@@ -1,23 +1,23 @@
 package cn.elytra.gtnh.cutcorners.strate;
 
-import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
 import net.minecraft.item.ItemStack;
+import tectech.recipe.EyeOfHarmonyRecipe;
 
 public interface ICutCornerStrategy {
 
-    default void updateGTRecipe(GT_Recipe recipe) {
+    default void updateGTRecipe(GTRecipe recipe) {
     }
 
-    default void updateAssemblyLineRecipe(GT_Recipe.GT_Recipe_AssemblyLine recipe) {
+    default void updateAssemblyLineRecipe(GTRecipe.RecipeAssemblyLine recipe) {
     }
 
     default void updateEOHRecipe(EyeOfHarmonyRecipe recipe) {
     }
 
-    default void updateResearchStationRecipe(GT_Recipe recipe) {
+    default void updateResearchStationRecipe(GTRecipe recipe) {
     }
 
     default void updateFurnaceRecipe_size(ItemStack stackIn, ItemStack stackOut) {

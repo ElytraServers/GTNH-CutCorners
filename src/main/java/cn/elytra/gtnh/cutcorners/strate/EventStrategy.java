@@ -1,19 +1,19 @@
 package cn.elytra.gtnh.cutcorners.strate;
 
 import cn.elytra.gtnh.cutcorners.strate.event.CutCornersEvents;
-import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
 import net.minecraft.item.ItemStack;
+import tectech.recipe.EyeOfHarmonyRecipe;
 
 public class EventStrategy implements ICutCornerStrategy {
 
-    public void updateGTRecipe(GT_Recipe recipe) {
+    public void updateGTRecipe(GTRecipe recipe) {
         CutCornersEvents.onGTRecipe(recipe);
     }
 
-    public void updateAssemblyLineRecipe(GT_Recipe.GT_Recipe_AssemblyLine recipe) {
+    public void updateAssemblyLineRecipe(GTRecipe.RecipeAssemblyLine recipe) {
         CutCornersEvents.onAssemblyLineRecipe(recipe);
     }
 
@@ -22,7 +22,7 @@ public class EventStrategy implements ICutCornerStrategy {
     }
 
     @Override
-    public void updateResearchStationRecipe(GT_Recipe recipe) {
+    public void updateResearchStationRecipe(GTRecipe recipe) {
         CutCornersEvents.onResearchStationRecipe(recipe);
     }
 

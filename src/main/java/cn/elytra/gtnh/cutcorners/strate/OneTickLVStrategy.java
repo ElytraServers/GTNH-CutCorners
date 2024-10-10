@@ -1,9 +1,9 @@
 package cn.elytra.gtnh.cutcorners.strate;
 
-import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
 import com.github.wohaopa.GTNHModify.mixins.late.gregtech.EyeOfHarmonyRecipeAccessor;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
+import tectech.recipe.EyeOfHarmonyRecipe;
 
 @Deprecated
 public class OneTickLVStrategy extends OneTickStrategy {
@@ -16,13 +16,13 @@ public class OneTickLVStrategy extends OneTickStrategy {
     }
 
     @Override
-    public void updateGTRecipe(GT_Recipe recipe) {
+    public void updateGTRecipe(GTRecipe recipe) {
         super.updateGTRecipe(recipe);
         recipe.mEUt = RECIPE_LV;
     }
 
     @Override
-    public void updateAssemblyLineRecipe(GT_Recipe.GT_Recipe_AssemblyLine recipe) {
+    public void updateAssemblyLineRecipe(GTRecipe.RecipeAssemblyLine recipe) {
         super.updateAssemblyLineRecipe(recipe);
         recipe.mEUt = RECIPE_LV;
     }

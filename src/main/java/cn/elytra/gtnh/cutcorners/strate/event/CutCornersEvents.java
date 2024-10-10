@@ -1,20 +1,20 @@
 package cn.elytra.gtnh.cutcorners.strate.event;
 
-import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
 import cpw.mods.fml.common.eventhandler.EventBus;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
+import tectech.recipe.EyeOfHarmonyRecipe;
 
 public class CutCornersEvents {
 
     public static final EventBus CC_EVENTS = new EventBus();
 
-    public static void onGTRecipe(GT_Recipe recipe) {
+    public static void onGTRecipe(GTRecipe recipe) {
         CC_EVENTS.post(new ModifyRecipeEvent.GregTech(recipe));
     }
 
-    public static void onAssemblyLineRecipe(GT_Recipe.GT_Recipe_AssemblyLine recipe) {
+    public static void onAssemblyLineRecipe(GTRecipe.RecipeAssemblyLine recipe) {
         CC_EVENTS.post(new ModifyRecipeEvent.GT_AssemblyLine(recipe));
     }
 
@@ -22,7 +22,7 @@ public class CutCornersEvents {
         CC_EVENTS.post(new ModifyRecipeEvent.GT_EyeOfHarmony(recipe));
     }
 
-    public static void onResearchStationRecipe(GT_Recipe recipe) {
+    public static void onResearchStationRecipe(GTRecipe recipe) {
         CC_EVENTS.post(new ModifyRecipeEvent.GT_ResearchStation(recipe));
     }
 

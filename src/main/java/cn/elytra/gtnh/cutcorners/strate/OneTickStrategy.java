@@ -1,23 +1,23 @@
 package cn.elytra.gtnh.cutcorners.strate;
 
-import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
 import com.github.wohaopa.GTNHModify.mixins.late.gregtech.EyeOfHarmonyRecipeAccessor;
 import com.github.wohaopa.GTNHModify.mixins.late.railcraft.BlastFurnaceRecipeAccessor;
 import com.github.wohaopa.GTNHModify.mixins.late.railcraft.CokeOvenRecipeAccessor;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
+import tectech.recipe.EyeOfHarmonyRecipe;
 
 @Deprecated
 public class OneTickStrategy implements ICutCornerStrategy {
 
     @Override
-    public void updateGTRecipe(GT_Recipe recipe) {
+    public void updateGTRecipe(GTRecipe recipe) {
         recipe.mDuration = 1;
     }
 
     @Override
-    public void updateAssemblyLineRecipe(GT_Recipe.GT_Recipe_AssemblyLine recipe) {
+    public void updateAssemblyLineRecipe(GTRecipe.RecipeAssemblyLine recipe) {
         recipe.mDuration = 1;
     }
 

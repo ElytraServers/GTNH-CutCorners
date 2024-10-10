@@ -1,14 +1,13 @@
 package cn.elytra.gtnh.cutcorners.strate.event;
 
-import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
 import com.github.wohaopa.GTNHModify.mixins.late.gregtech.EyeOfHarmonyRecipeAccessor;
 import com.github.wohaopa.GTNHModify.mixins.late.railcraft.BlastFurnaceRecipeAccessor;
 import com.github.wohaopa.GTNHModify.mixins.late.railcraft.CokeOvenRecipeAccessor;
 import cpw.mods.fml.common.eventhandler.Event;
-import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GTRecipe;
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
-import net.minecraft.item.ItemStack;
+import tectech.recipe.EyeOfHarmonyRecipe;
 
 public abstract class ModifyRecipeEvent<T> extends Event {
 
@@ -18,14 +17,14 @@ public abstract class ModifyRecipeEvent<T> extends Event {
         this.recipe = recipe;
     }
 
-    public static class GregTech extends ModifyRecipeEvent<GT_Recipe> {
-        public GregTech(GT_Recipe recipe) {
+    public static class GregTech extends ModifyRecipeEvent<GTRecipe> {
+        public GregTech(GTRecipe recipe) {
             super(recipe);
         }
     }
 
-    public static class GT_AssemblyLine extends ModifyRecipeEvent<GT_Recipe.GT_Recipe_AssemblyLine> {
-        public GT_AssemblyLine(GT_Recipe.GT_Recipe_AssemblyLine recipe) {
+    public static class GT_AssemblyLine extends ModifyRecipeEvent<GTRecipe.RecipeAssemblyLine> {
+        public GT_AssemblyLine(GTRecipe.RecipeAssemblyLine recipe) {
             super(recipe);
         }
     }
@@ -60,8 +59,8 @@ public abstract class ModifyRecipeEvent<T> extends Event {
         }
     }
 
-    public static class GT_ResearchStation extends ModifyRecipeEvent<GT_Recipe> {
-        public GT_ResearchStation(GT_Recipe recipe) {
+    public static class GT_ResearchStation extends ModifyRecipeEvent<GTRecipe> {
+        public GT_ResearchStation(GTRecipe recipe) {
             super(recipe);
         }
 

@@ -1,12 +1,12 @@
 package com.github.wohaopa.GTNHModify.mixins.late.gregtech;
 
-import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
-import com.github.technus.tectech.util.FluidStackLong;
-import com.github.technus.tectech.util.ItemStackLong;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
+import tectech.recipe.EyeOfHarmonyRecipe;
+import tectech.util.FluidStackLong;
+import tectech.util.ItemStackLong;
 
 import java.util.ArrayList;
 
