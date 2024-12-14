@@ -1,64 +1,70 @@
-package cn.elytra.gtnh.cutcorners.strate.listener;
+package cn.elytra.gtnh.cutcorners.strate.impl.event.listener;
 
-import cn.elytra.gtnh.cutcorners.strate.event.GetDurationEvent;
-import cn.elytra.gtnh.cutcorners.strate.event.ModifyRecipeEvent;
+import cn.elytra.gtnh.cutcorners.strate.impl.event.event.GetDurationEvent;
+import cn.elytra.gtnh.cutcorners.strate.impl.event.event.IHasDuration;
+import cn.elytra.gtnh.cutcorners.strate.impl.event.event.IHasLongDuration;
+import cn.elytra.gtnh.cutcorners.strate.impl.event.event.ModifyRecipeEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class OneTickListener {
+public abstract class AbstractReducedTickListener {
+
+    protected abstract void transform(IHasDuration i);
+
+    protected abstract void transform(IHasLongDuration i);
 
     @SubscribeEvent
     public void onGTRecipe(ModifyRecipeEvent.GregTech e) {
-        e.recipe.mDuration = 1;
+        transform(e);
     }
 
     @SubscribeEvent
     public void onGTAssemblyLine(ModifyRecipeEvent.GT_AssemblyLine e) {
-        e.recipe.mDuration = 1;
+        transform(e);
     }
 
     @SubscribeEvent
     public void onEOHRecipe(ModifyRecipeEvent.GT_EyeOfHarmony e) {
-        e.getAccessor().set_miningTimeSeconds(1);
+        transform(e);
     }
 
     @SubscribeEvent
     public void onResearchStation(ModifyRecipeEvent.GT_ResearchStation e) {
-        e.recipe.mDuration = 1;
+        transform(e);
     }
 
     @SubscribeEvent
     public void onRCCokeOven(ModifyRecipeEvent.RC_CokeOven e) {
-        e.getAccessor().set_cookTime(1);
+        transform(e);
     }
 
     @SubscribeEvent
     public void onBlastFurnace(ModifyRecipeEvent.RC_BlastFurnace e) {
-        e.getAccessor().set_cookTime(1);
+        transform(e);
     }
 
     @SubscribeEvent
     public void onFurnaceSmelting(GetDurationEvent.FurnaceSmeltingTime e) {
-        e.setDuration(1);
+        transform(e);
     }
 
     @SubscribeEvent
     public void onBotaniaSpreader(GetDurationEvent.Botania_SpreadPingback e) {
-        e.setDuration(1);
+        transform(e);
     }
 
     @SubscribeEvent
     public void onGTMachine(GetDurationEvent.GT_MaxProgressTime e) {
-        e.setDuration(1);
+        transform(e);
     }
 
     @SubscribeEvent
     public void onTCFurnaceSmelting(GetDurationEvent.TC_FurnaceSmeltingTime e) {
-        e.setDuration(1);
+        transform(e);
     }
 
     @SubscribeEvent
     public void onTCNodeRegen(GetDurationEvent.TC_NodeRegenerationTime e) {
-        e.setDuration(1);
+        transform(e);
     }
 
 }

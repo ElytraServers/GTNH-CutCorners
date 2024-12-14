@@ -1,9 +1,9 @@
-package cn.elytra.gtnh.cutcorners.strate.event;
+package cn.elytra.gtnh.cutcorners.strate.impl.event.event;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class GetDurationEvent extends Event {
+public abstract class GetDurationEvent extends Event implements IHasDuration {
 
     private int duration;
 

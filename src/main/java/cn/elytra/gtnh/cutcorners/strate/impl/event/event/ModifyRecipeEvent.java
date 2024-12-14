@@ -1,4 +1,4 @@
-package cn.elytra.gtnh.cutcorners.strate.event;
+package cn.elytra.gtnh.cutcorners.strate.impl.event.event;
 
 import com.github.wohaopa.GTNHModify.mixins.late.gregtech.EyeOfHarmonyRecipeAccessor;
 import com.github.wohaopa.GTNHModify.mixins.late.railcraft.BlastFurnaceRecipeAccessor;
@@ -17,19 +17,39 @@ public abstract class ModifyRecipeEvent<T> extends Event {
         this.recipe = recipe;
     }
 
-    public static class GregTech extends ModifyRecipeEvent<GTRecipe> {
+    public static class GregTech extends ModifyRecipeEvent<GTRecipe> implements IHasDuration {
         public GregTech(GTRecipe recipe) {
             super(recipe);
         }
-    }
 
-    public static class GT_AssemblyLine extends ModifyRecipeEvent<GTRecipe.RecipeAssemblyLine> {
-        public GT_AssemblyLine(GTRecipe.RecipeAssemblyLine recipe) {
-            super(recipe);
+        @Override
+        public int getDuration() {
+            return recipe.mDuration;
+        }
+
+        @Override
+        public void setDuration(int duration) {
+            recipe.mDuration = duration;
         }
     }
 
-    public static class GT_EyeOfHarmony extends ModifyRecipeEvent<EyeOfHarmonyRecipe> {
+    public static class GT_AssemblyLine extends ModifyRecipeEvent<GTRecipe.RecipeAssemblyLine> implements IHasDuration {
+        public GT_AssemblyLine(GTRecipe.RecipeAssemblyLine recipe) {
+            super(recipe);
+        }
+
+        @Override
+        public int getDuration() {
+            return recipe.mDuration;
+        }
+
+        @Override
+        public void setDuration(int duration) {
+            recipe.mDuration = duration;
+        }
+    }
+
+    public static class GT_EyeOfHarmony extends ModifyRecipeEvent<EyeOfHarmonyRecipe> implements IHasLongDuration {
         public GT_EyeOfHarmony(EyeOfHarmonyRecipe recipe) {
             super(recipe);
         }
@@ -37,9 +57,19 @@ public abstract class ModifyRecipeEvent<T> extends Event {
         public EyeOfHarmonyRecipeAccessor getAccessor() {
             return (EyeOfHarmonyRecipeAccessor) recipe;
         }
+
+        @Override
+        public long getDuration() {
+            return getAccessor().get_miningTimeSeconds();
+        }
+
+        @Override
+        public void setDuration(long duration) {
+            getAccessor().set_miningTimeSeconds(duration);
+        }
     }
 
-    public static class RC_CokeOven extends ModifyRecipeEvent<ICokeOvenRecipe> {
+    public static class RC_CokeOven extends ModifyRecipeEvent<ICokeOvenRecipe> implements IHasDuration {
         public RC_CokeOven(ICokeOvenRecipe recipe) {
             super(recipe);
         }
@@ -47,9 +77,19 @@ public abstract class ModifyRecipeEvent<T> extends Event {
         public CokeOvenRecipeAccessor getAccessor() {
             return (CokeOvenRecipeAccessor) recipe;
         }
+
+        @Override
+        public int getDuration() {
+            return getAccessor().get_cookTime();
+        }
+
+        @Override
+        public void setDuration(int duration) {
+            getAccessor().set_cookTime(duration);
+        }
     }
 
-    public static class RC_BlastFurnace extends ModifyRecipeEvent<IBlastFurnaceRecipe> {
+    public static class RC_BlastFurnace extends ModifyRecipeEvent<IBlastFurnaceRecipe> implements IHasDuration {
         public RC_BlastFurnace(IBlastFurnaceRecipe recipe) {
             super(recipe);
         }
@@ -57,9 +97,19 @@ public abstract class ModifyRecipeEvent<T> extends Event {
         public BlastFurnaceRecipeAccessor getAccessor() {
             return (BlastFurnaceRecipeAccessor) recipe;
         }
+
+        @Override
+        public int getDuration() {
+            return getAccessor().get_cookTime();
+        }
+
+        @Override
+        public void setDuration(int duration) {
+            getAccessor().set_cookTime(duration);
+        }
     }
 
-    public static class GT_ResearchStation extends ModifyRecipeEvent<GTRecipe> {
+    public static class GT_ResearchStation extends GregTech {
         public GT_ResearchStation(GTRecipe recipe) {
             super(recipe);
         }

@@ -1,11 +1,8 @@
 package com.github.wohaopa.GTNHModify;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
-import com.github.wohaopa.GTNHModify.config.Config;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cn.elytra.gtnh.cutcorners.config.Config;
+import cpw.mods.fml.common.event.*;
 
 import java.io.File;
 
@@ -30,9 +27,11 @@ public class CommonProxy {
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {}
 
-    // register server commands in this event handler (Remove if not needed)
-    public void serverStarting(FMLServerStartingEvent event) {
+    public void loadComplete(FMLLoadCompleteEvent event) {
         CutCorners.LOG.info("Cutting and initializing all recipes");
         CutCorners.init();
     }
+
+    // register server commands in this event handler (Remove if not needed)
+    public void serverStarting(FMLServerStartingEvent event) {}
 }

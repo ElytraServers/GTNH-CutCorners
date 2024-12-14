@@ -1,7 +1,10 @@
-package com.github.wohaopa.GTNHModify.config;
+package cn.elytra.gtnh.cutcorners.config;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
-import cn.elytra.gtnh.cutcorners.strate.*;
+import cn.elytra.gtnh.cutcorners.strate.CutCornerStrategies;
+import cn.elytra.gtnh.cutcorners.strate.ICutCornerStrategy;
+import cn.elytra.gtnh.cutcorners.strate.impl.event.CutCornerBuiltinEventHandlers;
+import cn.elytra.gtnh.cutcorners.strate.impl.event.CutCornersEventDispatchHelper;
 import com.github.wohaopa.GTNHModify.GTNHModifyMod;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -15,6 +18,8 @@ import java.util.Optional;
 public class Config {
 
     public static Configuration config;
+
+    public static final String CATE_TICK_REDUCE = "reduce-tick";
 
     private static boolean doSave;
 
@@ -46,7 +51,9 @@ public class Config {
                 The strategy of cut corners.
                 NOOP: No cut corners.
                 EVENT: Cut corners triggered by events.
-                Others are deprecated and works like EVENT.""",
+                Others are deprecated and works like EVENT.
+
+                (DEPRECATED OPTION)""",
             new String[]{"NOOP", "EVENT", "None", "OneTick", "Tenths", "Output64", "Energyless"}
         );
         String strategyName = propStrategy.getString();
@@ -75,13 +82,20 @@ public class Config {
             """
                 The event handlers used by EVENT strategy.
                 ONE_TICK: All recipes and processing time are set to 1 tick.
+                RATIO_TICK: All recipes and processing time are reduced to ratio * original.
+                FIXED_TICK: All recipes and processing time are reduced by fixed tick.
                 GT_TIER_LV: All voltage tier of GT recipes are set to LV."""
         );
         String[] eventHandlerNames = propEventHandlers.getStringList();
+        if(eventHandlerNames.length == 0) {
+            CutCorners.LOG.info("No handler is configured");
+        }
         for (String name : eventHandlerNames) {
-            Optional<Object> handlerOptional = CutCornerEventHandlers.getHandler(name);
+            Optional<Object> handlerOptional = CutCornerBuiltinEventHandlers.getHandler(name);
             if (handlerOptional.isPresent()) {
-                CutCorners.registerListener(handlerOptional.get());
+                var handler = handlerOptional.get();
+                CutCorners.LOG.info("Using handler {}", handler.getClass().getSimpleName());
+                CutCornersEventDispatchHelper.registerListener(handler);
             } else {
                 CutCorners.LOG.error("The event handler {} does not exist!", name);
             }
@@ -91,6 +105,14 @@ public class Config {
             config.save();
             doSave = false;
         }
+    }
+
+    public static float getRatioTickValue() {
+        return config.getFloat("ratio", CATE_TICK_REDUCE, 0.5F, 0.0F, 1.0F, "The ratio of duration.");
+    }
+
+    public static int getFixedReduceTickValue() {
+        return config.getInt("fixed", CATE_TICK_REDUCE, 60 * 20 /* 1 min */, 0, Integer.MAX_VALUE, "The fixed ticks to reduce.");
     }
 
 }

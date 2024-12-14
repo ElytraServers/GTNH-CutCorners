@@ -1,6 +1,6 @@
-package cn.elytra.gtnh.cutcorners.strate.listener;
+package cn.elytra.gtnh.cutcorners.strate.impl.event.listener;
 
-import cn.elytra.gtnh.cutcorners.strate.event.ModifyRecipeEvent;
+import cn.elytra.gtnh.cutcorners.strate.impl.event.event.ModifyRecipeEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.TierEU;
 

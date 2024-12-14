@@ -5,8 +5,7 @@ import cn.elytra.gtnh.cutcorners.init.RailcraftRecipeInit;
 import cn.elytra.gtnh.cutcorners.init.VanillaRecipeInit;
 import cn.elytra.gtnh.cutcorners.strate.CutCornerStrategies;
 import cn.elytra.gtnh.cutcorners.strate.ICutCornerStrategy;
-import cn.elytra.gtnh.cutcorners.strate.event.CutCornersEvents;
-import cn.elytra.gtnh.cutcorners.strate.listener.OneTickListener;
+import cn.elytra.gtnh.cutcorners.strate.impl.event.CutCornersEventDispatchHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,6 +15,9 @@ public class CutCorners {
 
     public static final Logger LOG = LogManager.getLogger("GTNH-CutCorners");
 
+    /**
+     * The methods that directly modify the recipes without using mixins.
+     */
     private static final Runnable[] INITIALIZERS = new Runnable[]{
         GTRecipeInit::init,
         VanillaRecipeInit::init,
@@ -26,6 +28,8 @@ public class CutCorners {
         CutCorners.strategy = strategies;
     }
 
+    private static boolean initialized = false;
+
     public static ICutCornerStrategy getStrategy() {
         if (strategy == null) {
             throw new IllegalStateException("strategy has not been set yet!");
@@ -33,8 +37,13 @@ public class CutCorners {
         return strategy;
     }
 
-    // called in ServerStarting event
+    // called in LoadComplete event
     public static void init() {
+        if (initialized) {
+            CutCornersEventDispatchHelper.checkReinitializeCompatibility();
+        }
+
+        initialized = true;
         for (Runnable initializer : INITIALIZERS) {
             try {
                 initializer.run();
@@ -44,16 +53,13 @@ public class CutCorners {
         }
     }
 
+    @Deprecated
     public static void registerListener(Object listener) {
-        CutCornersEvents.CC_EVENTS.register(listener);
+        CutCornersEventDispatchHelper.registerListener(listener);
     }
 
+    @Deprecated
     public static void unregisterListener(Object listener) {
-        CutCornersEvents.CC_EVENTS.unregister(listener);
+        CutCornersEventDispatchHelper.unregisterListener(listener);
     }
-
-    static {
-        CutCornersEvents.CC_EVENTS.register(new OneTickListener());
-    }
-
 }
