@@ -1,8 +1,10 @@
 package com.github.wohaopa.GTNHModify;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
-import cn.elytra.gtnh.cutcorners.config.Config;
+import cn.elytra.gtnh.cutcorners.config.CutCornersConfig;
+import cn.elytra.gtnh.cutcorners.strate.impl.conf.NewConfigStrategy;
 import cpw.mods.fml.common.event.*;
+import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
 
@@ -11,14 +13,7 @@ public class CommonProxy {
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the
     // GameRegistry." (Remove if not needed)
     public void preInit(FMLPreInitializationEvent event) {
-        File configDir = event.getModConfigurationDirectory().getParentFile();
-        File newConfigFile = event.getModConfigurationDirectory();
-        File oldConfigFile = new File(configDir, "GTNHModify.cfg");
-        if(oldConfigFile.exists() && !newConfigFile.exists()) {
-            oldConfigFile.renameTo(event.getSuggestedConfigurationFile());
-        }
-
-        Config.init(event.getSuggestedConfigurationFile());
+        CutCorners.setStrategy(new NewConfigStrategy(new CutCornersConfig(new Configuration(new File(event.getModConfigurationDirectory(), "CutCorners.cfg")))));
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)

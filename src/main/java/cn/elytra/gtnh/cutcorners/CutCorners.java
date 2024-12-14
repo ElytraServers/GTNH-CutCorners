@@ -3,15 +3,17 @@ package cn.elytra.gtnh.cutcorners;
 import cn.elytra.gtnh.cutcorners.init.GTRecipeInit;
 import cn.elytra.gtnh.cutcorners.init.RailcraftRecipeInit;
 import cn.elytra.gtnh.cutcorners.init.VanillaRecipeInit;
-import cn.elytra.gtnh.cutcorners.strate.CutCornerStrategies;
 import cn.elytra.gtnh.cutcorners.strate.ICutCornerStrategy;
 import cn.elytra.gtnh.cutcorners.strate.impl.event.CutCornersEventDispatchHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class CutCorners {
 
-    private static ICutCornerStrategy strategy = CutCornerStrategies.EVENT;
+    @Nullable
+    private static ICutCornerStrategy strategy;
 
     public static final Logger LOG = LogManager.getLogger("GTNH-CutCorners");
 
@@ -24,12 +26,13 @@ public class CutCorners {
         RailcraftRecipeInit::init,
     };
 
-    public static void setStrategy(ICutCornerStrategy strategies) {
+    public static void setStrategy(@NotNull ICutCornerStrategy strategies) {
         CutCorners.strategy = strategies;
     }
 
     private static boolean initialized = false;
 
+    @NotNull
     public static ICutCornerStrategy getStrategy() {
         if (strategy == null) {
             throw new IllegalStateException("strategy has not been set yet!");

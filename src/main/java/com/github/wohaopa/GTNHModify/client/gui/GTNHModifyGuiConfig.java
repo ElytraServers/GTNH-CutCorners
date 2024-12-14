@@ -1,6 +1,6 @@
 package com.github.wohaopa.GTNHModify.client.gui;
 
-import cn.elytra.gtnh.cutcorners.config.Config;
+import cn.elytra.gtnh.cutcorners.config.CutCornersConfig;
 import com.github.wohaopa.GTNHModify.GTNHModifyMod;
 import cpw.mods.fml.client.config.GuiConfig;
 import net.minecraft.client.gui.GuiScreen;
@@ -13,10 +13,10 @@ public class GTNHModifyGuiConfig extends GuiConfig {
     public GTNHModifyGuiConfig(GuiScreen guiScreen) {
         super(
             guiScreen,
-            new ConfigElement(Config.config.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(),
+            new ConfigElement(CutCornersConfig.instance.getConfig().getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(),
             GTNHModifyMod.MOD_ID,
             true,
-            false,
-            GuiConfig.getAbridgedConfigPath(Config.config.toString()));
+            true,
+            GuiConfig.getAbridgedConfigPath(CutCornersConfig.instance.getConfig().toString()));
     }
 }

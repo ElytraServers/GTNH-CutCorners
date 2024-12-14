@@ -18,8 +18,13 @@ public class GT_MetaTileEntity_MinerMixin {
     @Shadow
     private int mSpeed;
 
-    @Inject(method = "<init>*", at = @At("RETURN"))
-    private void gtnhcc$overwriteSpeed(CallbackInfo info) {
+//    @Inject(method = "<init>*", at = @At("RETURN"))
+//    private void gtnhcc$overwriteSpeed(CallbackInfo info) {
+//        mSpeed = CutCorners.getStrategy().getMaxProgressTime(this, mSpeed);
+//    }
+
+    @Inject(method = "onPostTick", at = @At("HEAD"))
+    private void gtnhcc$onPostTick(CallbackInfo info) {
         mSpeed = CutCorners.getStrategy().getMaxProgressTime(this, mSpeed);
     }
 }

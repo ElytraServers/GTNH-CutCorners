@@ -2,12 +2,15 @@ package cn.elytra.gtnh.cutcorners.strate;
 
 import cn.elytra.gtnh.cutcorners.strate.impl.event.CutCornersEventDispatchHelper;
 import cn.elytra.gtnh.cutcorners.strate.impl.event.CutCornersStrategyEvent;
-import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
 import net.minecraft.item.ItemStack;
 import tectech.recipe.EyeOfHarmonyRecipe;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * The strategy of how to work with modifications.
@@ -20,36 +23,59 @@ import tectech.recipe.EyeOfHarmonyRecipe;
  * <p>
  * It is recommended to combine many strategies with {@link CutCornersStrategyEvent},
  * by listening to its events dispatched from {@link CutCornersEventDispatchHelper#CC_EVENTS CutCorners Event Bus}.
- *
- * @see CutCornerStrategies
  */
 public interface ICutCornerStrategy {
 
     /**
-     * Modify the {@link GT_Recipe}.
+     * Modify the {@link GTRecipe} in the {@link RecipeMap}.
+     * It should be invoked once per recipe map on game load completion.
+     */
+    default void updateGTRecipeMap(RecipeMap<?> recipeMap) {
+    }
+
+    /**
+     * Modify the {@link GTRecipe}.
      * It should be invoked once per recipe on game load completion.
      */
+    @Deprecated
     default void updateGTRecipe(GTRecipe recipe) {
     }
 
     /**
-     * Modify the {@link GT_Recipe.GT_Recipe_AssemblyLine}.
+     * Modify the {@link GTRecipe.RecipeAssemblyLine} list.
+     */
+    default void updateAssemblyLineRecipeList(List<GTRecipe.RecipeAssemblyLine> recipes) {}
+
+    /**
+     * Modify the {@link GTRecipe.RecipeAssemblyLine}.
      * It should be invoked once per recipe on game load completion.
      */
+    @Deprecated
     default void updateAssemblyLineRecipe(GTRecipe.RecipeAssemblyLine recipe) {
+    }
+
+    default void updateEOHRecipeMap(HashMap<String, EyeOfHarmonyRecipe> recipeMap) {
     }
 
     /**
      * Modify the {@link EyeOfHarmonyRecipe}.
      * It should be invoked once per recipe on game load completion.
      */
+    @Deprecated
     default void updateEOHRecipe(EyeOfHarmonyRecipe recipe) {
     }
 
     /**
-     * Modify the {@link GT_Recipe Research Station GT_Recipe}.
+     * Modify the {@link GTRecipe Research Station Recipe} map.
+     */
+    default void updateResearchStationRecipeMap(RecipeMap<?> recipeMap) {
+    }
+
+    /**
+     * Modify the {@link GTRecipe Research Station GT_Recipe}.
      * It should be invoked once per recipe on game load completion.
      */
+    @Deprecated
     default void updateResearchStationRecipe(GTRecipe recipe) {
     }
 
@@ -67,7 +93,7 @@ public interface ICutCornerStrategy {
     }
 
     /**
-     * Return the max smelting time (working duration) of furnaces.
+     * Return the max smelting time (working value) of furnaces.
      * It will be invoked on furnace updates.
      */
     default int getMaxFurnaceSmeltingTime(int original) {

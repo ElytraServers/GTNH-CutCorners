@@ -4,7 +4,6 @@ import cn.elytra.gtnh.cutcorners.CutCorners;
 import cn.elytra.gtnh.cutcorners.strate.impl.event.event.GetDurationEvent;
 import cn.elytra.gtnh.cutcorners.strate.impl.event.event.ModifyRecipeEvent;
 import cn.elytra.gtnh.cutcorners.strate.impl.event.listener.SingleUseListener;
-import com.github.technus.tectech.recipe.EyeOfHarmonyRecipe;
 import cpw.mods.fml.common.eventhandler.EventBus;
 import gregtech.api.util.GTRecipe;
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
@@ -23,7 +22,6 @@ public class CutCornersEventDispatchHelper {
 
     public static final EventBus CC_EVENTS = new EventBus();
 
-    public static void onGTRecipe(GTRecipe recipe) {
     private static boolean throwOnReinitialize = false;
 
     public static void registerListener(Object listener) {
@@ -42,12 +40,12 @@ public class CutCornersEventDispatchHelper {
     }
 
     public static void checkReinitializeCompatibility() {
-        if(throwOnReinitialize) {
+        if (throwOnReinitialize) {
             throw new IllegalStateException("Reinitialization is not supported");
         }
     }
 
-    public static void onGTRecipe(GT_Recipe recipe) {
+    public static void onGTRecipe(GTRecipe recipe) {
         CC_EVENTS.post(new ModifyRecipeEvent.GregTech(recipe));
     }
 

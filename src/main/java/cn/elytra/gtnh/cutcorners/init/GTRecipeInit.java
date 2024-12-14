@@ -1,7 +1,6 @@
 package cn.elytra.gtnh.cutcorners.init;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
-import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import tectech.TecTech;
@@ -23,28 +22,26 @@ public class GTRecipeInit {
 
     private static void updateGeneralRecipes() {
         RecipeMap.ALL_RECIPE_MAPS.forEach((s, map) -> {
-            if (map == GoodGeneratorRecipeMaps.naquadahReactorFuels) return;
-            CutCorners.LOG.info("Updating GT_Recipe Map: {}", map.unlocalizedName);
-            map.getAllRecipes().forEach(recipe -> CutCorners.getStrategy().updateGTRecipe(recipe));
+            CutCorners.getStrategy().updateGTRecipeMap(map);
         });
     }
 
     private static void updateAssemblyLineRecipes() {
         CutCorners.LOG.info("Updating Assembly Line Recipes");
-        GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.forEach((recipe) -> CutCorners.getStrategy().updateAssemblyLineRecipe(recipe));
+        CutCorners.getStrategy().updateAssemblyLineRecipeList(GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes);
     }
 
     private static void updateEOHRecipes() {
         CutCorners.LOG.info("Updating Eye of Harmony Recipes");
-        TecTechRecipeMaps.eyeOfHarmonyRecipes.getAllRecipes().forEach(recipe -> CutCorners.getStrategy().updateGTRecipe(recipe));
+        CutCorners.getStrategy().updateGTRecipeMap(TecTechRecipeMaps.eyeOfHarmonyRecipes);
 
         var recipeMap = getRecipeHashMap(TecTech.eyeOfHarmonyRecipeStorage);
-        recipeMap.forEach((s, recipe) -> CutCorners.getStrategy().updateEOHRecipe(recipe));
+        CutCorners.getStrategy().updateEOHRecipeMap(recipeMap);
     }
 
     private static void updateResearchStationRecipes() {
         CutCorners.LOG.info("Updating Research Station Recipes");
-        TecTechRecipeMaps.researchStationFakeRecipes.getAllRecipes().forEach(recipe -> CutCorners.getStrategy().updateResearchStationRecipe(recipe));
+        CutCorners.getStrategy().updateResearchStationRecipeMap(TecTechRecipeMaps.researchStationFakeRecipes);
     }
 
     private static final Field FIELD_RECIPE_HASH_MAP;
