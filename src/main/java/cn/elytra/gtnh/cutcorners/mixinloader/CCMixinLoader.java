@@ -1,14 +1,14 @@
-package com.github.wohaopa.GTNHModify;
+package cn.elytra.gtnh.cutcorners.mixinloader;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.collect.Lists;
 import com.gtnewhorizon.gtnhmixins.ILateMixinLoader;
 import com.gtnewhorizon.gtnhmixins.LateMixin;
 
+import java.util.List;
+import java.util.Set;
+
 @LateMixin
-public class LateMixinLoader implements ILateMixinLoader {
+public class CCMixinLoader implements ILateMixinLoader {
 
     @Override
     public String getMixinConfig() {
@@ -17,12 +17,10 @@ public class LateMixinLoader implements ILateMixinLoader {
 
     @Override
     public List<String> getMixins(Set<String> loadedMods) {
+        // read the mod init states
+        Mods.init(loadedMods);
 
-        for (Mods mod : Mods.values()) {
-            if (loadedMods.contains(mod.modid)) mod.setLoaded();
-        }
-
-        List<String> mixins = new ArrayList<>();
+        var mixins = Lists.<String>newArrayList();
 
         if (Mods.GregTech.isLoaded()) {
             // GregTech

@@ -1,4 +1,4 @@
-package com.github.wohaopa.GTNHModify.mixins.late.railcraft;
+package cn.elytra.gtnh.cutcorners.mixins.late.railcraft;
 
 import mods.railcraft.common.util.crafting.BlastFurnaceCraftingManager;
 import net.minecraft.item.ItemStack;

@@ -1,4 +1,4 @@
-package com.github.wohaopa.GTNHModify.mixins.late.gregtech;
+package cn.elytra.gtnh.cutcorners.mixins.late.gregtech;
 
 import gregtech.api.util.GTUtility;
 import org.spongepowered.asm.mixin.Mixin;

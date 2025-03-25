@@ -1,4 +1,4 @@
-package com.github.wohaopa.GTNHModify.mixins.late.gregtech;
+package cn.elytra.gtnh.cutcorners.mixins.late.gregtech;
 
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;

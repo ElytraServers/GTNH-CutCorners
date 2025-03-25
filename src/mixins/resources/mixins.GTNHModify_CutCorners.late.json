@@ -1,8 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8.5-GTNH",
-  "package": "com.github.wohaopa.GTNHModify.mixins",
-  "plugin": "com.github.wohaopa.GTNHModify.MixinPlugin",
+  "package": "cn.elytra.gtnh.cutcorners.mixins.late",
   "refmap": "mixins.GTNHModify_CutCorners.refmap.json",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",

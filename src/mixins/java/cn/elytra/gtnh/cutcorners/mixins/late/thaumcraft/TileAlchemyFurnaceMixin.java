@@ -1,4 +1,4 @@
-package com.github.wohaopa.GTNHModify.mixins.late.thaumcraft;
+package cn.elytra.gtnh.cutcorners.mixins.late.thaumcraft;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
 import org.objectweb.asm.Opcodes;

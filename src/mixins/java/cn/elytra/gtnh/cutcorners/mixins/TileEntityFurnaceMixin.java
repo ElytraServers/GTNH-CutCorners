@@ -1,4 +1,4 @@
-package com.github.wohaopa.GTNHModify.mixins;
+package cn.elytra.gtnh.cutcorners.mixins;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
 import net.minecraft.tileentity.TileEntityFurnace;

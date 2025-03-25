@@ -1,4 +1,4 @@
-package com.github.wohaopa.GTNHModify.mixins.late.gtnhintergalactic;
+package cn.elytra.gtnh.cutcorners.mixins.late.gtnhintergalactic;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

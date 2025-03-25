@@ -1,4 +1,4 @@
-package com.github.wohaopa.GTNHModify.mixins.late.botania;
+package cn.elytra.gtnh.cutcorners.mixins.late.botania;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
 import org.spongepowered.asm.mixin.Mixin;

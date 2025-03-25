@@ -1,4 +1,4 @@
-package com.github.wohaopa.GTNHModify.mixins.late.gregtech;
+package cn.elytra.gtnh.cutcorners.mixins.late.gregtech;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
 import gregtech.common.tileentities.machines.basic.MTEMiner;

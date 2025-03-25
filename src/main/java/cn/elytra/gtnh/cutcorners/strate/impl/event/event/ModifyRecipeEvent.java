@@ -1,8 +1,8 @@
 package cn.elytra.gtnh.cutcorners.strate.impl.event.event;
 
-import com.github.wohaopa.GTNHModify.mixins.late.gregtech.EyeOfHarmonyRecipeAccessor;
-import com.github.wohaopa.GTNHModify.mixins.late.railcraft.BlastFurnaceRecipeAccessor;
-import com.github.wohaopa.GTNHModify.mixins.late.railcraft.CokeOvenRecipeAccessor;
+import cn.elytra.gtnh.cutcorners.mixins.late.gregtech.EyeOfHarmonyRecipeAccessor;
+import cn.elytra.gtnh.cutcorners.mixins.late.railcraft.BlastFurnaceRecipeAccessor;
+import cn.elytra.gtnh.cutcorners.mixins.late.railcraft.CokeOvenRecipeAccessor;
 import cpw.mods.fml.common.eventhandler.Event;
 import gregtech.api.util.GTRecipe;
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;

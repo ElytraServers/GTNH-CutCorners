@@ -1,11 +1,13 @@
 {
   "required": true,
   "minVersion": "0.8.5-GTNH",
-  "package": "com.github.wohaopa.GTNHModify.mixins.late",
+  "package": "cn.elytra.gtnh.cutcorners.mixins",
   "refmap": "mixins.GTNHModify_CutCorners.refmap.json",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [],
+  "mixins": [
+    "TileEntityFurnaceMixin"
+  ],
   "client": [],
   "server": []
 }
