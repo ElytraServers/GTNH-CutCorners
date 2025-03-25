@@ -58,6 +58,8 @@ dependencies {
 //    runtimeOnlyNonPublishable("com.github.GTNewHorizons:BloodMagic:1.7.0")
 //    runtimeOnlyNonPublishable("com.github.GTNewHorizons:Electro-Magic-Tools:1.6.2")
 
+    implementation("ganymedes01.etfuturum:Et-Futurum-Requiem:2.6.2.4-GTNH:dev")
+
     testImplementation(platform("org.junit:junit-bom:5.11.4"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
