@@ -2,6 +2,7 @@ package cn.elytra.gtnh.cutcorners.strate.impl.conf;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
 import cn.elytra.gtnh.cutcorners.config.CutCornersConfig;
+import cn.elytra.gtnh.cutcorners.config.ValueModification;
 import cn.elytra.gtnh.cutcorners.strate.ICutCornerStrategy;
 import cn.elytra.gtnh.cutcorners.util.ResearchStationHelper;
 import cn.elytra.gtnh.cutcorners.mixins.late.gregtech.EyeOfHarmonyRecipeAccessor;
@@ -108,6 +109,14 @@ public class NewConfigStrategy implements ICutCornerStrategy {
         return config.doesBlacklistFurnace()
             ? original
             : config.getDurationModification().getModifiedValue(original, 1);
+    }
+
+    @Override
+    public int getMaxSpecialFurnaceSmeltingTime(int original) {
+        // delegate to furnace.
+        // to rational, it works as intended.
+        // to fixed, everything is pull to a same speed, so it's not a problem.
+        return getMaxFurnaceSmeltingTime(original);
     }
 
     @Override

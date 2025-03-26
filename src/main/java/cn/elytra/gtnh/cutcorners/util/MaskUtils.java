@@ -38,83 +38,81 @@ public class MaskUtils {
 		private final int bitCount;
 		private final int bitOffset;
 
-		private final long maskLong;
-		private final long maxValueLong;
-
-		private final int maskInt;
-		private final int maxValueInt;
-
-		private boolean allowInteger = true;
+		private final int mask;
+		private final int maxValue;
 
 		public MaskOperator(int bitCount, int bitOffset) {
-			this(bitCount, bitOffset, false);
-		}
-
-		public MaskOperator(int bitCount, int bitOffset, boolean supportsInteger) {
 			this.bitCount = bitCount;
 			this.bitOffset = bitOffset;
 
-			this.maskLong = ((1L << (bitCount + bitOffset))) - (1L << (bitOffset));
-			this.maxValueLong = (1L << bitCount) - 1;
-
-			if(maskLong >> 32 != 0) { // greater than integer, long only
-				if(supportsInteger) {
-					throw new IllegalArgumentException("the mask is too big to fit in integer mode");
-				}
-				this.allowInteger = false;
-
-				this.maskInt = 0;
-				this.maxValueInt = 0;
-			} else {
-				this.maskInt = (int) maskLong;
-				this.maxValueInt = (int) maxValueLong;
-			}
+			this.mask = ((1 << (bitCount + bitOffset))) - (1 << (bitOffset));
+			this.maxValue = (1 << bitCount) - 1;
 		}
 
 		@Override
 		public String toString() {
-			return "MaskOperator{bits=" + bitCount + ", offset=" + bitOffset + ", mask=" + Long.toString(maskLong, 2) + "}";
+			return "MaskOperator{bits=" + bitCount + ", offset=" + bitOffset + ", mask=" + Long.toString(mask, 2) + "}";
 		}
 
-		private long zero(long value) {
-			return value & ~maskLong;
+		private int zero(int value) {
+			return value & ~mask;
 		}
 
-		private long offset(long value) {
-			if(value > maxValueLong) {
-				throw new IllegalArgumentException("the value is too big: " + value + " > " + maxValueLong);
+		private int offset(int value) {
+			if(value > maxValue) {
+				throw new IllegalArgumentException("the value is too big: " + value + " > " + maxValue);
 			}
 			return value << bitOffset;
 		}
 
-		public long setValue(long whole, int part) {
+		public int setValue(int whole, int part) {
 			return (zero(whole) | offset(part));
 		}
 
-		public long toValue(long whole) {
-			return ((whole & maskLong) >> bitOffset);
-		}
-
-		private int zeroInt(int value) {
-			return value & ~maskInt;
-		}
-
-		private int offsetInt(int value) {
-			if(value > maxValueInt) {
-				throw new IllegalArgumentException("the value is too big: " + value + " > " + maxValueInt);
-			}
-			return value << bitOffset;
-		}
-
-		public int toValueInt(int whole, int part) {
-			if(!allowInteger) throw new IllegalStateException("integer not allowed");
-			return (zeroInt(whole) | offsetInt(part));
-		}
-
-		public int getValueInt(int whole) {
-			if(!allowInteger) throw new IllegalStateException("integer not allowed");
-			return ((whole & maskInt) >> bitOffset);
+		public int getValue(int whole) {
+			return ((whole & mask) >> bitOffset);
 		}
 	}
+
+    public static class MaskOperatorLong {
+
+        private final int bitCount;
+        private final int bitOffset;
+
+        private final long mask;
+        private final long maxValue;
+
+        public MaskOperatorLong(int bitCount, int bitOffset) {
+            this.bitCount = bitCount;
+            this.bitOffset = bitOffset;
+
+            this.mask = ((1L << (bitCount + bitOffset))) - (1L << (bitOffset));
+            this.maxValue = (1L << bitCount) - 1;
+        }
+
+        @Override
+        public String toString() {
+            return "MaskOperatorLong{" + "mask=" + mask + ", bitOffset=" + bitOffset + ", bitCount=" + bitCount + "}";
+        }
+
+        private long zero(long value) {
+            return value & ~mask;
+        }
+
+        private long offset(long value) {
+            if(value > maxValue) {
+                throw new IllegalArgumentException("the value is too big: " + value + " > " + maxValue);
+            }
+            return value << bitOffset;
+        }
+
+        public long setValue(long whole, int part) {
+            return (zero(whole) | offset(part));
+        }
+
+        public long getValue(long whole) {
+            return ((whole & mask) >> bitOffset);
+        }
+    }
 
 }

@@ -5,11 +5,9 @@ import cn.elytra.gtnh.cutcorners.init.RailcraftRecipeInit;
 import cn.elytra.gtnh.cutcorners.init.VanillaRecipeInit;
 import cn.elytra.gtnh.cutcorners.strate.ICutCornerStrategy;
 import cn.elytra.gtnh.cutcorners.strate.impl.event.CutCornersEventDispatchHelper;
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.recipe.Scanning;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
@@ -84,7 +82,7 @@ public class CutCorners {
 
             GTValues.RA.stdBuilder()
                 .metadata(GTRecipeConstants.RESEARCH_ITEM, new ItemStack(Items.apple))
-                .metadata(GTRecipeConstants.RESEARCH_TIME, 1)
+                .metadata(GTRecipeConstants.SCANNING, new Scanning(1, TierEU.RECIPE_LV))
                 .itemInputs(
                     ItemList.AdvDebugStructureWriter.get(1),
                     new Object[] {OrePrefixes.circuit.get(Materials.UXV), 16},

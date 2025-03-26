@@ -45,6 +45,9 @@ public class CCMixinLoader implements ILateMixinLoader {
             mixins.add("railcraft.CokeOvenRecipeAccessor");
             mixins.add("railcraft.BlastFurnaceRecipeAccessor");
         }
+        if (Mods.EtFuturumRequiem.isLoaded()) {
+          mixins.add("et_futurum_requiem.BlastFurnaceAndSmoker_Mixin");
+        }
 
         return mixins;
     }
