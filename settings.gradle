@@ -10,6 +10,13 @@ pluginManagement {
                 includeGroupByRegex("com\\.gtnewhorizons\\..+")
             }
         }
+        maven {
+            name "JitPack"
+            url "https://jitpack.io"
+            mavenContent {
+                includeGroupByRegex("com\\.github\\..+")
+            }
+        }
         gradlePluginPortal()
         mavenCentral()
         mavenLocal()
@@ -17,5 +24,5 @@ pluginManagement {
 }
 
 plugins {
-    id 'com.gtnewhorizons.gtnhsettingsconvention' version '1.0.31'
+    id 'com.gtnewhorizons.gtnhsettingsconvention' version '1.0.41'
 }
