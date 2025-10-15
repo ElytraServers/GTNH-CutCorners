@@ -17,6 +17,7 @@ public enum Mods {
     GtnhIntergalactic("gtnhintergalactic"),
     Botania("Botania"),
     Railcraft("Railcraft"),
+    EtFuturumRequiem("etfuturum"),
     ;
 
     private static final Logger LOG = LogManager.getLogger();

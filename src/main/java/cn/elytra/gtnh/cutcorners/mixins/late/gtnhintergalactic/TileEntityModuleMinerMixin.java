@@ -3,7 +3,7 @@ package cn.elytra.gtnh.cutcorners.mixins.late.gtnhintergalactic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner;
+import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 
 @Mixin(value = TileEntityModuleMiner.class, remap = false)

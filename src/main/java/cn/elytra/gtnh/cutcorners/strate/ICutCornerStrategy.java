@@ -101,6 +101,14 @@ public interface ICutCornerStrategy {
     }
 
     /**
+     * Return the max smelting time of Blast Furnaces and Smokers from Et Futurum Requiem.
+     * It will be invoked on their updates.
+     */
+    default int getMaxSpecialFurnaceSmeltingTime(int original) {
+        return original;
+    }
+
+    /**
      * Return the pingback ticks of Botania spreaders.
      * It will be invoked on spreader updates.
      */
