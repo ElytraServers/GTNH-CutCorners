@@ -28,6 +28,7 @@ public class CCMixinLoader implements ILateMixinLoader {
             mixins.add("gregtech.GT_MetaTileEntity_MinerMixin");
             mixins.add("gregtech.GT_MetaTileEntity_MultiFurnaceMixin");
             mixins.add("gregtech.GT_MetaTileEntity_DrillerBaseMixin");
+            mixins.add("gregtech.GT_DrillingLogicDelegateMixin");
             mixins.add("gregtech.EyeOfHarmonyRecipeAccessor");
             mixins.add("gregtech.EyeOfHarmonyFrontendFixMixin");
 
