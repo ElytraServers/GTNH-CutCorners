@@ -17,6 +17,8 @@ public class SmeltryLogicMixin {
         target = "Ltconstruct/library/crafting/Smeltery;getLiquifyTemperature(Lnet/minecraft/item/ItemStack;)Ljava/lang/Integer;"))
     private Integer gtnhcc$tconMoltenTemperature(ItemStack item, Operation<Integer> original) {
         Integer value = original.call(item);
+        // if value is 20, it means there's no recipe for the item, so we return it as-is.
+        if (value == 20) return value;
         // the base line is 20 (multiplied by 10 in the arrays), which ingredients with lower molten point won't melt.
         value = Math.max(1, CutCorners.getStrategy().getMaxProgressTime(this, value - 20)) + 20;
         return value;
