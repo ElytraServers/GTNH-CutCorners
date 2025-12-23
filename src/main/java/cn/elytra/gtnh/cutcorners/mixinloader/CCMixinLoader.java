@@ -33,6 +33,7 @@ public class CCMixinLoader implements ILateMixinLoader {
             mixins.add("gregtech.EyeOfHarmonyFrontendFixMixin");
 
             mixins.add("gregtech.MTESteamFurnaceMixin");
+            mixins.add("gregtech.MTEBoilerMixin");
         }
         if (Mods.Thaumcraft.isLoaded()) {
             mixins.add("thaumcraft.TileAlchemyFurnaceMixin");

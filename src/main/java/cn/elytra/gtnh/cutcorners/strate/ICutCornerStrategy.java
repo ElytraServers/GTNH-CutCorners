@@ -27,6 +27,15 @@ import java.util.List;
 public interface ICutCornerStrategy {
 
     /**
+     * Used as a flag indicate whether CutCorner is in 1-tick mode or not.
+     *
+     * @return {@code true} if in immediate mode (or 1-tick mode).
+     */
+    default boolean isImmediateMode() {
+        return false;
+    }
+
+    /**
      * Modify the {@link GTRecipe} in the {@link RecipeMap}.
      * It should be invoked once per recipe map on game load completion.
      */

@@ -31,6 +31,14 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     }
 
     @Override
+    public boolean isImmediateMode() {
+        if(config.getDurationModification() instanceof ValueModification.Fixed fixed) {
+            return fixed.value() == 1;
+        }
+        return false;
+    }
+
+    @Override
     public void updateGTRecipeMap(RecipeMap<?> recipeMap) {
         if (ArrayUtils.contains(config.getGregTechBlacklistedRecipeMaps(), recipeMap.unlocalizedName) ^ config.whitelistMode()) {
             CutCorners.LOG.info("Skipped GT RecipeMap: {}", recipeMap.unlocalizedName);
