@@ -34,6 +34,11 @@
  * For more details, see https://docs.gradle.org/8.0.1/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
 dependencies {
+    elytraModpackVersion {
+        setGtnhVersion("2.8.1")
+        attachManifestVersionToJar(true)
+    }
+
     runtimeOnlyNonPublishable(gtnhdev("NotEnoughItems"))
     runtimeOnlyNonPublishable(gtnhdev("Mobs-Info"))
 
@@ -42,6 +47,7 @@ dependencies {
     // devOnlyNonPublishable(gtnhdev("GTNH-Intergalactic"))
     devOnlyNonPublishable(gtnhdev("Galaxy-Space-GTNH"))
     devOnlyNonPublishable(gtnhdev("Railcraft"))
+    devOnlyNonPublishable(gtnhdev("TinkersConstruct"))
 
     runtimeOnlyNonPublishable(gtnhdev("waila"))
     runtimeOnlyNonPublishable(gtnhdev("EnderCore"))
@@ -55,12 +61,10 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-@SuppressWarnings('GrMethodMayBeStatic')
 String gtnhdev(String name) {
-    elytraModpackVersion.gtnhdev(name)
+    project.elytraModpackVersion.gtnhdev(name)
 }
 
-@SuppressWarnings('GrMethodMayBeStatic')
 String v(String name) {
-    elytraModpackVersion.get(name)
+    project.elytraModpackVersion[name]
 }

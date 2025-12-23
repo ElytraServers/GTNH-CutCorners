@@ -18,6 +18,7 @@ public enum Mods {
     Botania("Botania"),
     Railcraft("Railcraft"),
     EtFuturumRequiem("etfuturum"),
+    TConstruct("TConstruct"),
     ;
 
     private static final Logger LOG = LogManager.getLogger();

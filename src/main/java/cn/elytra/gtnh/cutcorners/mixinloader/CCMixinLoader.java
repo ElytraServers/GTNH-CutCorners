@@ -51,7 +51,10 @@ public class CCMixinLoader implements ILateMixinLoader {
             mixins.add("railcraft.TileCokeOvenMixin");
         }
         if (Mods.EtFuturumRequiem.isLoaded()) {
-          mixins.add("et_futurum_requiem.BlastFurnaceAndSmoker_Mixin");
+            mixins.add("et_futurum_requiem.BlastFurnaceAndSmoker_Mixin");
+        }
+        if (Mods.TConstruct.isLoaded()) {
+            mixins.add("tconstruct.SmeltryLogicMixin");
         }
 
         return mixins;
