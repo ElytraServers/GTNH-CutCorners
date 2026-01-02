@@ -34,6 +34,13 @@ public class CCMixinLoader implements ILateMixinLoader {
 
             mixins.add("gregtech.MTESteamFurnaceMixin");
             mixins.add("gregtech.MTEBoilerMixin");
+
+            mixins.add("gregtech.RecipeMapMixin");
+            mixins.add("gregtech.RecipeMapBackendMixin");
+        }
+        if(Mods.NHCore.isLoaded()) {
+            // fix divided by zero error
+            mixins.add("nhcore.DTPFCalculatorMixin");
         }
         if (Mods.Thaumcraft.isLoaded()) {
             mixins.add("thaumcraft.TileAlchemyFurnaceMixin");

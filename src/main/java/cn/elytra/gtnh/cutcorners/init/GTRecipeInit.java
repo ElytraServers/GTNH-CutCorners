@@ -1,7 +1,6 @@
 package cn.elytra.gtnh.cutcorners.init;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
-import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import tectech.TecTech;
 import tectech.recipe.EyeOfHarmonyRecipe;
@@ -14,14 +13,9 @@ import java.util.HashMap;
 public class GTRecipeInit {
 
     public static void init() {
-        updateGeneralRecipes();
         updateAssemblyLineRecipes();
         updateEOHRecipes();
         updateResearchStationRecipes();
-    }
-
-    private static void updateGeneralRecipes() {
-        RecipeMap.ALL_RECIPE_MAPS.forEach((s, map) -> CutCorners.getStrategy().updateGTRecipeMap(map));
     }
 
     private static void updateAssemblyLineRecipes() {
@@ -30,9 +24,6 @@ public class GTRecipeInit {
     }
 
     private static void updateEOHRecipes() {
-        CutCorners.LOG.info("Updating Eye of Harmony Recipes");
-        CutCorners.getStrategy().updateGTRecipeMap(TecTechRecipeMaps.eyeOfHarmonyRecipes);
-
         var recipeMap = getRecipeHashMap(TecTech.eyeOfHarmonyRecipeStorage);
         CutCorners.getStrategy().updateEOHRecipeMap(recipeMap);
     }

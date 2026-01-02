@@ -3,7 +3,11 @@ package com.github.wohaopa.GTNHModify;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,7 +23,9 @@ import org.apache.logging.log4j.Logger;
         "required-after:tectech;" +
         "required-after:miscutils;" +
         "required-after:GoodGenerator;" +
-        "after:Twist-Space-Technology;")
+        "after:Twist-Space-Technology;" +
+        "after:*;"
+)
 public class GTNHModifyMod {
 
     public static final String MOD_ID = "GTNHModify_CutCorners";

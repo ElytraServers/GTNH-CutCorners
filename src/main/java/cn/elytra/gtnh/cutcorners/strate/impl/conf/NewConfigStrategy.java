@@ -3,18 +3,18 @@ package cn.elytra.gtnh.cutcorners.strate.impl.conf;
 import cn.elytra.gtnh.cutcorners.CutCorners;
 import cn.elytra.gtnh.cutcorners.config.CutCornersConfig;
 import cn.elytra.gtnh.cutcorners.config.ValueModification;
-import cn.elytra.gtnh.cutcorners.strate.ICutCornerStrategy;
-import cn.elytra.gtnh.cutcorners.util.ResearchStationHelper;
 import cn.elytra.gtnh.cutcorners.mixins.late.gregtech.EyeOfHarmonyRecipeAccessor;
 import cn.elytra.gtnh.cutcorners.mixins.late.railcraft.BlastFurnaceRecipeAccessor;
 import cn.elytra.gtnh.cutcorners.mixins.late.railcraft.CokeOvenRecipeAccessor;
+import cn.elytra.gtnh.cutcorners.strate.ICutCornerStrategy;
+import cn.elytra.gtnh.cutcorners.util.ResearchStationHelper;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
-import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import tectech.recipe.EyeOfHarmonyRecipe;
 
 import java.util.HashMap;
@@ -39,20 +39,10 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     }
 
     @Override
-    public void updateGTRecipeMap(RecipeMap<?> recipeMap) {
-        if (ArrayUtils.contains(config.getGregTechBlacklistedRecipeMaps(), recipeMap.unlocalizedName) ^ config.whitelistMode()) {
-            CutCorners.LOG.info("Skipped GT RecipeMap: {}", recipeMap.unlocalizedName);
-            return;
-        }
-
-        CutCorners.LOG.info("Hacking GT Recipe Map: {}", recipeMap.unlocalizedName);
-
-        for (GTRecipe recipe : recipeMap.getAllRecipes()) {
-            recipe.mDuration = config.getDurationModification().getModifiedValue(recipe.mDuration, 1);
-
-            if (config.useAllLVRecipes()) {
-                recipe.mEUt = (int) TierEU.RECIPE_LV;
-            }
+    public void updateGTRecipe(GTRecipe recipe, @Nullable RecipeMap<?> recipeMap) {
+        recipe.mDuration = config.getDurationModification().getModifiedValue(recipe.mDuration, 1);
+        if(config.useAllLVRecipes()) {
+            recipe.mEUt = (int) TierEU.RECIPE_LV;
         }
     }
 

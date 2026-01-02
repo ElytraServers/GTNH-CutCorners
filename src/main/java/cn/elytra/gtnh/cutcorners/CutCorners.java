@@ -4,8 +4,14 @@ import cn.elytra.gtnh.cutcorners.init.GTRecipeInit;
 import cn.elytra.gtnh.cutcorners.init.RailcraftRecipeInit;
 import cn.elytra.gtnh.cutcorners.init.VanillaRecipeInit;
 import cn.elytra.gtnh.cutcorners.strate.ICutCornerStrategy;
-import cn.elytra.gtnh.cutcorners.strate.impl.event.CutCornersEventDispatchHelper;
-import gregtech.api.enums.*;
+import com.github.wohaopa.GTNHModify.GTNHModifyMod;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.recipe.Scanning;
 import net.minecraft.init.Items;
@@ -15,6 +21,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class CutCorners {
 
@@ -26,11 +36,8 @@ public class CutCorners {
     /**
      * The methods that directly modify the recipes without using mixins.
      */
-    private static final Runnable[] INITIALIZERS = new Runnable[]{
-        GTRecipeInit::init,
-        VanillaRecipeInit::init,
-        RailcraftRecipeInit::init,
-    };
+    private static final Runnable[] INITIALIZERS = new Runnable[] { GTRecipeInit::init, VanillaRecipeInit::init,
+        RailcraftRecipeInit::init, };
 
     public static void setStrategy(@NotNull ICutCornerStrategy strategies) {
         CutCorners.strategy = strategies;
@@ -48,11 +55,8 @@ public class CutCorners {
 
     // called in LoadComplete event
     public static void loadComplete() {
-        if (initialized) {
-            CutCornersEventDispatchHelper.checkReinitializeCompatibility();
-        }
-
         initialized = true;
+        warnModsLoadedAfterCutCorners();
         for (Runnable initializer : INITIALIZERS) {
             try {
                 initializer.run();
@@ -62,22 +66,12 @@ public class CutCorners {
         }
     }
 
-    @Deprecated
-    public static void registerListener(Object listener) {
-        CutCornersEventDispatchHelper.registerListener(listener);
-    }
-
-    @Deprecated
-    public static void unregisterListener(Object listener) {
-        CutCornersEventDispatchHelper.unregisterListener(listener);
-    }
-
     private static boolean isDevEnvironment() {
         return (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
     }
 
     public static void postInit() {
-        if(isDevEnvironment()) {
+        if (isDevEnvironment()) {
             LOG.info("Development Environment detected, adding Testing Recipes");
 
             GTValues.RA.stdBuilder()
@@ -85,17 +79,36 @@ public class CutCorners {
                 .metadata(GTRecipeConstants.SCANNING, new Scanning(1, TierEU.RECIPE_LV))
                 .itemInputs(
                     ItemList.AdvDebugStructureWriter.get(1),
-                    new Object[] {OrePrefixes.circuit.get(Materials.UXV), 16},
-                    new Object[] {OrePrefixes.circuit.get(Materials.UXV), 16},
-                    new Object[] {OrePrefixes.circuit.get(Materials.UXV), 16}
-                )
-                .fluidInputs(
-                    Materials.Lubricant.getFluid(1000)
-                )
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 16 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 16 },
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 16 })
+                .fluidInputs(Materials.Lubricant.getFluid(1000))
                 .itemOutputs(new ItemStack(Items.stick))
                 .eut(1)
                 .duration(1)
                 .addTo(GTRecipeConstants.AssemblyLine);
+        }
+    }
+
+    private static void warnModsLoadedAfterCutCorners() {
+        // the mod list is sorted in loading order, so we can easily tell which mods are loaded after us.
+        List<ModContainer> modList = Loader.instance().getModList();
+        boolean foundCutCorners = false;
+        ArrayList<ModContainer> modLoadedAfterCutCorners = new ArrayList<>();
+        for (ModContainer modContainer : modList) {
+            if (foundCutCorners) {
+                modLoadedAfterCutCorners.add(modContainer);
+            } else if (Objects.equals(modContainer.getModId(), GTNHModifyMod.MOD_ID)) {
+                foundCutCorners = true;
+            }
+        }
+        if (!modLoadedAfterCutCorners.isEmpty()) {
+            LOG.warn("Following mods are loaded after CutCorners, thus some modifications may not take effect.");
+            for (ModContainer modContainer : modLoadedAfterCutCorners) {
+                LOG.warn("- {}", modContainer.getModId());
+            }
+        } else {
+            LOG.info("CutCorners is the last to be loaded, everything should be fine.");
         }
     }
 }

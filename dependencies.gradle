@@ -48,6 +48,9 @@ dependencies {
     devOnlyNonPublishable(gtnhdev("Galaxy-Space-GTNH"))
     devOnlyNonPublishable(gtnhdev("Railcraft"))
     devOnlyNonPublishable(gtnhdev("TinkersConstruct"))
+    devOnlyNonPublishable(gtnhdev("NewHorizonsCoreMod")) {
+        exclude group: "net.glease"
+    }
 
     runtimeOnlyNonPublishable(gtnhdev("waila"))
     runtimeOnlyNonPublishable(gtnhdev("EnderCore"))

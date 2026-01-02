@@ -19,6 +19,7 @@ public enum Mods {
     Railcraft("Railcraft"),
     EtFuturumRequiem("etfuturum"),
     TConstruct("TConstruct"),
+    NHCore("dreamcraft"),
     ;
 
     private static final Logger LOG = LogManager.getLogger();

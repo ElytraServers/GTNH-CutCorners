@@ -1,12 +1,11 @@
 package cn.elytra.gtnh.cutcorners.strate;
 
-import cn.elytra.gtnh.cutcorners.strate.impl.event.CutCornersEventDispatchHelper;
-import cn.elytra.gtnh.cutcorners.strate.impl.event.CutCornersStrategyEvent;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 import tectech.recipe.EyeOfHarmonyRecipe;
 
 import java.util.HashMap;
@@ -20,9 +19,6 @@ import java.util.List;
  * <p>
  * Others are dynamically invoked during the machine updates.
  * They are changeable while the game is still running, but it is not recommended!
- * <p>
- * It is recommended to combine many strategies with {@link CutCornersStrategyEvent},
- * by listening to its events dispatched from {@link CutCornersEventDispatchHelper#CC_EVENTS CutCorners Event Bus}.
  */
 public interface ICutCornerStrategy {
 
@@ -39,6 +35,7 @@ public interface ICutCornerStrategy {
      * Modify the {@link GTRecipe} in the {@link RecipeMap}.
      * It should be invoked once per recipe map on game load completion.
      */
+    @Deprecated
     default void updateGTRecipeMap(RecipeMap<?> recipeMap) {
     }
 
@@ -48,6 +45,13 @@ public interface ICutCornerStrategy {
      */
     @Deprecated
     default void updateGTRecipe(GTRecipe recipe) {
+    }
+
+    /**
+     * Modify the {@link GTRecipe} in the recipe map.
+     * It should be invoked when the recipe is added to the recipe map.
+     */
+    default void updateGTRecipe(GTRecipe recipe, @Nullable RecipeMap<?> recipeMap) {
     }
 
     /**
