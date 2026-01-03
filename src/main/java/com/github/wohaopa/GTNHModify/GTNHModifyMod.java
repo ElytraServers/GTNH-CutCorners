@@ -1,5 +1,8 @@
 package com.github.wohaopa.GTNHModify;
 
+import cn.elytra.gtnh.cutcorners.CutCorners;
+import cn.elytra.gtnh.cutcorners.config.CutCornersConfig;
+import cn.elytra.gtnh.cutcorners.strate.impl.conf.NewConfigStrategy;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -8,8 +11,11 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.File;
 
 @Mod(
     modid = GTNHModifyMod.MOD_ID,
@@ -37,6 +43,13 @@ public class GTNHModifyMod {
         clientSide = "com.github.wohaopa.GTNHModify.ClientProxy",
         serverSide = "com.github.wohaopa.GTNHModify.CommonProxy")
     public static CommonProxy proxy;
+
+    public GTNHModifyMod() {
+        // the config folder, same to the file obtained from preInit
+        File configDir = Loader.instance().getConfigDir();
+        CutCornersConfig config = new CutCornersConfig(new Configuration(new File(configDir, "CutCorners.cfg")));
+        CutCorners.setStrategy(new NewConfigStrategy(config));
+    }
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
