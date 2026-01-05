@@ -3,6 +3,7 @@ package cn.elytra.gtnh.cutcorners.mixinloader;
 import com.google.common.collect.Lists;
 import com.gtnewhorizon.gtnhmixins.ILateMixinLoader;
 import com.gtnewhorizon.gtnhmixins.LateMixin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
@@ -16,7 +17,7 @@ public class CCMixinLoader implements ILateMixinLoader {
     }
 
     @Override
-    public List<String> getMixins(Set<String> loadedMods) {
+    public @NotNull List<String> getMixins(Set<String> loadedMods) {
         // read the mod init states
         Mods.init(loadedMods);
 
@@ -34,6 +35,7 @@ public class CCMixinLoader implements ILateMixinLoader {
 
             mixins.add("gregtech.MTESteamFurnaceMixin");
             mixins.add("gregtech.MTEBoilerMixin");
+            mixins.add("gregtech.MTECleanroomMixin");
 
             mixins.add("gregtech.RecipeMapMixin");
             mixins.add("gregtech.RecipeMapBackendMixin");
