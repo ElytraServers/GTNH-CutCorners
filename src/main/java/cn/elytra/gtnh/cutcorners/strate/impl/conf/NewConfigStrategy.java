@@ -32,7 +32,7 @@ public class NewConfigStrategy implements ICutCornerStrategy {
 
     @Override
     public boolean isImmediateMode() {
-        if(config.getDurationModification() instanceof ValueModification.Fixed fixed) {
+        if (config.getDurationModification() instanceof ValueModification.Fixed fixed) {
             return fixed.value() == 1;
         }
         return false;
@@ -41,7 +41,7 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     @Override
     public void updateGTRecipe(GTRecipe recipe, @Nullable RecipeMap<?> recipeMap) {
         recipe.mDuration = config.getDurationModification().getModifiedValue(recipe.mDuration, 1);
-        if(config.useAllLVRecipes()) {
+        if (config.useAllLVRecipes()) {
             recipe.mEUt = (int) TierEU.RECIPE_LV;
         }
     }
@@ -75,8 +75,10 @@ public class NewConfigStrategy implements ICutCornerStrategy {
 
         for (EyeOfHarmonyRecipe recipe : recipeMap.values()) {
             var recipeAcc = (EyeOfHarmonyRecipeAccessor) recipe;
-            recipeAcc.set_miningTimeSeconds(config.getDurationModification().getModifiedValue((int) recipeAcc.get_miningTimeSeconds(), 1));
-            recipeAcc.set_euStartCost(config.getEOHStartEuCostModification().getModifiedValue((int) recipeAcc.get_euStartCost(), 1));
+            recipeAcc.set_miningTimeSeconds(config.getDurationModification()
+                .getModifiedValue((int) recipeAcc.get_miningTimeSeconds(), 1));
+            recipeAcc.set_euStartCost(config.getEOHStartEuCostModification()
+                .getModifiedValue((int) recipeAcc.get_euStartCost(), 1));
         }
     }
 
@@ -93,12 +95,12 @@ public class NewConfigStrategy implements ICutCornerStrategy {
             recipe.mDuration = config.getDurationModification().getModifiedValue(recipe.mDuration, 1);
             recipe.mSpecialValue = ResearchStationHelper.getSpecialValueAtAmp(
                 recipe.mSpecialValue,
-                config.getResearchStationAmpModification().getModifiedValue(recipe.mSpecialValue, 1)
-            );
+                config.getResearchStationAmpModification()
+                    .getModifiedValue(ResearchStationHelper.getAmp(recipe.mSpecialValue), 1));
             recipe.mSpecialValue = ResearchStationHelper.getSpecialValueAtMinComputation(
                 recipe.mSpecialValue,
-                config.getResearchStationMinComputationModification().getModifiedValue(recipe.mSpecialValue, 1)
-            );
+                config.getResearchStationMinComputationModification()
+                    .getModifiedValue(ResearchStationHelper.getMinComputation(recipe.mSpecialValue), 1));
         }
     }
 
