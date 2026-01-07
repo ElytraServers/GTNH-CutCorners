@@ -59,9 +59,7 @@ dependencies {
 
     implementation("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
 
-    devOnlyNonPublishable("com.github.ElytraServers:conditional-mixin-legacy:1.0.0") {
-        exclude group: "io.github.legacymoddingmc"
-    }
+    devOnlyNonPublishable("com.github.ElytraServers:conditional-mixin-legacy:1.1.0")
 
     testImplementation(platform("org.junit:junit-bom:5.11.4"))
     testImplementation("org.junit.jupiter:junit-jupiter")

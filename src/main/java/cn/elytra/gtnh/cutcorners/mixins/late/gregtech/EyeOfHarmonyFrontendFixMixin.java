@@ -11,7 +11,7 @@ import tectech.util.TTUtility;
 @Mixin(targets = { "tectech.recipe.EyeOfHarmonyFrontend$EyeOfHarmonySpecialValueFormatter" }, remap = false)
 @Restriction(
     // bug was fixed in #3861, and released in 5.09.51.97
-    require = @Condition(value = "gregtech", versionPredicates = "[,5.09.51.97)"))
+    require = @Condition(value = "gregtech", versionPredicates = "metadata:[,5.09.51.97)"))
 public class EyeOfHarmonyFrontendFixMixin {
 
     @Redirect(
