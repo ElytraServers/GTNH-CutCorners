@@ -24,14 +24,14 @@ import java.io.File;
     name = "GTNHModify",
     acceptedMinecraftVersions = "[1.7.10]",
     acceptableRemoteVersions = "*",
-    dependencies = "required-after:gregtech;" +
-        "required-after:Thaumcraft;" +
-        "required-after:tectech;" +
-        "required-after:miscutils;" +
-        "required-after:GoodGenerator;" +
-        "after:Twist-Space-Technology;" +
-        "after:*;"
-)
+    dependencies = "required-after:conditional_mixin;"
+        + "required-after:gregtech;"
+        + "required-after:Thaumcraft;"
+        + "required-after:tectech;"
+        + "required-after:miscutils;"
+        + "required-after:GoodGenerator;"
+        + "after:Twist-Space-Technology;"
+        + "after:*;")
 public class GTNHModifyMod {
 
     public static final String MOD_ID = "GTNHModify_CutCorners";
@@ -53,7 +53,7 @@ public class GTNHModifyMod {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        if(Loader.isModLoaded(OLD_MOD_ID)) {
+        if (Loader.isModLoaded(OLD_MOD_ID)) {
             throw new IllegalStateException("Don't install both CutCorners and GTNHModify!");
         }
 

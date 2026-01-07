@@ -36,6 +36,7 @@ public class CCMixinLoader implements ILateMixinLoader {
             mixins.add("gregtech.MTESteamFurnaceMixin");
             mixins.add("gregtech.MTEBoilerMixin");
             mixins.add("gregtech.MTECleanroomMixin");
+            mixins.add("gregtech.MTEBasicMachineMixin");
 
             mixins.add("gregtech.RecipeMapMixin");
             mixins.add("gregtech.RecipeMapBackendMixin");

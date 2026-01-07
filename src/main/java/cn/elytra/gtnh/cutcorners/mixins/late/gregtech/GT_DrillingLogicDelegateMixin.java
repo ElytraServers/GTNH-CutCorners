@@ -1,5 +1,6 @@
 package cn.elytra.gtnh.cutcorners.mixins.late.gregtech;
 
+import cn.elytra.gtnh.cutcorners.CutCorners;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import gregtech.common.misc.DrillingLogicDelegate;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,6 +13,9 @@ public class GT_DrillingLogicDelegateMixin {
         method = "onPostTickRetract",
         at = @At(value = "INVOKE", target = "Lgregtech/common/misc/IDrillingLogicDelegateOwner;getMachineSpeed()I"))
     private int gtnhcc$ensureMinRetractSpeed(int original) {
-        return Math.max(original, 5);
+        if (CutCorners.getStrategy().isImmediateMode()) {
+            return 5;
+        }
+        return original;
     }
 }
