@@ -54,6 +54,8 @@ dependencies {
 
     runtimeOnlyNonPublishable(gtnhdev("waila"))
     runtimeOnlyNonPublishable(gtnhdev("EnderCore"))
+    runtimeOnlyNonPublishable(gtnhdev("EnderIO"))
+    runtimeOnlyNonPublishable(gtnhdev("Mobs-Info"))
 
     devOnlyNonPublishable("ganymedes01.etfuturum:Et-Futurum-Requiem:" + v("Et-Futurum-Requiem"))
 
