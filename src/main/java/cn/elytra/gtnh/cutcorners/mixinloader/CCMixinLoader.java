@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("unused")
 @LateMixin
 public class CCMixinLoader implements ILateMixinLoader {
 
