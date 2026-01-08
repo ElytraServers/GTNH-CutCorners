@@ -1,5 +1,8 @@
 # GTNH-CutCorners
 
+Requires [Conditional Mixin Legacy](https://github.com/ElytraServers/conditional-mixin-legacy/releases) since v1.3.12.
+从 v1.3.12 开始需要同时安装 [Conditional Mixin Legacy](https://github.com/ElytraServers/conditional-mixin-legacy/releases)。
+
 **Cut Corners** means *to do something in the easiest and shortest way, esp at the expense of high standards.*\
 **Cut Corners** 意思是 *用最简单最省事的方式做事，尤其是以牺牲高标准为代价。*
 
