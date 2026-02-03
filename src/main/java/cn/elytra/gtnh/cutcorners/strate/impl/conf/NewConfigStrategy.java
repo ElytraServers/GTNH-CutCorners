@@ -159,4 +159,9 @@ public class NewConfigStrategy implements ICutCornerStrategy {
         var recipeAcc = (BlastFurnaceRecipeAccessor) recipe;
         recipeAcc.set_cookTime(config.getDurationModification().getModifiedValue(recipeAcc.get_cookTime(), 1));
     }
+
+    @Override
+    public float getPurificationSuccessChance(Object instance, float original) {
+        return config.getWaterPurificationSuccessChanceModification().getValue(original);
+    }
 }

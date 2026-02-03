@@ -43,6 +43,7 @@ public class CCMixinLoader implements ILateMixinLoader {
             mixins.add("gregtech.BaseItemTickableMixin");
             mixins.add("gregtech.TileEntityDecayablesChestMixin");
             mixins.add("gregtech.MTEPurificationPlantMixin");
+            mixins.add("gregtech.MTEPurificationUnitBaseMixin");
             mixins.add("gregtech.MTEAssemblyLineMixin");
 
             mixins.add("gregtech.RecipeMapMixin");

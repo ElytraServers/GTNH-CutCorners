@@ -192,4 +192,30 @@ public class CutCornersConfig {
 
     // endregion
 
+    // region Water Purification
+
+    private static final String CATEGORY_WATER_PURIFICATION_SPEC = "water-purification-spec";
+
+    public WaterPurificationConfigData getWaterPurificationSuccessChanceModification() {
+        int mode = this.config.getInt("successChance", CATEGORY_WATER_PURIFICATION_SPEC, 0, 0, 2, """
+            Mode of Water Purification Success Chance Modification
+
+            NOTE: the value is valid in range from 0F to 100F.
+
+            0 = None
+            1 = Fixed
+            2 = Additional""");
+
+        float fixedSuccessChance = this.config.getFloat("fixedSuccessChance", CATEGORY_WATER_PURIFICATION_SPEC, 100, 0, 100, "The fixed success chance of water purification.");
+        float additionalSuccessChance = this.config.getFloat("additionalSuccessChance", CATEGORY_WATER_PURIFICATION_SPEC, 100, 0, 100, "The additional success chance of water purification.");
+        return switch (mode) {
+            case 0 -> WaterPurificationConfigData.none();
+            case 1 -> WaterPurificationConfigData.fixed(fixedSuccessChance);
+            case 2 -> WaterPurificationConfigData.additional(additionalSuccessChance);
+            default -> throw new IllegalStateException("Unexpected value: " + mode);
+        };
+    }
+
+    // endregion
+
 }

@@ -170,4 +170,8 @@ public interface ICutCornerStrategy {
     default void updateRailcraftBlastFurnaceRecipe(IBlastFurnaceRecipe recipe) {
     }
 
+    default float getPurificationSuccessChance(Object instance, float original) {
+        return original;
+    }
+
 }
