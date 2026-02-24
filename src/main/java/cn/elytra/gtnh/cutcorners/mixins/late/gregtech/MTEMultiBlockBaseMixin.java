@@ -1,42 +1,31 @@
 package cn.elytra.gtnh.cutcorners.mixins.late.gregtech;
 
-import cn.elytra.gtnh.cutcorners.CutCorners;
 import cn.elytra.gtnh.cutcorners.config.CutCornersConfig;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-@Mixin(value = MTEBasicMachine.class, remap = false)
-public class MTEBasicMachineMixin {
+@Mixin(value = MTEMultiBlockBase.class, remap = false)
+public class MTEMultiBlockBaseMixin {
 
     @Shadow
     public int mMaxProgresstime;
     @Unique
     private static List<Class<?>> gtnhcc$runMachineApplied;
 
-    @ModifyConstant(method = "onPostTick", constant = @Constant(intValue = 1000))
-    private int gtnhcc$modifyAutoOutputFluidAmount(int constant) {
-        if (CutCorners.getStrategy().isImmediateMode()) {
-            return Integer.MAX_VALUE;
-        }
-        return constant;
-    }
-
     @Inject(method = "<clinit>", at = @At("TAIL"))
-    private static void gtnhcc$init(CallbackInfo ci) {
+    private static void gtnhcc$initClassList(CallbackInfo ci) {
         CutCornersConfig.onUpdateAndNow(() -> gtnhcc$runMachineApplied = CutCornersConfig.instance.getMaxProgressTimeRunMachineClasses());
     }
 
-    @Inject(method = "onPostTick", at = @At("HEAD"))
+    @Inject(method = "runMachine", at = @At("HEAD"))
     private void gtnhcc$hookRunMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick, CallbackInfo ci) {
         if (mMaxProgresstime > 0) {
             if (gtnhcc$runMachineApplied.contains(getClass())) {

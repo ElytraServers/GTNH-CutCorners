@@ -2,11 +2,17 @@ package cn.elytra.gtnh.cutcorners.config;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.lang.reflect.Method;
+import java.util.*;
+import java.util.function.Consumer;
 
 @SuppressWarnings("UnusedReturnValue")
 public class CutCornersConfig {
@@ -15,7 +21,10 @@ public class CutCornersConfig {
 
     private final Configuration config;
 
+    private static final Logger LOGGER = LogManager.getLogger();
+
     private static final String[] EXCLUDED_WARMUP_METHODS = {"save"};
+    private static final List<Runnable> UPDATE_LISTENERS = new ArrayList<>();
 
     public CutCornersConfig(@NotNull Configuration config) {
         instance = this;
@@ -45,6 +54,33 @@ public class CutCornersConfig {
 
     public void save() {
         this.config.save();
+    }
+
+    public static void update(Consumer<Configuration> block) {
+        CutCornersConfig config = Objects.requireNonNull(instance);
+        block.accept(config.config);
+        config.save();
+        // the user-given logics are wrapped in a try-catch block, so it's safe to ignore the exceptions.
+        UPDATE_LISTENERS.forEach(Runnable::run);
+    }
+
+    public static void onUpdate(Runnable block) {
+        Exception listenerSource = new Exception("Listener Registrator");
+        UPDATE_LISTENERS.add(() -> {
+            try {
+                block.run();
+            } catch (Throwable e) {
+                // add the source to suppressed for better debugging.
+                e.addSuppressed(listenerSource);
+                LOGGER.warn("Failed to invoke configuration update listener.", e);
+            }
+        });
+    }
+
+    /// Run the block immediately and run again when the config is updated.
+    public static void onUpdateAndNow(Runnable block) {
+        block.run();
+        onUpdate(block);
     }
 
     // region Utils
@@ -217,5 +253,66 @@ public class CutCornersConfig {
     }
 
     // endregion
+
+    // region General
+
+    private static final String CATEGORY_RM_ACCELERATION_SPEC = "run-machine-acceleration-spec";
+    private static final String PROPERTY_RM_ACCELERATION_TARGET_CLASSES = "target-classes";
+
+    public List<Class<?>> getMaxProgressTimeRunMachineClasses() {
+        // define the prop.
+        this.config.getStringList(
+            PROPERTY_RM_ACCELERATION_TARGET_CLASSES,
+            CATEGORY_RM_ACCELERATION_SPEC,
+            new String[0],
+            "The full-qualified names of classes to patch time in runMachine() function. experimental.");
+        return RunMachineAcceleration.getClasses();
+    }
+
+    // endregion
+
+    public static class RunMachineAcceleration {
+        private static final Logger LOGGER = LogManager.getLogger();
+
+        private static Property prop() {
+            // the property will be initialized during the configuration loading, so we don't care about other settings.
+            return instance.config.get(
+                CATEGORY_RM_ACCELERATION_SPEC,
+                PROPERTY_RM_ACCELERATION_TARGET_CLASSES,
+                new String[0]);
+        }
+
+        public static boolean addClass(Class<?> clazz) {
+            Property prop = prop();
+            HashSet<String> cls = new HashSet<>(Arrays.asList(prop.getStringList()));
+            boolean added = cls.add(clazz.getCanonicalName());
+            if (added) {
+                prop.set(cls.toArray(new String[0]));
+            }
+            return added;
+        }
+
+        public static boolean containsClass(Class<?> clazz) {
+            Property prop = prop();
+            List<String> cls = Arrays.asList(prop.getStringList());
+            return cls.contains(clazz.getCanonicalName());
+        }
+
+        @Unmodifiable
+        public static List<Class<?>> getClasses() {
+            Property prop = prop();
+            String[] array = prop.getStringList();
+            ArrayList<Class<?>> list = new ArrayList<>(array.length);
+            for (String fqn : array) {
+                try {
+                    Class<?> clazz = Class.forName(fqn, false, Thread.currentThread().getContextClassLoader());
+                    list.add(clazz);
+                } catch (ClassNotFoundException e) {
+                    LOGGER.warn("Couldn't load the target class of R.M. Acceleration: {}", fqn, e);
+                }
+            }
+            return Collections.unmodifiableList(list);
+        }
+    }
 
 }

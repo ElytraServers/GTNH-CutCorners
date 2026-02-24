@@ -7,18 +7,16 @@ import cn.elytra.gtnh.cutcorners.strate.ICutCornerStrategy;
 import com.github.wohaopa.GTNHModify.GTNHModifyMod;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
+import gregtech.api.enums.*;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.recipe.Scanning;
+import net.minecraft.command.ICommand;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -110,5 +108,10 @@ public class CutCorners {
         } else {
             LOG.info("CutCorners is the last to be loaded, everything should be fine.");
         }
+    }
+
+    @ApiStatus.Internal
+    public static ICommand getCutCornersCommand() {
+        return CutCornersCommand.INSTANCE;
     }
 }
