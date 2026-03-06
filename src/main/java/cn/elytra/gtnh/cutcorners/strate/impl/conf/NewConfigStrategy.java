@@ -23,11 +23,16 @@ import java.util.Objects;
 
 public class NewConfigStrategy implements ICutCornerStrategy {
 
+    private final Set<String> blacklistedRecipeMaps;
+
     @NotNull
     private final CutCornersConfig config;
 
     public NewConfigStrategy(CutCornersConfig config) {
         this.config = Objects.requireNonNull(config);
+        this.blacklistedRecipeMaps = new HashSet<>(
+            Arrays.asList(config.getGregTechBlacklistedRecipeMaps())
+        );
     }
 
     @Override
@@ -40,6 +45,14 @@ public class NewConfigStrategy implements ICutCornerStrategy {
 
     @Override
     public void updateGTRecipe(GTRecipe recipe, @Nullable RecipeMap<?> recipeMap) {
+        if (recipeMap != null) {
+            boolean blacklisted = this.blacklistedRecipeMaps.contains(recipeMap.unlocalizedName);
+            if (blacklisted != config.whitelistMode()) {
+                CutCorners.LOG.info("Skipped GTRecipe in {}", recipeMap.unlocalizedName);
+                return;
+            }
+        }
+
         recipe.mDuration = config.getDurationModification().getModifiedValue(recipe.mDuration, 1);
         if (config.useAllLVRecipes()) {
             recipe.mEUt = (int) TierEU.RECIPE_LV;
