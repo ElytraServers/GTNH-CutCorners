@@ -110,8 +110,8 @@ public class CutCornersConfig {
         return this.config.getBoolean("whitelistMode", CATEGORY_BLACKLIST, false, "Consider blacklists as whitelists");
     }
 
-    public String[] getGregTechBlacklistedRecipeMaps() {
-        return this.config.getStringList("gtBlacklistedRecipeMaps", CATEGORY_BLACKLIST, new String[] { "gt.recipe.naquadah_reactor" }, "The unlocalized names of blacklisted GregTech recipe maps. (e.g.: gt.recipe.packager)");
+        public String[] getGregTechBlacklistedRecipeMaps() {
+        return this.config.getStringList("gtBlacklistedRecipeMaps", CATEGORY_BLACKLIST, new String[] { "gg.recipe.naquadah_reactor" }, "The unlocalized names of blacklisted GregTech recipe maps. (e.g.: gt.recipe.packager)");
     }
 
     public boolean doesBlacklistFurnace() {
