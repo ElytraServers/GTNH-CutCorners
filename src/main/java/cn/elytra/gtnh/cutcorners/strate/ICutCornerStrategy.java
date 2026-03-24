@@ -170,6 +170,13 @@ public interface ICutCornerStrategy {
     default void updateRailcraftBlastFurnaceRecipe(IBlastFurnaceRecipe recipe) {
     }
 
+    /**
+     * Return the max cycle time of the water purification plant.
+     */
+    default int getWaterPurificationCycleTime(int original) {
+        return original;
+    }
+
     default float getPurificationSuccessChance(Object instance, float original) {
         return original;
     }

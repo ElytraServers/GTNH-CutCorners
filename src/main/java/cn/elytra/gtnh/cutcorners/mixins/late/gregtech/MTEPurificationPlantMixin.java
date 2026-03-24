@@ -11,7 +11,7 @@ public class MTEPurificationPlantMixin {
 
     @ModifyConstant(method = "startCycle", constant = @Constant(intValue = 2400))
     private int gtnhcc$modifyCycleTime(int constant) {
-        return CutCorners.getStrategy().getMaxProgressTime(this, constant);
+        return CutCorners.getStrategy().getWaterPurificationCycleTime(constant);
     }
 
 }

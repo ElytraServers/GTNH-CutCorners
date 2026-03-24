@@ -11,7 +11,12 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 @SuppressWarnings("UnusedReturnValue")
@@ -132,6 +137,10 @@ public class CutCornersConfig {
 
     public boolean doesBlacklistResearchStation() {
         return this.config.getBoolean("blacklistResearchStation", CATEGORY_BLACKLIST, false, "Blacklist the Research Station.");
+    }
+
+    public boolean doesBlacklistWaterPurification() {
+        return this.config.getBoolean("blacklistWaterPurification", CATEGORY_BLACKLIST, false, "Blacklist the Water Purification Plant.");
     }
 
     public boolean doesBlacklistWildcardDurationModification() {

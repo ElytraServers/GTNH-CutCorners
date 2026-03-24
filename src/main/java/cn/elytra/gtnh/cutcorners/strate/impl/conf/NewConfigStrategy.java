@@ -161,6 +161,15 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     }
 
     @Override
+    public int getWaterPurificationCycleTime(int original) {
+        if (config.doesBlacklistWaterPurification()) {
+            return original;
+        }
+        // fallback to the max progress time
+        return getMaxProgressTime(null, original);
+    }
+
+    @Override
     public float getPurificationSuccessChance(Object instance, float original) {
         return config.getWaterPurificationSuccessChanceModification().getValue(original);
     }
