@@ -8,6 +8,7 @@ import cn.elytra.gtnh.cutcorners.mixins.late.railcraft.BlastFurnaceRecipeAccesso
 import cn.elytra.gtnh.cutcorners.mixins.late.railcraft.CokeOvenRecipeAccessor;
 import cn.elytra.gtnh.cutcorners.strate.ICutCornerStrategy;
 import cn.elytra.gtnh.cutcorners.util.ResearchStationHelper;
+import com.google.common.collect.Sets;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
@@ -20,14 +21,18 @@ import tectech.recipe.EyeOfHarmonyRecipe;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class NewConfigStrategy implements ICutCornerStrategy {
 
     @NotNull
     private final CutCornersConfig config;
+    @NotNull
+    private final Set<String> blacklistedRecipeMaps;
 
     public NewConfigStrategy(CutCornersConfig config) {
         this.config = Objects.requireNonNull(config);
+        this.blacklistedRecipeMaps = Sets.newHashSet(config.getGregTechBlacklistedRecipeMaps());
     }
 
     @Override
@@ -40,6 +45,14 @@ public class NewConfigStrategy implements ICutCornerStrategy {
 
     @Override
     public void updateGTRecipe(GTRecipe recipe, @Nullable RecipeMap<?> recipeMap) {
+        if (recipeMap != null) {
+            boolean blacklisted = this.blacklistedRecipeMaps.contains(recipeMap.unlocalizedName);
+            if (blacklisted != config.whitelistMode()) {
+                CutCorners.LOG.info("Skipped GTRecipe in {}", recipeMap.unlocalizedName);
+                return;
+            }
+        }
+
         recipe.mDuration = config.getDurationModification().getModifiedValue(recipe.mDuration, 1);
         if (config.useAllLVRecipes()) {
             recipe.mEUt = (int) TierEU.RECIPE_LV;
