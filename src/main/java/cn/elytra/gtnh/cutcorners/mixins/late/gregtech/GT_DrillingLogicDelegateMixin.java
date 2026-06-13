@@ -13,9 +13,6 @@ public class GT_DrillingLogicDelegateMixin {
         method = "onPostTickRetract",
         at = @At(value = "INVOKE", target = "Lgregtech/common/misc/IDrillingLogicDelegateOwner;getMachineSpeed()I"))
     private int gtnhcc$ensureMinRetractSpeed(int original) {
-        if (CutCorners.getStrategy().isImmediateMode()) {
-            return 5;
-        }
-        return original;
+        return 5;
     }
 }

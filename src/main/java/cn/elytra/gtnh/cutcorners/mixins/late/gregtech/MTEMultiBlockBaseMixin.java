@@ -28,10 +28,10 @@ public class MTEMultiBlockBaseMixin {
     @Inject(method = "runMachine", at = @At("HEAD"))
     private void gtnhcc$hookRunMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick, CallbackInfo ci) {
         if (mMaxProgresstime > 0) {
-            if (gtnhcc$runMachineApplied.contains(getClass())) {
+            if (gtnhcc$runMachineApplied != null && gtnhcc$runMachineApplied.contains(getClass())) {
                 mMaxProgresstime = 1;
             }
         }
     }
-
 }
+
