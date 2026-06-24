@@ -7,12 +7,7 @@ import cn.elytra.gtnh.cutcorners.strate.ICutCornerStrategy;
 import com.github.wohaopa.GTNHModify.GTNHModifyMod;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
-import gregtech.api.enums.*;
-import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.recipe.Scanning;
 import net.minecraft.command.ICommand;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,8 +29,8 @@ public class CutCorners {
     /**
      * The methods that directly modify the recipes without using mixins.
      */
-    private static final Runnable[] INITIALIZERS = new Runnable[] { GTRecipeInit::init, VanillaRecipeInit::init,
-        RailcraftRecipeInit::init, };
+    private static final Runnable[] INITIALIZERS = new Runnable[]{GTRecipeInit::init, VanillaRecipeInit::init,
+        RailcraftRecipeInit::init,};
 
     public static void setStrategy(@NotNull ICutCornerStrategy strategies) {
         CutCorners.strategy = strategies;
@@ -70,21 +65,7 @@ public class CutCorners {
 
     public static void postInit() {
         if (isDevEnvironment()) {
-            LOG.info("Development Environment detected, adding Testing Recipes");
-
-            GTValues.RA.stdBuilder()
-                .metadata(GTRecipeConstants.RESEARCH_ITEM, new ItemStack(Items.apple))
-                .metadata(GTRecipeConstants.SCANNING, new Scanning(1, TierEU.RECIPE_LV))
-                .itemInputs(
-                    ItemList.AdvDebugStructureWriter.get(1),
-                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 16 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 16 },
-                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 16 })
-                .fluidInputs(Materials.Lubricant.getFluid(1000))
-                .itemOutputs(new ItemStack(Items.stick))
-                .eut(1)
-                .duration(1)
-                .addTo(GTRecipeConstants.AssemblyLine);
+            LOG.info("Development environment!");
         }
     }
 
