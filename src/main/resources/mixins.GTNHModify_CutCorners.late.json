@@ -6,7 +6,9 @@
   "refmap": "mixins.GTNHModify_CutCorners.refmap.json",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [],
+  "mixins": [
+    "thaumcraft.ShapedArcaneRecipeNullFix"
+  ],
   "client": [],
   "server": []
 }

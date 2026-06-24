@@ -1,6 +1,7 @@
 package cn.elytra.gtnh.cutcorners.config;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
+import com.gtnewhorizon.gtnhlib.util.data.Lazy;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import org.apache.commons.lang3.ArrayUtils;
@@ -116,7 +117,7 @@ public class CutCornersConfig {
     }
 
     public String[] getGregTechBlacklistedRecipeMaps() {
-        return this.config.getStringList("gtBlacklistedRecipeMaps", CATEGORY_BLACKLIST, new String[] { "gg.recipe.naquadah_reactor" }, "The unlocalized names of blacklisted GregTech recipe maps. (e.g.: gt.recipe.packager)");
+        return this.config.getStringList("gtBlacklistedRecipeMaps", CATEGORY_BLACKLIST, new String[]{"gg.recipe.naquadah_reactor"}, "The unlocalized names of blacklisted GregTech recipe maps. (e.g.: gt.recipe.packager)");
     }
 
     public boolean doesBlacklistFurnace() {
@@ -267,6 +268,8 @@ public class CutCornersConfig {
 
     private static final String CATEGORY_RM_ACCELERATION_SPEC = "run-machine-acceleration-spec";
     private static final String PROPERTY_RM_ACCELERATION_TARGET_CLASSES = "target-classes";
+
+    public static final Lazy<List<Class<?>>> MAX_PROGRESS_TIME_RUN_MACHINE_CLASSES = new Lazy<>(RunMachineAcceleration::getClasses);
 
     public List<Class<?>> getMaxProgressTimeRunMachineClasses() {
         // define the prop.

@@ -1,13 +1,11 @@
 package cn.elytra.gtnh.cutcorners.config;
 
-import com.github.bsideup.jabel.Desugar;
-
 /**
  * @see NoMod
  * @see Fixed
  * @see Rational
  */
-public interface ValueModification {
+public sealed interface ValueModification {
 
     int getModifiedValue(int originalValue);
 
@@ -22,7 +20,6 @@ public interface ValueModification {
         }
     }
 
-    @Desugar
     record Fixed(int value) implements ValueModification {
         @Override
         public int getModifiedValue(int originalValue) {
@@ -30,7 +27,6 @@ public interface ValueModification {
         }
     }
 
-    @Desugar
     record Rational(double multiplier) implements ValueModification {
         @Override
         public int getModifiedValue(int originalValue) {

@@ -37,8 +37,8 @@ public class NewConfigStrategy implements ICutCornerStrategy {
 
     @Override
     public boolean isImmediateMode() {
-        if (config.getDurationModification() instanceof ValueModification.Fixed fixed) {
-            return fixed.value() == 1;
+        if (config.getDurationModification() instanceof ValueModification.Fixed(int value)) {
+            return value == 1;
         }
         return false;
     }
