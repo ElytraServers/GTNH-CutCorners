@@ -24,4 +24,13 @@ pluginManagement {
 
 plugins {
     id("com.gtnewhorizons.gtnhsettingsconvention") version "2.0.26"
+    id("cn.elytra.gradle.conventions.settings") version "1.2.0-beta.1"
+}
+
+elytra {
+    versionCatalogs {
+        create("nh") {
+            version = "2.9.0-beta-1"
+        }
+    }
 }

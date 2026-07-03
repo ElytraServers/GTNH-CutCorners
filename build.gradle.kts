@@ -22,28 +22,20 @@ dependencies {
 
     // Mod dependencies
 
-    fun gtnhVer(n: String) = project.elytraModpackVersion[n]
-
-    fun gtnhDev(n: String) = project.elytraModpackVersion.gtnhdev(n)
-
-    runtimeOnlyNonPublishable(gtnhDev("NotEnoughItems"))
-
-    devOnlyNonPublishable(gtnhDev("GT5-Unofficial"))
-    devOnlyNonPublishable(gtnhDev("Botania"))
-    devOnlyNonPublishable(gtnhDev("Galaxy-Space-GTNH"))
-    devOnlyNonPublishable(gtnhDev("Railcraft"))
-    devOnlyNonPublishable(gtnhDev("TinkersConstruct"))
-    devOnlyNonPublishable(gtnhDev("NewHorizonsCoreMod")) {
-        exclude(group = "net.glease")
+    devOnlyNonPublishable(nh.gt5Unofficial)
+    devOnlyNonPublishable(nh.botania)
+    devOnlyNonPublishable(nh.galaxySpaceGtnh)
+    devOnlyNonPublishable(nh.railcraft)
+    devOnlyNonPublishable(nh.tinkersConstruct)
+    devOnlyNonPublishable(nh.newHorizonsCoreMod) {
+        exclude(group = "net.gleast")
     }
-
-    runtimeOnlyNonPublishable(gtnhDev("waila"))
-    runtimeOnlyNonPublishable(gtnhDev("EnderCore"))
-    runtimeOnlyNonPublishable(gtnhDev("EnderIO"))
-    runtimeOnlyNonPublishable(gtnhDev("Mobs-Info"))
-
-    devOnlyNonPublishable("ganymedes01.etfuturum:Et-Futurum-Requiem:" + gtnhVer("Et-Futurum-Requiem"))
-
+    runtimeOnlyNonPublishable(nh.notEnoughItems)
+    runtimeOnlyNonPublishable(nh.waila)
+    runtimeOnlyNonPublishable(nh.enderCore)
+    runtimeOnlyNonPublishable(nh.enderIo)
+    runtimeOnlyNonPublishable(nh.mobsInfo)
+    devOnlyNonPublishable("ganymedes01.etfuturum:Et-Futurum-Requiem:" + nh.versions.etFuturumRequiem.get())
     implementation("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { isTransitive = false }
 
     devOnlyNonPublishable("com.github.ElytraServers:conditional-mixin-legacy:1.1.0")
