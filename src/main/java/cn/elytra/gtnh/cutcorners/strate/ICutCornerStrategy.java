@@ -79,6 +79,14 @@ public interface ICutCornerStrategy {
     }
 
     /**
+     * Return the burn time of fuels in Large Boilers.
+     * It will be invoked when a Large Boiler starts burning a fuel.
+     */
+    default int getLargeBoilerFuelBurnTime(Object instance, int original) {
+        return original;
+    }
+
+    /**
      * Modify the {@link GTRecipe Research Station Recipe} map.
      */
     default void updateResearchStationRecipeMap(RecipeMap<?> recipeMap) {
