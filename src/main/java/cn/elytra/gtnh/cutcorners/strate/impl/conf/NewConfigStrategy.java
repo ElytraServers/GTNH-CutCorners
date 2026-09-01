@@ -25,6 +25,8 @@ import java.util.Set;
 
 public class NewConfigStrategy implements ICutCornerStrategy {
 
+    private static final String LARGE_BOILER_FAKE_FUEL_RECIPE_MAP = "gt.recipe.largeboilerfakefuels";
+
     @NotNull
     private final CutCornersConfig config;
     @NotNull
@@ -46,6 +48,9 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     @Override
     public void updateGTRecipe(GTRecipe recipe, @Nullable RecipeMap<?> recipeMap) {
         if (recipeMap != null) {
+            if (LARGE_BOILER_FAKE_FUEL_RECIPE_MAP.equals(recipeMap.unlocalizedName)) {
+                return;
+            }
             boolean blacklisted = this.blacklistedRecipeMaps.contains(recipeMap.unlocalizedName);
             if (blacklisted != config.whitelistMode()) {
                 CutCorners.LOG.info("Skipped GTRecipe in {}", recipeMap.unlocalizedName);
@@ -93,6 +98,11 @@ public class NewConfigStrategy implements ICutCornerStrategy {
             recipeAcc.set_euStartCost(config.getEOHStartEuCostModification()
                 .getModifiedValue((int) recipeAcc.get_euStartCost(), 1));
         }
+    }
+
+    @Override
+    public int getLargeBoilerFuelBurnTime(Object instance, int original) {
+        return config.getLargeBoilerFuelBurnTimeModification().getModifiedValue(original, 1);
     }
 
     @Override

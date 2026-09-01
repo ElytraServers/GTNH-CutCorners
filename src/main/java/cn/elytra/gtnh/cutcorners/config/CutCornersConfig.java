@@ -204,6 +204,40 @@ public class CutCornersConfig {
 
     // endregion
 
+    // region Large Boiler Specific
+
+    public static final String CATEGORY_LARGE_BOILER_SPEC = "large-boiler-spec";
+
+    public ValueModification getLargeBoilerFuelBurnTimeModification() {
+        int mode = this.config.getInt("burnTimeMode", CATEGORY_LARGE_BOILER_SPEC, 0, 0, 2, """
+            Mode of Large Boiler Fuel Burn Time Modification
+
+            Applies to both solid and liquid fuels.
+
+            0 = None
+            1 = Fixed
+            2 = Rational""");
+
+        int fixedBurnTime = this.config.getInt(
+            "fixedBurnTime",
+            CATEGORY_LARGE_BOILER_SPEC,
+            1,
+            1,
+            Integer.MAX_VALUE,
+            "The fixed burn time, in ticks, of fuels in Large Boilers.");
+        float rationalBurnTime = this.config.getFloat(
+            "rationalBurnTime",
+            CATEGORY_LARGE_BOILER_SPEC,
+            0.5F,
+            0.0001F,
+            Float.MAX_VALUE,
+            "Multiplier of the burn time of fuels in Large Boilers.");
+
+        return mergeValueModification(mode, fixedBurnTime, rationalBurnTime, new ValueModification.NoMod());
+    }
+
+    // endregion
+
     // region Research Station Specific
 
     public static final String CATEGORY_RESEARCH_STATION_SPEC = "research-station-spec";
