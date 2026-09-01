@@ -37,9 +37,7 @@ public class AddRecipeHook {
 
     @ApiStatus.Internal
     public static void onRecipeAddedToRecipeMapBackend(RecipeMapBackend backend, GTRecipe recipe) {
-        RecipeMap<?> recipeMapContext = backend instanceof LargeBoilerFuelBackend
-            ? RecipeMaps.largeBoilerFakeFuels
-            : getRecipeMapContext();
+        RecipeMap<?> recipeMapContext = getRecipeMapContext();
         try {
             CutCorners.getStrategy().updateGTRecipe(recipe, recipeMapContext);
         } catch (Exception e) {
