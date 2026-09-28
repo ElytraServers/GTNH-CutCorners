@@ -162,10 +162,8 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     @Override
     public void updateRailcraftCokeOvenRecipe(ICokeOvenRecipe recipe) {
         if (config.doesBlacklistRailcraft()) {
-            CutCorners.LOG.info("Skipped Railcraft Coke Oven Recipes");
+            return;
         }
-
-        CutCorners.LOG.info("Hacking Railcraft Coke Oven Recipes");
 
         var recipeAcc = (CokeOvenRecipeAccessor) recipe;
         recipeAcc.set_cookTime(config.getDurationModification().getModifiedValue(recipeAcc.get_cookTime(), 1));
@@ -174,10 +172,8 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     @Override
     public void updateRailcraftBlastFurnaceRecipe(IBlastFurnaceRecipe recipe) {
         if (config.doesBlacklistRailcraft()) {
-            CutCorners.LOG.info("Skipped Railcraft Blast Furnace Recipes");
+            return;
         }
-
-        CutCorners.LOG.info("Hacking Railcraft Blast Furnace Recipes");
 
         var recipeAcc = (BlastFurnaceRecipeAccessor) recipe;
         recipeAcc.set_cookTime(config.getDurationModification().getModifiedValue(recipeAcc.get_cookTime(), 1));
