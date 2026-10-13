@@ -124,6 +124,14 @@ public class CutCornersConfig {
         return this.config.getBoolean("blacklistFurnace", CATEGORY_BLACKLIST, false, "Blacklist the vanilla furnaces.");
     }
 
+    public boolean doesBlacklistThaumcraft() {
+        return this.config.getBoolean("blacklistThaumcraft", CATEGORY_BLACKLIST, false, "Blacklist the Thaumcraft machines (the Alchemy Furnace and aura Nodes).");
+    }
+
+    public boolean doesBlacklistBotania() {
+        return this.config.getBoolean("blacklistBotania", CATEGORY_BLACKLIST, false, "Blacklist the Botania mana spreaders.");
+    }
+
     public boolean doesBlacklistRailcraft() {
         return this.config.getBoolean("blacklistRailcraft", CATEGORY_BLACKLIST, false, "Blacklist the Railcraft furnaces (Coke Oven and Blast Furnace).");
     }
