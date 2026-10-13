@@ -1,9 +1,10 @@
 package cn.elytra.gtnh.cutcorners.mixins.late.thaumcraft;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
+import com.llamalad7.mixinextras.sugar.Share;
+import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -15,17 +16,14 @@ public abstract class TileNodeMixin {
     @Shadow
     int regeneration;
 
-    @Unique
-    private boolean gtnhcc$recalculated;
-
     @Inject(method = "handleRecharge", at = @At("HEAD"))
-    private void gtnhcc$captureRecalculation(CallbackInfoReturnable<Boolean> cir) {
-        this.gtnhcc$recalculated = this.regeneration < 0;
+    private void gtnhcc$captureRecalculation(CallbackInfoReturnable<Boolean> cir, @Share("recalculate") LocalBooleanRef recalculate) {
+        recalculate.set(this.regeneration < 0);
     }
 
     @Inject(method = "handleRecharge", at = @At("RETURN"))
-    private void gtnhcc$scaleIntervalOnce(CallbackInfoReturnable<Boolean> cir) {
-        if (!this.gtnhcc$recalculated) {
+    private void gtnhcc$scaleIntervalOnce(CallbackInfoReturnable<Boolean> cir, @Share("recalculate") LocalBooleanRef recalculate) {
+        if (!recalculate.get()) {
             return;
         }
 
