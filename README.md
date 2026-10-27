@@ -1,5 +1,7 @@
 # GTNH-CutCorners
 
+![](https://img.shields.io/badge/QQ%E7%BE%A4-639927833-blue)
+
 Requires [Conditional Mixin Legacy](https://github.com/ElytraServers/conditional-mixin-legacy/releases) since v1.3.12.
 从 v1.3.12 开始需要同时安装 [Conditional Mixin Legacy](https://github.com/ElytraServers/conditional-mixin-legacy/releases)。
 
