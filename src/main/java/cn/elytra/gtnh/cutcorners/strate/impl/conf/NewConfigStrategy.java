@@ -25,6 +25,8 @@ import java.util.Set;
 
 public class NewConfigStrategy implements ICutCornerStrategy {
 
+    private static final String LARGE_BOILER_FAKE_FUEL_RECIPE_MAP = "gt.recipe.largeboilerfakefuels";
+
     @NotNull
     private final CutCornersConfig config;
     @NotNull
@@ -46,6 +48,9 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     @Override
     public void updateGTRecipe(GTRecipe recipe, @Nullable RecipeMap<?> recipeMap) {
         if (recipeMap != null) {
+            if (LARGE_BOILER_FAKE_FUEL_RECIPE_MAP.equals(recipeMap.unlocalizedName)) {
+                return;
+            }
             boolean blacklisted = this.blacklistedRecipeMaps.contains(recipeMap.unlocalizedName);
             if (blacklisted != config.whitelistMode()) {
                 CutCorners.LOG.info("Skipped GTRecipe in {}", recipeMap.unlocalizedName);
@@ -96,6 +101,11 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     }
 
     @Override
+    public int getLargeBoilerFuelBurnTime(Object instance, int original) {
+        return config.getLargeBoilerFuelBurnTimeModification().getModifiedValue(original, 1);
+    }
+
+    @Override
     public void updateResearchStationRecipeMap(RecipeMap<?> recipeMap) {
         if (config.doesBlacklistResearchStation()) {
             CutCorners.LOG.info("Skipped Research Station Recipes");
@@ -140,22 +150,31 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     }
 
     @Override
+    public int getBotaniaSpreaderPingbackTicks(int original) {
+        return config.doesBlacklistBotania()
+            ? original
+            : config.getDurationModification().getModifiedValue(original, 1);
+    }
+
+    @Override
     public int getThaumcraftFurnaceSmeltingTime(int original) {
-        return ICutCornerStrategy.super.getThaumcraftFurnaceSmeltingTime(original);
+        return config.doesBlacklistThaumcraft()
+            ? original
+            : config.getDurationModification().getModifiedValue(original, 1);
     }
 
     @Override
     public int getThaumcraftNodeRegenerationTime(int original) {
-        return ICutCornerStrategy.super.getThaumcraftNodeRegenerationTime(original);
+        return config.doesBlacklistThaumcraft()
+            ? original
+            : config.getDurationModification().getModifiedValue(original, 1);
     }
 
     @Override
     public void updateRailcraftCokeOvenRecipe(ICokeOvenRecipe recipe) {
         if (config.doesBlacklistRailcraft()) {
-            CutCorners.LOG.info("Skipped Railcraft Coke Oven Recipes");
+            return;
         }
-
-        CutCorners.LOG.info("Hacking Railcraft Coke Oven Recipes");
 
         var recipeAcc = (CokeOvenRecipeAccessor) recipe;
         recipeAcc.set_cookTime(config.getDurationModification().getModifiedValue(recipeAcc.get_cookTime(), 1));
@@ -164,10 +183,8 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     @Override
     public void updateRailcraftBlastFurnaceRecipe(IBlastFurnaceRecipe recipe) {
         if (config.doesBlacklistRailcraft()) {
-            CutCorners.LOG.info("Skipped Railcraft Blast Furnace Recipes");
+            return;
         }
-
-        CutCorners.LOG.info("Hacking Railcraft Blast Furnace Recipes");
 
         var recipeAcc = (BlastFurnaceRecipeAccessor) recipe;
         recipeAcc.set_cookTime(config.getDurationModification().getModifiedValue(recipeAcc.get_cookTime(), 1));

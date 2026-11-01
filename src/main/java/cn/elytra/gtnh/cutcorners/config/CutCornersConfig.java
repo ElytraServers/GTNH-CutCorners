@@ -124,6 +124,14 @@ public class CutCornersConfig {
         return this.config.getBoolean("blacklistFurnace", CATEGORY_BLACKLIST, false, "Blacklist the vanilla furnaces.");
     }
 
+    public boolean doesBlacklistThaumcraft() {
+        return this.config.getBoolean("blacklistThaumcraft", CATEGORY_BLACKLIST, false, "Blacklist the Thaumcraft machines (the Alchemy Furnace and aura Nodes).");
+    }
+
+    public boolean doesBlacklistBotania() {
+        return this.config.getBoolean("blacklistBotania", CATEGORY_BLACKLIST, false, "Blacklist the Botania mana spreaders.");
+    }
+
     public boolean doesBlacklistRailcraft() {
         return this.config.getBoolean("blacklistRailcraft", CATEGORY_BLACKLIST, false, "Blacklist the Railcraft furnaces (Coke Oven and Blast Furnace).");
     }
@@ -200,6 +208,40 @@ public class CutCornersConfig {
         float rationalStartEuCost = this.config.getFloat("rationalStartEuCost", CATEGORY_EOH_SPEC, 0.2F, 0.001F, Float.MAX_VALUE, "Multiplier of EU Cost for Starting EOH.");
 
         return mergeValueModification(mode, fixedStartEuCost, rationalStartEuCost, new ValueModification.NoMod());
+    }
+
+    // endregion
+
+    // region Large Boiler Specific
+
+    public static final String CATEGORY_LARGE_BOILER_SPEC = "large-boiler-spec";
+
+    public ValueModification getLargeBoilerFuelBurnTimeModification() {
+        int mode = this.config.getInt("burnTimeMode", CATEGORY_LARGE_BOILER_SPEC, 0, 0, 2, """
+            Mode of Large Boiler Fuel Burn Time Modification
+
+            Applies to both solid and liquid fuels.
+
+            0 = None
+            1 = Fixed
+            2 = Rational""");
+
+        int fixedBurnTime = this.config.getInt(
+            "fixedBurnTime",
+            CATEGORY_LARGE_BOILER_SPEC,
+            1,
+            1,
+            Integer.MAX_VALUE,
+            "The fixed burn time, in ticks, of fuels in Large Boilers.");
+        float rationalBurnTime = this.config.getFloat(
+            "rationalBurnTime",
+            CATEGORY_LARGE_BOILER_SPEC,
+            0.5F,
+            0.0001F,
+            Float.MAX_VALUE,
+            "Multiplier of the burn time of fuels in Large Boilers.");
+
+        return mergeValueModification(mode, fixedBurnTime, rationalBurnTime, new ValueModification.NoMod());
     }
 
     // endregion
