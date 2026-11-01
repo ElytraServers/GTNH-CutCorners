@@ -99,6 +99,18 @@ public class NewConfig {
     @Config.Comment("")
     public static boolean immediateMode;
 
+    @Config.Comment({
+        "the value modification expression that applied to the block strength",
+        "if the value is >= 1.0F, block is broken instantly."})
+    @Config.DefaultString("=0.99")
+    public static String blockStrengthModification;
+    @Config.Ignore
+    public static final Supplier<MathOp> BLOCK_STRENGTH = vm(() -> blockStrengthModification);
+
+    @Config.Comment("whether all blocks are harvestable (destroy with drops) with any tools, even barehand")
+    @Config.DefaultBoolean(true)
+    public static boolean allHarvestable;
+
     @Config.Comment("the value modification expression that applied to the \"Start EU Cost\" of Eye of Harmony-s")
     @Config.DefaultString("*0.5")
     @Config.Reloadable(CONFIGURATION_RELOAD_RUNTIME)

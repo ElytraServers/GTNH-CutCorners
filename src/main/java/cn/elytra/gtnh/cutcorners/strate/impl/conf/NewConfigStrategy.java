@@ -180,4 +180,14 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     public float getPurificationSuccessChance(Object instance, float original) {
         return NewConfig.WATER_PURIFICATION_SUCCESS_CHANCE.get().apply(original);
     }
+
+    @Override
+    public float getBlockStrength(float original) {
+        return NewConfig.BLOCK_STRENGTH.get().apply(original);
+    }
+
+    @Override
+    public boolean canHarvestBlock(boolean original) {
+        return NewConfig.allHarvestable || original;
+    }
 }

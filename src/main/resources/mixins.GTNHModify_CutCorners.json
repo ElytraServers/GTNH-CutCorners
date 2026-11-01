@@ -6,7 +6,8 @@
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "TileEntityFurnaceMixin"
+    "TileEntityFurnaceMixin",
+    "ForgeHooksMixin"
   ],
   "client": [],
   "server": []
