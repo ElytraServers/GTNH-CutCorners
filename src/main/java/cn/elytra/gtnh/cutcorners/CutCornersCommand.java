@@ -1,6 +1,6 @@
 package cn.elytra.gtnh.cutcorners;
 
-import cn.elytra.gtnh.cutcorners.config.CutCornersConfig;
+import cn.elytra.gtnh.cutcorners.api.CutCornersAPI;
 import cn.elytra.gtnh.cutcorners.util.ChatHelper;
 import cn.elytra.gtnh.cutcorners.util.Utils;
 import codechicken.lib.raytracer.RayTracer;
@@ -134,7 +134,7 @@ class CutCornersCommand extends CommandBase {
                             }
                             if (mte instanceof MTEBasicMachine || mte instanceof MTEMultiBlockBase) {
                                 sc.text("[R.M. Acceleration]").color(EnumChatFormatting.WHITE);
-                                if (CutCornersConfig.RunMachineAcceleration.containsClass(mteClass)) {
+                                if (CutCornersAPI.isMTEAccelerated(mteClass)) {
                                     sc.text("Listed").color(EnumChatFormatting.GREEN);
                                 } else {
                                     sc.text("Not listed. ")
@@ -153,7 +153,7 @@ class CutCornersCommand extends CommandBase {
                     String cfqn = removeFirst(args);
                     if (cfqn == null) {
                         sc.text("[Currently]").color(EnumChatFormatting.WHITE).bold(true);
-                        for (Class<?> c : CutCornersConfig.instance.getMaxProgressTimeRunMachineClasses()) {
+                        for (Class<?> c : CutCornersAPI.getMTEAccelerated()) {
                             sc.textFormatted("- %s", c.getCanonicalName()).color(EnumChatFormatting.GRAY).italic(true);
                         }
                     } else {
@@ -165,7 +165,7 @@ class CutCornersCommand extends CommandBase {
                             throw new CommandException("Class %s is not found", cfqn);
                         }
 
-                        CutCornersConfig.update($ -> CutCornersConfig.RunMachineAcceleration.addClass(clazz));
+                        CutCornersAPI.addMTEAccelerated(clazz);
                         sc.text("Success!").color(EnumChatFormatting.GREEN);
                     }
                 }

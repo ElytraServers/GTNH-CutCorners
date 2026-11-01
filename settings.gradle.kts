@@ -30,7 +30,7 @@ plugins {
 elytra {
     versionCatalogs {
         create("nh") {
-            version = "2.9.0-beta-1"
+            version = "2.9.0"
         }
     }
 }

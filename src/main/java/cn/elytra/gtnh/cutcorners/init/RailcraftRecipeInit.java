@@ -1,11 +1,9 @@
 package cn.elytra.gtnh.cutcorners.init;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
-import cn.elytra.gtnh.cutcorners.config.CutCornersConfig;
+import cn.elytra.gtnh.cutcorners.config.NewConfig;
 import mods.railcraft.common.util.crafting.BlastFurnaceCraftingManager;
 import mods.railcraft.common.util.crafting.CokeOvenCraftingManager;
-
-import java.util.Objects;
 
 public class RailcraftRecipeInit {
 
@@ -35,7 +33,7 @@ public class RailcraftRecipeInit {
     }
 
     private static boolean isRailcraftBlacklisted() {
-        return Objects.requireNonNull(CutCornersConfig.instance).doesBlacklistRailcraft();
+        return NewConfig.BLACKLIST.get().contains(NewConfig.BL_RC);
     }
 
 }

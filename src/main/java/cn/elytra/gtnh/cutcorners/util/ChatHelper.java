@@ -159,6 +159,10 @@ public final class ChatHelper {
             return message;
         }
 
+        public Dsl message(IChatComponent component) {
+            return addMessage(new Dsl(component));
+        }
+
         public Dsl text(String text) {
             return addMessage(new Dsl(new ChatComponentText(text)));
         }

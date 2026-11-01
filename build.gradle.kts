@@ -4,7 +4,7 @@ plugins {
 }
 
 elytraModpackVersion {
-    gtnhVersion = "2.9.0-beta-1"
+    gtnhVersion = "2.9.0"
     attachManifestVersionToJar = true
 }
 
@@ -13,6 +13,11 @@ repositories {
 }
 
 dependencies {
+    fun ModuleDependency.dev(transitive: Boolean = true) {
+        artifact { classifier = "dev" }
+        if (!transitive) isTransitive = false
+    }
+
     // JSpecify
     compileOnly("org.jspecify:jspecify:1.0.0")
     // JUnit
@@ -22,23 +27,26 @@ dependencies {
 
     // Mod dependencies
 
-    devOnlyNonPublishable(nh.gt5Unofficial)
-    devOnlyNonPublishable(nh.botania)
-    devOnlyNonPublishable(nh.galaxySpaceGtnh)
-    devOnlyNonPublishable(nh.railcraft)
-    devOnlyNonPublishable(nh.tinkersConstruct)
-    devOnlyNonPublishable(nh.newHorizonsCoreMod) {
-        exclude(group = "net.gleast")
+    devOnlyNonPublishable(nh.gt5Unofficial) { dev() }
+    devOnlyNonPublishable(nh.galaxySpaceGtnh) { dev() }
+
+    devOnlyNonPublishable(nh.botania) { dev(false) }
+    devOnlyNonPublishable(nh.railcraft) { dev(false) }
+    devOnlyNonPublishable(nh.tinkersConstruct) { dev() }
+    devOnlyNonPublishable(nh.newHorizonsCoreMod) { dev() }
+    runtimeOnlyNonPublishable(nh.notEnoughItems) { dev() }
+    runtimeOnlyNonPublishable(nh.waila) { dev() }
+    runtimeOnlyNonPublishable(nh.enderCore) { dev() }
+    runtimeOnlyNonPublishable(nh.enderIo) { dev() }
+    runtimeOnlyNonPublishable(nh.appleCore) { dev() }
+    devOnlyNonPublishable("ganymedes01.etfuturum:Et-Futurum-Requiem:" + nh.versions.etFuturumRequiem.get()) {
+        artifact { classifier = "dev" }
     }
-    runtimeOnlyNonPublishable(nh.notEnoughItems)
-    runtimeOnlyNonPublishable(nh.waila)
-    runtimeOnlyNonPublishable(nh.enderCore)
-    runtimeOnlyNonPublishable(nh.enderIo)
-    runtimeOnlyNonPublishable(nh.mobsInfo)
-    devOnlyNonPublishable("ganymedes01.etfuturum:Et-Futurum-Requiem:" + nh.versions.etFuturumRequiem.get())
     implementation("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { isTransitive = false }
 
-    devOnlyNonPublishable("com.github.ElytraServers:conditional-mixin-legacy:1.1.0")
+    devOnlyNonPublishable("com.github.ElytraServers:conditional-mixin-legacy:1.1.0") {
+        artifact { classifier = "dev" }
+    }
 }
 
 tasks.test {

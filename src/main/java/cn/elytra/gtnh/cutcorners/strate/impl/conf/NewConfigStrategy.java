@@ -1,72 +1,52 @@
 package cn.elytra.gtnh.cutcorners.strate.impl.conf;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
-import cn.elytra.gtnh.cutcorners.config.CutCornersConfig;
-import cn.elytra.gtnh.cutcorners.config.ValueModification;
+import cn.elytra.gtnh.cutcorners.config.NewConfig;
 import cn.elytra.gtnh.cutcorners.mixins.late.gregtech.EyeOfHarmonyRecipeAccessor;
 import cn.elytra.gtnh.cutcorners.mixins.late.railcraft.BlastFurnaceRecipeAccessor;
 import cn.elytra.gtnh.cutcorners.mixins.late.railcraft.CokeOvenRecipeAccessor;
 import cn.elytra.gtnh.cutcorners.strate.ICutCornerStrategy;
 import cn.elytra.gtnh.cutcorners.util.ResearchStationHelper;
-import com.google.common.collect.Sets;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import tectech.recipe.EyeOfHarmonyRecipe;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 public class NewConfigStrategy implements ICutCornerStrategy {
 
-    private static final String LARGE_BOILER_FAKE_FUEL_RECIPE_MAP = "gt.recipe.largeboilerfakefuels";
-
-    @NotNull
-    private final CutCornersConfig config;
-    @NotNull
-    private final Set<String> blacklistedRecipeMaps;
-
-    public NewConfigStrategy(CutCornersConfig config) {
-        this.config = Objects.requireNonNull(config);
-        this.blacklistedRecipeMaps = Sets.newHashSet(config.getGregTechBlacklistedRecipeMaps());
+    public NewConfigStrategy() {
     }
 
     @Override
     public boolean isImmediateMode() {
-        if (config.getDurationModification() instanceof ValueModification.Fixed(int value)) {
-            return value == 1;
-        }
-        return false;
+        return NewConfig.immediateMode;
     }
 
     @Override
     public void updateGTRecipe(GTRecipe recipe, @Nullable RecipeMap<?> recipeMap) {
         if (recipeMap != null) {
-            if (LARGE_BOILER_FAKE_FUEL_RECIPE_MAP.equals(recipeMap.unlocalizedName)) {
-                return;
-            }
-            boolean blacklisted = this.blacklistedRecipeMaps.contains(recipeMap.unlocalizedName);
-            if (blacklisted != config.whitelistMode()) {
+            boolean blacklisted = NewConfig.BLACKLIST.get().contains(recipeMap.unlocalizedName);
+            if (blacklisted != NewConfig.whitelistMode) {
                 CutCorners.LOG.info("Skipped GTRecipe in {}", recipeMap.unlocalizedName);
                 return;
             }
         }
 
-        recipe.mDuration = config.getDurationModification().getModifiedValue(recipe.mDuration, 1);
-        if (config.useAllLVRecipes()) {
+        recipe.mDuration = NewConfig.GENERAL_MODIFICATION.get().apply(recipe.mDuration);
+        if (NewConfig.recipesToLVTier) {
             recipe.mEUt = (int) TierEU.RECIPE_LV;
         }
     }
 
     @Override
     public void updateAssemblyLineRecipeList(List<GTRecipe.RecipeAssemblyLine> recipes) {
-        if (config.doesBlacklistAssemblyLine()) {
+        if (NewConfig.BLACKLIST.get().contains(NewConfig.BL_GT_AL)) {
             CutCorners.LOG.info("Skipped GregTech Assembly Line Recipes");
             return;
         }
@@ -74,9 +54,8 @@ public class NewConfigStrategy implements ICutCornerStrategy {
         CutCorners.LOG.info("Hacking GregTech Assembly Line Recipes");
 
         for (GTRecipe.RecipeAssemblyLine recipe : recipes) {
-            recipe.mDuration = config.getDurationModification().getModifiedValue(recipe.mDuration, 1);
-
-            if (config.useAllLVRecipes()) {
+            recipe.mDuration = NewConfig.GENERAL_MODIFICATION.get().apply(recipe.mDuration);
+            if (NewConfig.recipesToLVTier) {
                 recipe.mEUt = (int) TierEU.RECIPE_LV;
             }
         }
@@ -84,7 +63,7 @@ public class NewConfigStrategy implements ICutCornerStrategy {
 
     @Override
     public void updateEOHRecipeMap(HashMap<String, EyeOfHarmonyRecipe> recipeMap) {
-        if (config.doesBlacklistEyeOfHarmony()) {
+        if (NewConfig.BLACKLIST.get().contains(NewConfig.BL_GT_EOH)) {
             CutCorners.LOG.info("Skipped EOH Recipes");
             return;
         }
@@ -93,21 +72,19 @@ public class NewConfigStrategy implements ICutCornerStrategy {
 
         for (EyeOfHarmonyRecipe recipe : recipeMap.values()) {
             var recipeAcc = (EyeOfHarmonyRecipeAccessor) recipe;
-            recipeAcc.set_miningTimeSeconds(config.getDurationModification()
-                .getModifiedValue((int) recipeAcc.get_miningTimeSeconds(), 1));
-            recipeAcc.set_euStartCost(config.getEOHStartEuCostModification()
-                .getModifiedValue((int) recipeAcc.get_euStartCost(), 1));
+            recipeAcc.set_miningTimeSeconds(NewConfig.GENERAL_MODIFICATION.get().apply(recipeAcc.get_miningTimeSeconds()));
+            recipeAcc.set_euStartCost(NewConfig.EYE_OF_HARMONY_START_EU_COST.get().apply(recipeAcc.get_euStartCost()));
         }
     }
 
     @Override
     public int getLargeBoilerFuelBurnTime(Object instance, int original) {
-        return config.getLargeBoilerFuelBurnTimeModification().getModifiedValue(original, 1);
+        return NewConfig.LARGE_BOILER_FUEL_BURN_TIME.get().apply(original);
     }
 
     @Override
     public void updateResearchStationRecipeMap(RecipeMap<?> recipeMap) {
-        if (config.doesBlacklistResearchStation()) {
+        if (NewConfig.BLACKLIST.get().contains(NewConfig.BL_GT_RS)) {
             CutCorners.LOG.info("Skipped Research Station Recipes");
             return;
         }
@@ -115,23 +92,23 @@ public class NewConfigStrategy implements ICutCornerStrategy {
         CutCorners.LOG.info("Hacking Research Station Recipes");
 
         for (GTRecipe recipe : recipeMap.getAllRecipes()) {
-            recipe.mDuration = config.getDurationModification().getModifiedValue(recipe.mDuration, 1);
+            recipe.mDuration = NewConfig.GENERAL_MODIFICATION.get().apply(recipe.mDuration);
             recipe.mSpecialValue = ResearchStationHelper.getSpecialValueAtAmp(
                 recipe.mSpecialValue,
-                config.getResearchStationAmpModification()
-                    .getModifiedValue(ResearchStationHelper.getAmp(recipe.mSpecialValue), 1));
+                NewConfig.RESEARCH_STATION_AMP.get()
+                    .apply(ResearchStationHelper.getAmp(recipe.mSpecialValue)));
             recipe.mSpecialValue = ResearchStationHelper.getSpecialValueAtMinComputation(
                 recipe.mSpecialValue,
-                config.getResearchStationMinComputationModification()
-                    .getModifiedValue(ResearchStationHelper.getMinComputation(recipe.mSpecialValue), 1));
+                NewConfig.RESEARCH_STATION_MIN_COMPUTATION.get()
+                    .apply(ResearchStationHelper.getMinComputation(recipe.mSpecialValue)));
         }
     }
 
     @Override
     public int getMaxFurnaceSmeltingTime(int original) {
-        return config.doesBlacklistFurnace()
+        return NewConfig.BLACKLIST.get().contains(NewConfig.BL_FURNACE)
             ? original
-            : config.getDurationModification().getModifiedValue(original, 1);
+            : NewConfig.GENERAL_MODIFICATION.get().apply(original);
     }
 
     @Override
@@ -144,63 +121,63 @@ public class NewConfigStrategy implements ICutCornerStrategy {
 
     @Override
     public int getMaxProgressTime(Object instance, int original) {
-        return config.doesBlacklistWildcardDurationModification()
+        return NewConfig.BLACKLIST.get().contains(NewConfig.BL_GT_WILDCARD)
             ? original
-            : config.getDurationModification().getModifiedValue(original, 1);
+            : NewConfig.GENERAL_MODIFICATION.get().apply(original);
     }
 
     @Override
     public int getBotaniaSpreaderPingbackTicks(int original) {
-        return config.doesBlacklistBotania()
+        return NewConfig.BLACKLIST.get().contains(NewConfig.BL_BOT)
             ? original
-            : config.getDurationModification().getModifiedValue(original, 1);
+            : NewConfig.GENERAL_MODIFICATION.get().apply(original);
     }
 
     @Override
     public int getThaumcraftFurnaceSmeltingTime(int original) {
-        return config.doesBlacklistThaumcraft()
+        return NewConfig.BLACKLIST.get().contains(NewConfig.BL_TC)
             ? original
-            : config.getDurationModification().getModifiedValue(original, 1);
+            : NewConfig.GENERAL_MODIFICATION.get().apply(original);
     }
 
     @Override
     public int getThaumcraftNodeRegenerationTime(int original) {
-        return config.doesBlacklistThaumcraft()
+        return NewConfig.BLACKLIST.get().contains(NewConfig.BL_TC)
             ? original
-            : config.getDurationModification().getModifiedValue(original, 1);
+            : NewConfig.GENERAL_MODIFICATION.get().apply(original);
     }
 
     @Override
     public void updateRailcraftCokeOvenRecipe(ICokeOvenRecipe recipe) {
-        if (config.doesBlacklistRailcraft()) {
+        if (NewConfig.BLACKLIST.get().contains(NewConfig.BL_RC)) {
             return;
         }
 
         var recipeAcc = (CokeOvenRecipeAccessor) recipe;
-        recipeAcc.set_cookTime(config.getDurationModification().getModifiedValue(recipeAcc.get_cookTime(), 1));
+        recipeAcc.set_cookTime(NewConfig.GENERAL_MODIFICATION.get().apply(recipeAcc.get_cookTime()));
     }
 
     @Override
     public void updateRailcraftBlastFurnaceRecipe(IBlastFurnaceRecipe recipe) {
-        if (config.doesBlacklistRailcraft()) {
+        if (NewConfig.BLACKLIST.get().contains(NewConfig.BL_RC)) {
             return;
         }
 
         var recipeAcc = (BlastFurnaceRecipeAccessor) recipe;
-        recipeAcc.set_cookTime(config.getDurationModification().getModifiedValue(recipeAcc.get_cookTime(), 1));
+        recipeAcc.set_cookTime(NewConfig.GENERAL_MODIFICATION.get().apply(recipeAcc.get_cookTime()));
     }
 
     @Override
     public int getWaterPurificationCycleTime(int original) {
-        if (config.doesBlacklistWaterPurification()) {
+        if (NewConfig.BLACKLIST.get().contains(NewConfig.BL_GT_WPP)) {
             return original;
         }
         // fallback to the max progress time
-        return getMaxProgressTime(null, original);
+        return NewConfig.WATER_PURIFICATION_CYCLE.get().apply(original);
     }
 
     @Override
     public float getPurificationSuccessChance(Object instance, float original) {
-        return config.getWaterPurificationSuccessChanceModification().getValue(original);
+        return NewConfig.WATER_PURIFICATION_SUCCESS_CHANCE.get().apply(original);
     }
 }
