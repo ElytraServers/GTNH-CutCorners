@@ -97,6 +97,7 @@ public class NewConfig {
     public static boolean recipesToLVTier;
 
     @Config.Comment("")
+    @Config.DefaultBoolean(true)
     public static boolean immediateMode;
 
     @Config.Comment({

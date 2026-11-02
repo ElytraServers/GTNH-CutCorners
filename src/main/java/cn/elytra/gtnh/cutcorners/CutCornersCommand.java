@@ -22,6 +22,8 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ import java.util.concurrent.atomic.AtomicReference;
 class CutCornersCommand extends CommandBase {
 
     public static final CutCornersCommand INSTANCE = new CutCornersCommand();
+    private static final Logger log = LogManager.getLogger(CutCornersCommand.class);
 
     private CutCornersCommand() {
     }
@@ -167,6 +170,14 @@ class CutCornersCommand extends CommandBase {
 
                         CutCornersAPI.addMTEAccelerated(clazz);
                         sc.text("Success!").color(EnumChatFormatting.GREEN);
+                    }
+                } else if (s.equalsIgnoreCase("reload")) {
+                    try {
+                        CutCornersAPI.reloadConfig();
+                        sc.text("Success!").color(EnumChatFormatting.GREEN);
+                    } catch (Exception e) {
+                        log.error("Failed to reload", e);
+                        sc.text("Something went wrong!").color(EnumChatFormatting.RED);
                     }
                 }
             } else {
