@@ -103,7 +103,7 @@ public class NewConfig {
     @Config.Comment({
         "the value modification expression that applied to the block strength",
         "if the value is >= 1.0F, block is broken instantly."})
-    @Config.DefaultString("=0.99")
+    @Config.DefaultString("+0{min=0.99}") // instead of =0.99, use +0{min=0.99} to allow unmodified instant breaks
     public static String blockStrengthModification;
     @Config.Ignore
     public static final Supplier<MathOp> BLOCK_STRENGTH = vm(() -> blockStrengthModification);
@@ -111,6 +111,12 @@ public class NewConfig {
     @Config.Comment("whether all blocks are harvestable (destroy with drops) with any tools, even barehand")
     @Config.DefaultBoolean(true)
     public static boolean allHarvestable;
+
+    @Config.Comment({
+        "whether all blocks are breakable, even unbreakable blocks like Bedrock",
+        "this is different from \"harvestable\", where harvestable controls if the block will drop an item (or if you're using the right tool), while breakable controls if you have any chance to break it."})
+    @Config.DefaultBoolean(false)
+    public static boolean allBreakable;
 
     @Config.Comment("the value modification expression that applied to the \"Start EU Cost\" of Eye of Harmony-s")
     @Config.DefaultString("*0.5")

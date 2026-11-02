@@ -183,6 +183,8 @@ public class NewConfigStrategy implements ICutCornerStrategy {
 
     @Override
     public float getBlockStrength(float original) {
+        // prevent from breaking bedrocks.
+        if (!NewConfig.allBreakable && original <= 0.0F) return original;
         return NewConfig.BLOCK_STRENGTH.get().safeApply(original);
     }
 
