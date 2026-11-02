@@ -160,6 +160,10 @@ public class NewConfig {
     @Config.Ignore
     public static final Supplier<MathOp> WATER_PURIFICATION_CYCLE = vm(() -> waterPurificationPlantModification);
 
+    @Config.Comment("whether add effective materials of Excavators to Hammers (so that Hammers can dig gravels and sands.")
+    @Config.DefaultBoolean(true)
+    public static boolean ticExtraHammerMaterial;
+
     @Config.Comment({
         "the list of MTE-internal accelerated classes (FQCN)",
         "GENERATED, DON'T EDIT!"})

@@ -7,7 +7,9 @@
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "thaumcraft.ShapedArcaneRecipeNullFix"
+    "thaumcraft.ShapedArcaneRecipeNullFix",
+    "tconstruct.ExcavatorAccessor",
+    "tconstruct.HammerMixin"
   ],
   "client": [],
   "server": []
