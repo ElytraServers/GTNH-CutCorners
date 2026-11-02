@@ -5,29 +5,65 @@ import com.google.common.collect.Lists;
 import java.math.BigDecimal;
 import java.util.function.Function;
 
+import static cn.elytra.gtnh.cutcorners.util.math.MathOps.log;
+
 public interface MathOp extends Function<BigDecimal, BigDecimal>, MathFunc {
 
     BigDecimal apply(BigDecimal left);
 
+    /// Apply the value.
+    ///
+    /// - if the value is **[finite][Double#isFinite(double)]**, it works like [#apply(BigDecimal)].
+    /// - if this OP can handle **[NaN][Double#NaN]** or **[Infinite][Double#isInfinite(double)]**, it works like [#apply(BigDecimal)] still.
+    /// - otherwise, the value is returned as-is, unchanged.
+    default float safeApply(float value) {
+        return MathOps.safeApply(this, value);
+    }
+
+    /// See [#safeApply(float)].
+    default double safeApply(double value) {
+        return MathOps.safeApply(this, value);
+    }
+
     // region interface MathFunc
     @Override
     default int apply(int left) {
-        return this.apply(new BigDecimal(left)).intValue();
+        try {
+            return this.apply(new BigDecimal(left)).intValue();
+        } catch (NumberFormatException e) {
+            log.warn("MathOp format error: {}", left, e);
+            return left; // return as-is
+        }
     }
 
     @Override
     default long apply(long left) {
-        return this.apply(new BigDecimal(left)).longValue();
+        try {
+            return this.apply(new BigDecimal(left)).longValue();
+        } catch (NumberFormatException e) {
+            log.warn("MathOp format error: {}", left, e);
+            return left; // return as-is
+        }
     }
 
     @Override
     default float apply(float left) {
-        return this.apply(new BigDecimal(left)).floatValue();
+        try {
+            return this.apply(new BigDecimal(left)).floatValue();
+        } catch (NumberFormatException e) {
+            log.warn("MathOp format error: {}", left, e);
+            return left; // return as-is
+        }
     }
 
     @Override
     default double apply(double left) {
-        return this.apply(new BigDecimal(left)).doubleValue();
+        try {
+            return this.apply(new BigDecimal(left)).doubleValue();
+        } catch (NumberFormatException e) {
+            log.warn("MathOp format error: {}", left, e);
+            return left; // return as-is
+        }
     }
     // endregion interface MathFunc
 

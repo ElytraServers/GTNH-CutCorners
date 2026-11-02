@@ -183,7 +183,7 @@ public class NewConfigStrategy implements ICutCornerStrategy {
 
     @Override
     public float getBlockStrength(float original) {
-        return NewConfig.BLOCK_STRENGTH.get().apply(original);
+        return NewConfig.BLOCK_STRENGTH.get().safeApply(original);
     }
 
     @Override

@@ -3,6 +3,8 @@ package cn.elytra.gtnh.cutcorners.util.math;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -12,7 +14,25 @@ import java.util.concurrent.ExecutionException;
 
 public final class MathOps {
 
+    static final Logger log = LogManager.getLogger();
+
     private MathOps() {
+    }
+
+    private static boolean isNaNTolerant(MathOp op) {
+        return op instanceof NoOp || op instanceof ReplaceOp;
+    }
+
+    public static float safeApply(MathOp op, float value) {
+        // if the op can accept the value (either the value is finite, or the op can handle NaN)
+        // apply the op; or return the value as-is.
+        return Float.isFinite(value) || isNaNTolerant(op) ? op.apply(value) : value;
+    }
+
+    public static double safeApply(MathOp op, double value) {
+        // if the op can accept the value (either the value is finite, or the op can handle NaN)
+        // apply the op; or return the value as-is.
+        return Double.isFinite(value) || isNaNTolerant(op) ? op.apply(value) : value;
     }
 
     static MathOp coerceAtMost(BigDecimal max) {
@@ -127,13 +147,14 @@ public final class MathOps {
         public MathOp then(MathOp next) {
             if (next instanceof MathOpList thenList) {
                 ops.addAll(thenList.ops);
+                return this;
             } else if (next instanceof NoOp) {
                 // nothing to do
                 return this;
             } else {
                 ops.add(next);
+                return this;
             }
-            return this;
         }
 
         @Override
@@ -183,6 +204,26 @@ public final class MathOps {
         }
 
         @Override
+        public int apply(int left) {
+            return left;
+        }
+
+        @Override
+        public long apply(long left) {
+            return left;
+        }
+
+        @Override
+        public float apply(float left) {
+            return left;
+        }
+
+        @Override
+        public double apply(double left) {
+            return left;
+        }
+
+        @Override
         public MathOp then(MathOp next) {
             // inline this op
             return next;
@@ -217,6 +258,26 @@ public final class MathOps {
         @Override
         public BigDecimal apply(BigDecimal dropped) {
             return value;
+        }
+
+        @Override
+        public int apply(int left) {
+            return value.intValue();
+        }
+
+        @Override
+        public long apply(long left) {
+            return value.longValue();
+        }
+
+        @Override
+        public float apply(float left) {
+            return value.floatValue();
+        }
+
+        @Override
+        public double apply(double left) {
+            return value.doubleValue();
         }
 
         @Override
