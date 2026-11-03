@@ -164,6 +164,22 @@ public class NewConfig {
     @Config.DefaultBoolean(true)
     public static boolean ticExtraHammerMaterial;
 
+    @Config.Comment("whether to make all Pumps transfer \"max int\"L of fluids per execution")
+    @Config.DefaultBoolean(true)
+    public static boolean maxBatchSizePump;
+
+    @Config.Comment("whether to make all Conveyors transfer \"max int\" amount of items per execution")
+    @Config.DefaultBoolean(true)
+    public static boolean maxBatchSizeConveyor;
+
+    @Config.Comment("whether to allow all Conveyors work with interval of 1t at minimum")
+    @Config.DefaultBoolean(true)
+    public static boolean maxTickRateConveyorCover;
+
+    @Config.Comment("whether to allow all Robot Arms work with interval of 1t at minimum")
+    @Config.DefaultBoolean(true)
+    public static boolean maxTickRateRobotArmCover;
+
     @Config.Comment({
         "the list of MTE-internal accelerated classes (FQCN)",
         "GENERATED, DON'T EDIT!"})

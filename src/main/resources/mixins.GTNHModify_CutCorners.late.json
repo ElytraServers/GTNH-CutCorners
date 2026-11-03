@@ -7,9 +7,12 @@
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "thaumcraft.ShapedArcaneRecipeNullFix",
+    "gregtech.cover.CoverArmMixin",
+    "gregtech.cover.CoverConveyorMixin",
+    "gregtech.cover.CoverPumpMixin",
     "tconstruct.ExcavatorAccessor",
-    "tconstruct.HammerMixin"
+    "tconstruct.HammerMixin",
+    "thaumcraft.ShapedArcaneRecipeNullFix"
   ],
   "client": [],
   "server": []
