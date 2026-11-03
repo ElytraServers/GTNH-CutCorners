@@ -10,6 +10,7 @@
     "gregtech.cover.CoverArmMixin",
     "gregtech.cover.CoverConveyorMixin",
     "gregtech.cover.CoverPumpMixin",
+    "crops_nh.TECropSticksMixin",
     "tconstruct.ExcavatorAccessor",
     "tconstruct.HammerMixin",
     "thaumcraft.ShapedArcaneRecipeNullFix"

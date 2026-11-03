@@ -181,6 +181,12 @@ public class NewConfig {
     public static boolean maxTickRateRobotArmCover;
 
     @Config.Comment({
+        "the tick rate of growth for Crop Sticks in CropsNH.",
+        "256 by default from CropsNH; -1 for disable modification"})
+    @Config.DefaultInt(8) // 32x faster
+    public static int tickRateCropsNH;
+
+    @Config.Comment({
         "the list of MTE-internal accelerated classes (FQCN)",
         "GENERATED, DON'T EDIT!"})
     @Config.DefaultStringList({})

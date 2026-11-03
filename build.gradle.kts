@@ -34,11 +34,13 @@ dependencies {
     devOnlyNonPublishable(nh.railcraft) { dev(false) }
     devOnlyNonPublishable(nh.tinkersConstruct) { dev() }
     devOnlyNonPublishable(nh.newHorizonsCoreMod) { dev() }
+    devOnlyNonPublishable(nh.cropsNh) { dev() }
     runtimeOnlyNonPublishable(nh.notEnoughItems) { dev() }
     runtimeOnlyNonPublishable(nh.waila) { dev() }
     runtimeOnlyNonPublishable(nh.enderCore) { dev() }
     runtimeOnlyNonPublishable(nh.enderIo) { dev() }
     runtimeOnlyNonPublishable(nh.appleCore) { dev() }
+    runtimeOnlyNonPublishable(nh.betterBuildersWands) { dev() }
     devOnlyNonPublishable("ganymedes01.etfuturum:Et-Futurum-Requiem:" + nh.versions.etFuturumRequiem.get()) {
         artifact { classifier = "dev" }
     }
