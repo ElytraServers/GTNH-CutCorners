@@ -57,7 +57,8 @@ public interface ICutCornerStrategy {
     /**
      * Modify the {@link GTRecipe.RecipeAssemblyLine} list.
      */
-    default void updateAssemblyLineRecipeList(List<GTRecipe.RecipeAssemblyLine> recipes) {}
+    default void updateAssemblyLineRecipeList(List<GTRecipe.RecipeAssemblyLine> recipes) {
+    }
 
     /**
      * Modify the {@link GTRecipe.RecipeAssemblyLine}.
@@ -189,4 +190,11 @@ public interface ICutCornerStrategy {
         return original;
     }
 
+    default float getBlockStrength(float original) {
+        return original;
+    }
+
+    default boolean canHarvestBlock(boolean original) {
+        return original;
+    }
 }

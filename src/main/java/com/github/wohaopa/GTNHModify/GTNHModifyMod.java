@@ -1,27 +1,19 @@
 package com.github.wohaopa.GTNHModify;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
-import cn.elytra.gtnh.cutcorners.config.CutCornersConfig;
 import cn.elytra.gtnh.cutcorners.strate.impl.conf.NewConfigStrategy;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.common.config.Configuration;
+import cpw.mods.fml.common.event.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-
 @Mod(
     modid = GTNHModifyMod.MOD_ID,
+    name = GTNHModifyMod.MOD_NAME,
     version = Tags.VERSION,
     guiFactory = "com.github.wohaopa.GTNHModify.client.gui.GuiFactory",
-    name = "GTNHModify",
     acceptedMinecraftVersions = "[1.7.10]",
     acceptableRemoteVersions = "*",
     dependencies = "required-after:conditional_mixin;"
@@ -34,7 +26,8 @@ import java.io.File;
         + "after:*;")
 public class GTNHModifyMod {
 
-    public static final String MOD_ID = "GTNHModify_CutCorners";
+    public static final String MOD_ID = "CutCorners";
+    public static final String MOD_NAME = "GTNewHorizons: CutCorners";
     public static final String OLD_MOD_ID = "GTNHModify";
 
     public static final Logger LOG = LogManager.getLogger(MOD_ID);
@@ -45,10 +38,7 @@ public class GTNHModifyMod {
     public static CommonProxy proxy;
 
     public GTNHModifyMod() {
-        // the config folder, same to the file obtained from preInit
-        File configDir = Loader.instance().getConfigDir();
-        CutCornersConfig config = new CutCornersConfig(new Configuration(new File(configDir, "CutCorners.cfg")));
-        CutCorners.setStrategy(new NewConfigStrategy(config));
+        CutCorners.setStrategy(new NewConfigStrategy());
     }
 
     @Mod.EventHandler

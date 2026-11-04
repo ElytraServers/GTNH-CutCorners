@@ -1,6 +1,6 @@
 package cn.elytra.gtnh.cutcorners;
 
-import cn.elytra.gtnh.cutcorners.config.CutCornersConfig;
+import cn.elytra.gtnh.cutcorners.api.CutCornersAPI;
 import cn.elytra.gtnh.cutcorners.util.ChatHelper;
 import cn.elytra.gtnh.cutcorners.util.Utils;
 import codechicken.lib.raytracer.RayTracer;
@@ -22,6 +22,8 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ import java.util.concurrent.atomic.AtomicReference;
 class CutCornersCommand extends CommandBase {
 
     public static final CutCornersCommand INSTANCE = new CutCornersCommand();
+    private static final Logger log = LogManager.getLogger(CutCornersCommand.class);
 
     private CutCornersCommand() {
     }
@@ -134,7 +137,7 @@ class CutCornersCommand extends CommandBase {
                             }
                             if (mte instanceof MTEBasicMachine || mte instanceof MTEMultiBlockBase) {
                                 sc.text("[R.M. Acceleration]").color(EnumChatFormatting.WHITE);
-                                if (CutCornersConfig.RunMachineAcceleration.containsClass(mteClass)) {
+                                if (CutCornersAPI.isMTEAccelerated(mteClass)) {
                                     sc.text("Listed").color(EnumChatFormatting.GREEN);
                                 } else {
                                     sc.text("Not listed. ")
@@ -153,7 +156,7 @@ class CutCornersCommand extends CommandBase {
                     String cfqn = removeFirst(args);
                     if (cfqn == null) {
                         sc.text("[Currently]").color(EnumChatFormatting.WHITE).bold(true);
-                        for (Class<?> c : CutCornersConfig.instance.getMaxProgressTimeRunMachineClasses()) {
+                        for (Class<?> c : CutCornersAPI.getMTEAccelerated()) {
                             sc.textFormatted("- %s", c.getCanonicalName()).color(EnumChatFormatting.GRAY).italic(true);
                         }
                     } else {
@@ -165,8 +168,16 @@ class CutCornersCommand extends CommandBase {
                             throw new CommandException("Class %s is not found", cfqn);
                         }
 
-                        CutCornersConfig.update($ -> CutCornersConfig.RunMachineAcceleration.addClass(clazz));
+                        CutCornersAPI.addMTEAccelerated(clazz);
                         sc.text("Success!").color(EnumChatFormatting.GREEN);
+                    }
+                } else if (s.equalsIgnoreCase("reload")) {
+                    try {
+                        CutCornersAPI.reloadConfig();
+                        sc.text("Success!").color(EnumChatFormatting.GREEN);
+                    } catch (Exception e) {
+                        log.error("Failed to reload", e);
+                        sc.text("Something went wrong!").color(EnumChatFormatting.RED);
                     }
                 }
             } else {

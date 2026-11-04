@@ -1,7 +1,7 @@
 package cn.elytra.gtnh.cutcorners.mixins.late.gregtech;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
-import cn.elytra.gtnh.cutcorners.config.CutCornersConfig;
+import cn.elytra.gtnh.cutcorners.api.CutCornersAPI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,7 +29,7 @@ public class MTEBasicMachineMixin {
     @Inject(method = "onPostTick", at = @At("HEAD"))
     private void gtnhcc$hookRunMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick, CallbackInfo ci) {
         if (mMaxProgresstime > 0) {
-            if (CutCornersConfig.MAX_PROGRESS_TIME_RUN_MACHINE_CLASSES.get().contains(getClass())) {
+            if (CutCornersAPI.isMTEAccelerated(getClass())) {
                 mMaxProgresstime = 1;
             }
         }
