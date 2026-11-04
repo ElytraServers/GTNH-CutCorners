@@ -181,6 +181,14 @@ public class NewConfig {
     public static boolean maxTickRateRobotArmCover;
 
     @Config.Comment({
+        "Runtime master switch for the bee work-cycle and crop-stick speedups.",
+        "Toggle in-game with the COMMA key by default, or /cutcorners toggle.",
+        "When false, all four related mixins restore their vanilla constants.",
+        "Toggling is a session-only change: it is never written back to the config file."})
+    @Config.DefaultBoolean(true)
+    public static volatile boolean beeCropSpeedupEnabled;
+
+    @Config.Comment({
         "the tick rate of growth for Crop Sticks in CropsNH.",
         "256 by default from CropsNH; -1 for disable modification",
         "also scales the growth progress of the GT/CropsNH Industrial Farm"})
@@ -203,8 +211,12 @@ public class NewConfig {
     @Config.Ignore
     public static final int MAX_QUEEN_WORK_THROTTLE_INCREMENT = 550;
 
-    /** Effective queen throttle increment, clamped to 1-550. 1 (vanilla) when the speedups are disabled. */
+    /**
+     * Effective queen throttle increment, clamped to 1-550. Returns the vanilla 1 when the runtime switch is off,
+     * which also restores the industrial apiary's 550 tick cycle and its 100 tick floor.
+     */
     public static int getQueenWorkCycleThrottleIncrement() {
+        if (!beeCropSpeedupEnabled) return VANILLA_QUEEN_WORK_THROTTLE_INCREMENT;
         int value = queenWorkCycleThrottleIncrement;
         if (value <= 0) return VANILLA_QUEEN_WORK_THROTTLE_INCREMENT;
         return Math.min(value, MAX_QUEEN_WORK_THROTTLE_INCREMENT);
@@ -216,9 +228,10 @@ public class NewConfig {
 
     /**
      * Effective CropsNH tick rate shared by the crop sticks and the industrial farm, so both always use the same
-     * multiplier. Returns the vanilla 256 when the modification is disabled or the configured value is out of range.
+     * multiplier. Returns the vanilla 256 when the runtime switch is off or the configured value is out of range.
      */
     public static int getCropCycleTickRate() {
+        if (!beeCropSpeedupEnabled) return VANILLA_CROP_TICK_RATE;
         int value = tickRateCropsNH;
         if (value <= 0 || value > VANILLA_CROP_TICK_RATE) return VANILLA_CROP_TICK_RATE;
         return value;

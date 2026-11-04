@@ -1,0 +1,7 @@
+key.categories.cutcorners=GTNH: CutCorners
+
+key.cutcorners.toggleSpeedup=切换蜜蜂/作物架加速
+
+cutcorners.speedup.enabled=[CutCorners] 蜜蜂工作周期与作物架加速：已开启
+cutcorners.speedup.disabled=[CutCorners] 蜜蜂工作周期与作物架加速：已关闭
+cutcorners.speedup.denied=[CutCorners] 需要管理员权限才能切换加速开关

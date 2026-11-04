@@ -6,3 +6,9 @@ commands.gtnh-modify.hello.usage=/gtnh-modify hello: HelloWorld
 
 commands.gtnh-modify.load.success=Load Modify Success!
 commands.gtnh-modify.load.failure=Load Modify Failure! Probably need a restart, or it's already loaded!
+
+key.categories.cutcorners=GTNH: CutCorners
+key.cutcorners.toggleSpeedup=Toggle Bee / Crop Speedup
+cutcorners.speedup.enabled=[CutCorners] Bee & crop-stick speedups: ENABLED
+cutcorners.speedup.disabled=[CutCorners] Bee & crop-stick speedups: DISABLED
+cutcorners.speedup.denied=[CutCorners] You need operator permission to toggle speedups.

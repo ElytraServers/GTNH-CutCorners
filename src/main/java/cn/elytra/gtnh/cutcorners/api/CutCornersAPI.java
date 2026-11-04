@@ -35,6 +35,20 @@ public final class CutCornersAPI {
         ConfigurationManager.save(CONFIG_CLASS);
     }
 
+    /**
+     * Runtime master switch for the bee work-cycle and crop-stick speedups. This state is intentionally not persisted:
+     * it lives only for the current session, so toggling it never rewrites the config file. {@link #reloadConfig()}
+     * restores the value from the config.
+     */
+    public static boolean isSpeedupEnabled() {
+        return NewConfig.beeCropSpeedupEnabled;
+    }
+
+    public static boolean toggleSpeedup() {
+        NewConfig.beeCropSpeedupEnabled = !NewConfig.beeCropSpeedupEnabled;
+        return NewConfig.beeCropSpeedupEnabled;
+    }
+
     public static boolean isMTEAccelerated(Class<?> c) {
         return NewConfig.MTE_ACCELERATION_CLASS.get().contains(c);
     }

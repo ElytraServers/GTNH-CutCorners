@@ -15,9 +15,7 @@ public class TECropSticksMixin {
 
     @ModifyConstant(method = "updateEntity", constant = @Constant(intValue = 256))
     private int cc$tickRate(int constant) {
-        if (NewConfig.tickRateCropsNH > 0) {
-            return NewConfig.tickRateCropsNH;
-        }
-        return constant;
+        // Go through the getter so the crop sticks, the industrial farm and the runtime switch always agree.
+        return NewConfig.getCropCycleTickRate();
     }
 }

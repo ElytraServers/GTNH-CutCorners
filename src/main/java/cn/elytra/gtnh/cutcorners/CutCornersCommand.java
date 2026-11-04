@@ -171,6 +171,10 @@ class CutCornersCommand extends CommandBase {
                         CutCornersAPI.addMTEAccelerated(clazz);
                         sc.text("Success!").color(EnumChatFormatting.GREEN);
                     }
+                } else if (s.equalsIgnoreCase("toggle")) {
+                    boolean enabled = CutCornersAPI.toggleSpeedup();
+                    sc.textFormatted("[CutCorners] Bee/crop speedup: %s", enabled ? "ON" : "OFF")
+                        .color(enabled ? EnumChatFormatting.GREEN : EnumChatFormatting.YELLOW);
                 } else if (s.equalsIgnoreCase("reload")) {
                     try {
                         CutCornersAPI.reloadConfig();
@@ -188,7 +192,7 @@ class CutCornersCommand extends CommandBase {
 
     private void helpMessage(ICommandSender sender) {
         String[] messages = {"== CutCorners Commands ==", "/cutcorners getMachineInfo [<x> <y> <z> [dim]]",
-            "/cutcorners runMachineApplied <classFullQualifiedName>"};
+            "/cutcorners runMachineApplied <classFullQualifiedName>", "/cutcorners toggle", "/cutcorners reload"};
 
         for (String message : messages) {
             sender.addChatMessage(new ChatComponentText(message));

@@ -1,6 +1,7 @@
 package com.github.wohaopa.GTNHModify;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
+import cn.elytra.gtnh.cutcorners.network.CutCornersNetwork;
 import cpw.mods.fml.common.event.*;
 
 public class CommonProxy {
@@ -9,6 +10,7 @@ public class CommonProxy {
     }
 
     public void init(FMLInitializationEvent event) {
+        CutCornersNetwork.init();
     }
 
     public void postInit(FMLPostInitializationEvent event) {
