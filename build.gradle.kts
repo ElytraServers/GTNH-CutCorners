@@ -41,6 +41,7 @@ dependencies {
     runtimeOnlyNonPublishable(nh.enderIo) { dev() }
     runtimeOnlyNonPublishable(nh.appleCore) { dev() }
     runtimeOnlyNonPublishable(nh.betterBuildersWands) { dev() }
+    runtimeOnlyNonPublishable(nh.forestryMc) { dev() }
     devOnlyNonPublishable("ganymedes01.etfuturum:Et-Futurum-Requiem:" + nh.versions.etFuturumRequiem.get()) {
         artifact { classifier = "dev" }
     }

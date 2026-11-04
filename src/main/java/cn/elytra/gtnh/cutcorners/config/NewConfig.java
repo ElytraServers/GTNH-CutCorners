@@ -182,9 +182,47 @@ public class NewConfig {
 
     @Config.Comment({
         "the tick rate of growth for Crop Sticks in CropsNH.",
-        "256 by default from CropsNH; -1 for disable modification"})
+        "256 by default from CropsNH; -1 for disable modification",
+        "also scales the growth progress of the GT/CropsNH Industrial Farm"})
     @Config.DefaultInt(8) // 32x faster
     public static int tickRateCropsNH;
+
+    @Config.Comment({
+        "the per-tick increment of the Forestry queen work cycle throttle, and the divisor of the",
+        "GT Industrial Apiary cycle length (both use the same value).",
+        "1 matches vanilla (550 ticks per cycle), 55 is about 10 ticks per cycle.",
+        "0 (or less) disables all bee-related speedups"})
+    @Config.DefaultInt(55)
+    @Config.Reloadable(CONFIGURATION_RELOAD_RUNTIME)
+    public static int queenWorkCycleThrottleIncrement;
+
+    @Config.Ignore
+    public static final int VANILLA_CROP_TICK_RATE = 256;
+    @Config.Ignore
+    public static final int VANILLA_QUEEN_WORK_THROTTLE_INCREMENT = 1;
+    @Config.Ignore
+    public static final int MAX_QUEEN_WORK_THROTTLE_INCREMENT = 550;
+
+    /** Effective queen throttle increment, clamped to 1-550. 1 (vanilla) when the speedups are disabled. */
+    public static int getQueenWorkCycleThrottleIncrement() {
+        int value = queenWorkCycleThrottleIncrement;
+        if (value <= 0) return VANILLA_QUEEN_WORK_THROTTLE_INCREMENT;
+        return Math.min(value, MAX_QUEEN_WORK_THROTTLE_INCREMENT);
+    }
+
+    public static boolean isBeeSpeedupEnabled() {
+        return getQueenWorkCycleThrottleIncrement() > VANILLA_QUEEN_WORK_THROTTLE_INCREMENT;
+    }
+
+    /**
+     * Effective CropsNH tick rate shared by the crop sticks and the industrial farm, so both always use the same
+     * multiplier. Returns the vanilla 256 when the modification is disabled or the configured value is out of range.
+     */
+    public static int getCropCycleTickRate() {
+        int value = tickRateCropsNH;
+        if (value <= 0 || value > VANILLA_CROP_TICK_RATE) return VANILLA_CROP_TICK_RATE;
+        return value;
+    }
 
     @Config.Comment({
         "the list of MTE-internal accelerated classes (FQCN)",
