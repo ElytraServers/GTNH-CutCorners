@@ -11,6 +11,9 @@
     "gregtech.cover.CoverConveyorMixin",
     "gregtech.cover.CoverPumpMixin",
     "crops_nh.TECropSticksMixin",
+    "crops_nh.MTEIndustrialFarmMixin",
+    "forestry.BeekeepingLogicMixin",
+    "gregtech.MTEIndustrialApiaryMixin",
     "tconstruct.ExcavatorAccessor",
     "tconstruct.HammerMixin",
     "thaumcraft.ShapedArcaneRecipeNullFix"
