@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 @Restriction(require = @Condition(ModConst.ModId.CropsNH))
 public class TECropSticksMixin {
 
-    @ModifyConstant(method = "updateEntity", constant = @Constant(intValue = TileEntityCropSticks.TICK_RATE))
+    @ModifyConstant(method = "updateEntity", constant = @Constant(intValue = TileEntityCropSticks.TICK_RATE), remap = true)
     private int cc$tickRate(int constant) {
         return CutCorners.getStrategy().getCropsNHStickTickRate(constant);
     }
