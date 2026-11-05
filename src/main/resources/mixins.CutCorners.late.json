@@ -3,7 +3,7 @@
   "minVersion": "0.8.5-GTNH",
   "package": "cn.elytra.gtnh.cutcorners.mixins.late",
   "plugin": "cn.elytra.gtnh.cutcorners.mixinloader.MixinConfigPlugin",
-  "refmap": "mixins.GTNHModify_CutCorners.refmap.json",
+  "refmap": "mixins.CutCorners.refmap.json",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
