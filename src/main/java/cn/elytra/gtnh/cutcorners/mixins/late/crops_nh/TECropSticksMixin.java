@@ -13,37 +13,23 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import static com.gtnewhorizon.cropsnh.tileentity.TileEntityCropSticks.TICK_RATE;
 
 @Mixin(value = TileEntityCropSticks.class, remap = false)
 @Restriction(require = @Condition(ModConst.ModId.CropsNH))
 public class TECropSticksMixin {
 
-    // a separated ticker used to consume the fertilizer and water
     @Unique
-    private int cc$tickCount;
-    // set to true every 256 ticks, to consume fertilizer and water
-    @Unique
-    private boolean cc$consumeThisTick;
+    private static int cc$getTickRate() {
+        return CutCorners.getStrategy().getCropsNHStickTickRate(TICK_RATE);
+    }
 
-    @ModifyConstant(method = "updateEntity", constant = @Constant(intValue = TileEntityCropSticks.TICK_RATE), remap = true)
+    @ModifyConstant(method = "updateEntity", constant = @Constant(intValue = TICK_RATE), remap = true)
     private int cc$tickRate(int constant) {
-        return CutCorners.getStrategy().getCropsNHStickTickRate(constant);
-    }
-
-    @Inject(method = "updateEntity", at = @At("HEAD"), remap = true)
-    private void cc$onUpdate(CallbackInfo ci) {
-        if (++cc$tickCount % TileEntityCropSticks.TICK_RATE == 0) {
-            cc$tickCount = 0;
-            cc$consumeThisTick = true;
-        }
-    }
-
-    @Inject(method = "updateEntity", at = @At("RETURN"), remap = true)
-    private void cc$onUpdateEnd(CallbackInfo ci) {
-        cc$consumeThisTick = false;
+        assert constant == TICK_RATE;
+        return cc$getTickRate();
     }
 
     @ModifyExpressionValue(method = "doGrowth", at = @At(value = "FIELD", target = "Lcom/gtnewhorizon/cropsnh/handler/ConfigurationHandler;growthMultiplier:F", opcode = Opcodes.GETSTATIC))
@@ -51,26 +37,47 @@ public class TECropSticksMixin {
         return CutCorners.getStrategy().getCropsNHMultiplier(original);
     }
 
+    @Unique
+    private static int cc$getSpeedUpRatio() {
+        return Math.max(1, TICK_RATE / cc$getTickRate());
+    }
+
     @ModifyExpressionValue(method = "onGrowthTick", at = @At(value = "FIELD", target = "Lcom/gtnewhorizon/cropsnh/handler/ConfigurationHandler;weedSpawnChance:I", opcode = Opcodes.GETSTATIC))
     private int cc$weedSpawnChanceRebalance(int original) {
         // we increase the "chance" number, so that the weed won't shit all over the farmland.
         // (for example, 256 (by default) / 32 (current) = 8),
-        int speedUpRatio = TileEntityCropSticks.TICK_RATE / CutCorners.getStrategy().getCropsNHStickTickRate(TileEntityCropSticks.TICK_RATE);
+        int ratio = cc$getSpeedUpRatio();
         // in case of someone wants a slower world (ratio <= 1), we don't decrease the weed chance. LOL.
-        return speedUpRatio > 1 ? original * speedUpRatio : original;
+        return ratio > 1 ? original * ratio : original;
     }
+
+    @ModifyExpressionValue(method = "onGrowthTick", at = @At(value = "FIELD", target = "Lcom/gtnewhorizon/cropsnh/handler/ConfigurationHandler;weedSpreadChance:I", opcode = Opcodes.GETSTATIC))
+    private int cc$weedSpreadChanceRebalance(int original) {
+        int ratio = cc$getSpeedUpRatio();
+        return ratio > 1 ? original * ratio : original;
+    }
+
+    // the counter of fertilizer and water being consumed.
+    // the real consumption will take place once this count reaches the speed-up ratio (= 256 / modified rate).
+    // for example, given 3t/op, the speed-up ratio is 256 / 3 = 85,
+    // so the real duration is 3 * 85 = 255t (near 256).
+    // but anyway, choose a better number will result in a true 256t/consumption, like 1, 2, 4, 8.
+    @Unique
+    private int cc$fertilizerUseCount, cc$waterUseCount;
 
     @Definition(id = "fertilizerStorage", field = "Lcom/gtnewhorizon/cropsnh/tileentity/TileEntityCropSticks;fertilizerStorage:I")
     @Expression("this.fertilizerStorage > 0")
     @ModifyExpressionValue(method = "onGrowthTick", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean cc$shouldConsumeFertilizer(boolean original) {
-        return original && cc$consumeThisTick;
+        cc$fertilizerUseCount = ++cc$fertilizerUseCount % cc$getSpeedUpRatio();
+        return original && cc$fertilizerUseCount == 0;
     }
 
     @Definition(id = "waterStorage", field = "Lcom/gtnewhorizon/cropsnh/tileentity/TileEntityCropSticks;waterStorage:I")
     @Expression("this.waterStorage > 0")
     @ModifyExpressionValue(method = "onGrowthTick", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean cc$shouldConsumeWater(boolean original) {
-        return original && cc$consumeThisTick;
+        cc$waterUseCount = ++cc$waterUseCount % cc$getSpeedUpRatio();
+        return original && cc$waterUseCount == 0;
     }
 }
