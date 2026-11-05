@@ -11,6 +11,7 @@ public final class ModConst {
 
         public static final String CropsNH = "cropsnh";
         public static final String TinkersConstruct = "TConstruct";
+        public static final String Forestry = "Forestry";
     }
 
 }

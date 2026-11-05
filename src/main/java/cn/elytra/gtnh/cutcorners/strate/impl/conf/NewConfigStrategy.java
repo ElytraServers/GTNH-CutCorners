@@ -192,4 +192,22 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     public boolean canHarvestBlock(boolean original) {
         return NewConfig.allHarvestable || original;
     }
+
+    @Override
+    public float getCropsNHMultiplier(float original) {
+        float value = NewConfig.growthMultiplierCropsNH;
+        return value > 0 ? value : original;
+    }
+
+    @Override
+    public int getCropsNHStickTickRate(int original) {
+        int value = NewConfig.tickRateCropsNH;
+        return value > 0 ? value : original;
+    }
+
+    @Override
+    public int getForestryQueenInterval(int original) {
+        int value = NewConfig.queenIntervalForestry;
+        return value > 0 ? value : original;
+    }
 }

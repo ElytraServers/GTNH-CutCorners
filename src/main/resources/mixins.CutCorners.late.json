@@ -7,14 +7,20 @@
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "crops_nh.MTEIndustrialFarmMixin",
+    "crops_nh.TECropSticksMixin",
+    "forestry.BeekeepingLogicMixin",
     "gregtech.cover.CoverArmMixin",
     "gregtech.cover.CoverConveyorMixin",
     "gregtech.cover.CoverPumpMixin",
-    "crops_nh.TECropSticksMixin",
+    "gregtech.mte.MTEIndustrialApiaryMixin",
     "tconstruct.ExcavatorAccessor",
     "tconstruct.HammerMixin",
     "thaumcraft.ShapedArcaneRecipeNullFix"
   ],
   "client": [],
-  "server": []
+  "server": [],
+  "mixinextras": {
+    "minVersion": "0.5.0"
+  }
 }

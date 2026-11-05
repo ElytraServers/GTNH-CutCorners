@@ -24,5 +24,6 @@ public class MixinConfigPlugin extends RestrictiveMixinConfigPlugin {
     @Override
     protected void onRestrictionCheckFailed(String mixinClassName, String reason) {
         System.err.println("[CutCorners] \"" + mixinClassName + "\" was disabled because of " + reason);
+        CutCornersMixinRecorder.notApplied(mixinClassName, reason);
     }
 }

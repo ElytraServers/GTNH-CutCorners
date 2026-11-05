@@ -14,7 +14,7 @@ public class CCMixinLoader implements ILateMixinLoader {
 
     @Override
     public String getMixinConfig() {
-        return "mixins.GTNHModify_CutCorners.late.json";
+        return "mixins.CutCorners.late.json";
     }
 
     @Override

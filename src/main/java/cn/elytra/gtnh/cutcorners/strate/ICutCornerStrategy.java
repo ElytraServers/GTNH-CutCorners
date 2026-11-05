@@ -32,22 +32,6 @@ public interface ICutCornerStrategy {
     }
 
     /**
-     * Modify the {@link GTRecipe} in the {@link RecipeMap}.
-     * It should be invoked once per recipe map on game load completion.
-     */
-    @Deprecated
-    default void updateGTRecipeMap(RecipeMap<?> recipeMap) {
-    }
-
-    /**
-     * Modify the {@link GTRecipe}.
-     * It should be invoked once per recipe on game load completion.
-     */
-    @Deprecated
-    default void updateGTRecipe(GTRecipe recipe) {
-    }
-
-    /**
      * Modify the {@link GTRecipe} in the recipe map.
      * It should be invoked when the recipe is added to the recipe map.
      */
@@ -60,23 +44,7 @@ public interface ICutCornerStrategy {
     default void updateAssemblyLineRecipeList(List<GTRecipe.RecipeAssemblyLine> recipes) {
     }
 
-    /**
-     * Modify the {@link GTRecipe.RecipeAssemblyLine}.
-     * It should be invoked once per recipe on game load completion.
-     */
-    @Deprecated
-    default void updateAssemblyLineRecipe(GTRecipe.RecipeAssemblyLine recipe) {
-    }
-
     default void updateEOHRecipeMap(HashMap<String, EyeOfHarmonyRecipe> recipeMap) {
-    }
-
-    /**
-     * Modify the {@link EyeOfHarmonyRecipe}.
-     * It should be invoked once per recipe on game load completion.
-     */
-    @Deprecated
-    default void updateEOHRecipe(EyeOfHarmonyRecipe recipe) {
     }
 
     /**
@@ -195,6 +163,18 @@ public interface ICutCornerStrategy {
     }
 
     default boolean canHarvestBlock(boolean original) {
+        return original;
+    }
+
+    default float getCropsNHMultiplier(float original) {
+        return original;
+    }
+
+    default int getCropsNHStickTickRate(int original) {
+        return original;
+    }
+
+    default int getForestryQueenInterval(int original) {
         return original;
     }
 }

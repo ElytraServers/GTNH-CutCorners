@@ -10,11 +10,9 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import static cn.elytra.gtnh.cutcorners.api.CutCornersAPI.CONFIGURATION_RELOAD_RUNTIME;
 import static cn.elytra.gtnh.cutcorners.util.fp.LazyMapping.lazyMapping;
 
 @Config(modid = "CutCorners-1")
-@Config.Sync
 public class NewConfig {
 
     static {
@@ -94,6 +92,7 @@ public class NewConfig {
     public static final Supplier<MathOp> GENERAL_MODIFICATION = vm(() -> generalModification);
 
     @Config.Comment("whether to set all GT recipes to LV EU-tier")
+    @Config.DefaultBoolean(false)
     public static boolean recipesToLVTier;
 
     @Config.Comment("")
@@ -120,42 +119,36 @@ public class NewConfig {
 
     @Config.Comment("the value modification expression that applied to the \"Start EU Cost\" of Eye of Harmony-s")
     @Config.DefaultString("*0.5")
-    @Config.Reloadable(CONFIGURATION_RELOAD_RUNTIME)
     public static String eyeOfHarmonyStartEuCostModification;
     @Config.Ignore
     public static final Supplier<MathOp> EYE_OF_HARMONY_START_EU_COST = vm(() -> eyeOfHarmonyStartEuCostModification);
 
     @Config.Comment("the value modification expression that applied to \"Fuel Burn Time\" of Large Boilers")
     @Config.DefaultString("*2")
-    @Config.Reloadable(CONFIGURATION_RELOAD_RUNTIME)
     public static String largeBoilerFuelBurnTimeModification;
     @Config.Ignore
     public static final Supplier<MathOp> LARGE_BOILER_FUEL_BURN_TIME = vm(() -> largeBoilerFuelBurnTimeModification);
 
     @Config.Comment("the value modification expression that applied to \"Amperage\" of Research Stations")
     @Config.DefaultString("~")
-    @Config.Reloadable(CONFIGURATION_RELOAD_RUNTIME)
     public static String researchStationAmperageModification;
     @Config.Ignore
     public static final Supplier<MathOp> RESEARCH_STATION_AMP = vm(() -> researchStationAmperageModification);
 
     @Config.Comment("the value modification expression that applied to \"Min Computation\" of Research Stations")
     @Config.DefaultString("~")
-    @Config.Reloadable(CONFIGURATION_RELOAD_RUNTIME)
     public static String researchStationMinComputationModification;
     @Config.Ignore
     public static final Supplier<MathOp> RESEARCH_STATION_MIN_COMPUTATION = vm(() -> researchStationMinComputationModification);
 
     @Config.Comment("the value modification expression that applied to \"Success Chance\" of Water Purification Plants")
     @Config.DefaultString("+50")
-    @Config.Reloadable(CONFIGURATION_RELOAD_RUNTIME)
     public static String waterPurificationPlantSuccessChance;
     @Config.Ignore
     public static final Supplier<MathOp> WATER_PURIFICATION_SUCCESS_CHANCE = vm(() -> waterPurificationPlantSuccessChance);
 
     @Config.Comment("the value modification expression that applied to duration of Water Purification Plant")
     @Config.DefaultString("~")
-    @Config.Reloadable(CONFIGURATION_RELOAD_RUNTIME)
     public static String waterPurificationPlantModification;
     @Config.Ignore
     public static final Supplier<MathOp> WATER_PURIFICATION_CYCLE = vm(() -> waterPurificationPlantModification);
@@ -181,16 +174,28 @@ public class NewConfig {
     public static boolean maxTickRateRobotArmCover;
 
     @Config.Comment({
-        "the tick rate of growth for Crop Sticks in CropsNH.",
-        "256 by default from CropsNH; -1 for disable modification"})
-    @Config.DefaultInt(8) // 32x faster
+        "the multiplier of the growth progress",
+        "the value is replacing \"Growth rate multiplier\" in CropsNH configuration. the range isn't capped.",
+        "the value should be positive."})
+    @Config.DefaultFloat(10.0F)
+    public static float growthMultiplierCropsNH;
+
+    @Config.Comment({
+        "the tick rate of growth for Crop Sticks in CropsNH",
+        "the value should be positive"})
+    @Config.DefaultInt(1)
     public static int tickRateCropsNH;
+
+    @Config.Comment({
+        "the interval ticks of queen working",
+        "the value should be positive"})
+    @Config.DefaultInt(1)
+    public static int queenIntervalForestry;
 
     @Config.Comment({
         "the list of MTE-internal accelerated classes (FQCN)",
         "GENERATED, DON'T EDIT!"})
     @Config.DefaultStringList({})
-    @Config.Reloadable(CONFIGURATION_RELOAD_RUNTIME)
     public static String[] mteAccelerationClass;
     @Config.Ignore
     public static final Supplier<Set<Class<?>>> MTE_ACCELERATION_CLASS = lazyMapping(

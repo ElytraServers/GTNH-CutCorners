@@ -16,12 +16,24 @@ import java.util.List;
 @NullMarked
 public final class ChatHelper {
 
+    public static Dsl empty() {
+        return text("");
+    }
+
     public static Dsl text(String text) {
         return new Dsl(new ChatComponentText(text));
     }
 
     public static Dsl translate(String key, @Nullable Object... args) {
         return new Dsl(new ChatComponentTranslation(key, args));
+    }
+
+    // Dsl overload, used to automatically "build" the Dsl-s.
+    public static Dsl translate(String key, Dsl... args) {
+        IChatComponent[] args1 = new IChatComponent[args.length];
+        for (int i = 0; i < args.length; i++) args1[i] = args[i].build();
+        // "(Object[]) args1" ==> "*args1"
+        return translate(key, (Object[]) args1);
     }
 
     public static Dsl textFormatted(String format, @Nullable Object... args) {
@@ -38,6 +50,21 @@ public final class ChatHelper {
 
         private Dsl(IChatComponent component) {
             this.component = component;
+        }
+
+        @Override
+        public String toString() {
+            return component.toString();
+        }
+
+        @Override
+        public int hashCode() {
+            return component.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof Dsl other && component.equals(other.component);
         }
 
         @TestOnly
