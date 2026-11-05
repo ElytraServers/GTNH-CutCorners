@@ -35,7 +35,7 @@ public class TECropSticksMixin {
 
     @Inject(method = "updateEntity", at = @At("HEAD"), remap = true)
     private void cc$onUpdate(CallbackInfo ci) {
-        if (cc$tickCount++ % TileEntityCropSticks.TICK_RATE == 0) {
+        if (++cc$tickCount % TileEntityCropSticks.TICK_RATE == 0) {
             cc$tickCount = 0;
             cc$consumeThisTick = true;
         }
