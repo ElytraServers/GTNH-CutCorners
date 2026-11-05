@@ -200,6 +200,12 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     }
 
     @Override
+    public float getCropsNHIndustrialFarmMultiplier(float original) {
+        float value = NewConfig.growthMultiplierIndustrialFarmCropsNH;
+        return value > 0 ? value : original;
+    }
+
+    @Override
     public int getCropsNHStickTickRate(int original) {
         int value = NewConfig.tickRateCropsNH;
         return value > 0 ? value : original;
