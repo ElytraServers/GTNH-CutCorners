@@ -187,11 +187,19 @@ public class NewConfig {
     public static boolean maxTickRateRobotArmCover;
 
     @Config.Comment({
-        "the multiplier of the growth progress",
+        "the multiplier of the growth progress for Crop Sticks in CropsNH",
         "the value is replacing \"Growth rate multiplier\" in CropsNH configuration. the range isn't capped.",
-        "the value should be positive."})
+        "the value should be positive.",
+        "NOTE: this only affects Crop Sticks. Industrial Farms use growthMultiplierIndustrialFarmCropsNH."})
     @Config.DefaultFloat(10.0F)
     public static float growthMultiplierCropsNH;
+
+    @Config.Comment({
+        "the multiplier of the growth progress for Industrial Farms in CropsNH",
+        "this is independent from growthMultiplierCropsNH, so neither of them affects the other.",
+        "the value should be positive; non-positive values disable the acceleration (x1)."})
+    @Config.DefaultFloat(10.0F)
+    public static float growthMultiplierIndustrialFarmCropsNH;
 
     @Config.Comment({
         "the tick rate of growth for Crop Sticks in CropsNH",

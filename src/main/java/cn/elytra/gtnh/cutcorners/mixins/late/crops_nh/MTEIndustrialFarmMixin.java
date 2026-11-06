@@ -2,7 +2,6 @@ package cn.elytra.gtnh.cutcorners.mixins.late.crops_nh;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
 import cn.elytra.gtnh.cutcorners.util.ModConst;
-import com.gtnewhorizon.cropsnh.handler.ConfigurationHandler;
 import com.gtnewhorizon.cropsnh.tileentity.multi.MTEIndustrialFarm;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import me.fallenbreath.conditionalmixin.api.annotation.Condition;
@@ -18,7 +17,8 @@ public class MTEIndustrialFarmMixin {
     private double cc$replaceGrowth(double original) {
         // Industrial Farm doesn't apply the multiplier in the configuration.
         // we must explicitly call it to make it work.
-        float multiplier = CutCorners.getStrategy().getCropsNHMultiplier(ConfigurationHandler.growthMultiplier);
+        // 1.0F is neutral, so it never falls back to ConfigurationHandler.growthMultiplier (used by Crop Sticks).
+        float multiplier = CutCorners.getStrategy().getCropsNHIndustrialFarmMultiplier(1.0F);
         return original * multiplier;
     }
 
