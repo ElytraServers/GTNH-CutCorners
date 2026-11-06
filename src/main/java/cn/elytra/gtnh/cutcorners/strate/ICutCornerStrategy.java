@@ -158,7 +158,7 @@ public interface ICutCornerStrategy {
         return original;
     }
 
-    default float getBlockStrength(float original) {
+    default float getBlockStrength(float original, boolean harvested) {
         return original;
     }
 
@@ -176,5 +176,9 @@ public interface ICutCornerStrategy {
 
     default int getForestryQueenInterval(int original) {
         return original;
+    }
+
+    default boolean isNoFlyingDigPenalty() {
+        return false;
     }
 }

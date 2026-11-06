@@ -100,12 +100,21 @@ public class NewConfig {
     public static boolean immediateMode;
 
     @Config.Comment({
-        "the value modification expression that applied to the block strength",
+        "the value modification expression that applied to the block strength when harvestable (tool matches or no tool required)",
         "if the value is >= 1.0F, block is broken instantly."})
     @Config.DefaultString("+0{min=0.99}") // instead of =0.99, use +0{min=0.99} to allow unmodified instant breaks
     public static String blockStrengthModification;
     @Config.Ignore
     public static final Supplier<MathOp> BLOCK_STRENGTH = vm(() -> blockStrengthModification);
+
+    @Config.Comment({
+        "the value modification expression that applied to the block strength, when non-harvestable (tool mismatch or harvest level higher than the tool)",
+        "by default, it's about 3.33x (or 100 / 30, to be precise) slower comparing to the harvestable situation, ignoring the benefits from tools.",
+        "if the value is >= 1.0F, block is broken instantly."})
+    @Config.DefaultString("*4")
+    public static String blockStrengthNonHarvestModification;
+    @Config.Ignore
+    public static final Supplier<MathOp> BLOCK_STRENGTH_NON_HARVEST = vm(() -> blockStrengthNonHarvestModification);
 
     @Config.Comment("whether all blocks are harvestable (destroy with drops) with any tools, even barehand")
     @Config.DefaultBoolean(true)
@@ -116,6 +125,10 @@ public class NewConfig {
         "this is different from \"harvestable\", where harvestable controls if the block will drop an item (or if you're using the right tool), while breakable controls if you have any chance to break it."})
     @Config.DefaultBoolean(false)
     public static boolean allBreakable;
+
+    @Config.Comment("whether to cancel the digging speed penalty when not on ground. (which is 5x slower than on ground)")
+    @Config.DefaultBoolean(true)
+    public static boolean noFlyingDigPenalty;
 
     @Config.Comment("the value modification expression that applied to the \"Start EU Cost\" of Eye of Harmony-s")
     @Config.DefaultString("*0.5")

@@ -182,10 +182,14 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     }
 
     @Override
-    public float getBlockStrength(float original) {
+    public float getBlockStrength(float original, boolean harvested) {
         // prevent from breaking bedrocks.
         if (!NewConfig.allBreakable && original <= 0.0F) return original;
-        return NewConfig.BLOCK_STRENGTH.get().safeApply(original);
+        if (harvested) {
+            return NewConfig.BLOCK_STRENGTH.get().safeApply(original);
+        } else {
+            return NewConfig.BLOCK_STRENGTH_NON_HARVEST.get().safeApply(original);
+        }
     }
 
     @Override
@@ -209,5 +213,10 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     public int getForestryQueenInterval(int original) {
         int value = NewConfig.queenIntervalForestry;
         return value > 0 ? value : original;
+    }
+
+    @Override
+    public boolean isNoFlyingDigPenalty() {
+        return NewConfig.noFlyingDigPenalty;
     }
 }
