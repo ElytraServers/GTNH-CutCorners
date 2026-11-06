@@ -3,9 +3,7 @@ name: Build and test
 
 on:
   pull_request:
-    branches: [ master, main, cutcorners-master ]
   push:
-    branches: [ master, main, cutcorners-master ]
 
 jobs:
   build-and-test:
