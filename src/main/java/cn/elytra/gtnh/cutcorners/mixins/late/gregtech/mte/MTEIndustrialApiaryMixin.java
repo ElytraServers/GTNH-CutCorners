@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 @Mixin(value = MTEIndustrialApiary.class, remap = false)
 public class MTEIndustrialApiaryMixin {
 
-    @ModifyConstant(method = "checkRecipe", constant = @Constant(floatValue = MTEIndustrialApiary.beeCycleLength))
+    @ModifyExpressionValue(method = "checkRecipe", at = @At(value = "CONSTANT", args = "floatValue=" + MTEIndustrialApiary.beeCycleLength))
     private float cc$beeCycle(float constant) {
         // constant is inlined as float, so we must explicitly convert them.
         return (float) CutCorners.getStrategy().getForestryQueenInterval((int) constant);

@@ -2,6 +2,7 @@ package cn.elytra.gtnh.cutcorners.mixins.late.gregtech;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
 import cn.elytra.gtnh.cutcorners.api.CutCornersAPI;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,7 +19,7 @@ public class MTEBasicMachineMixin {
     @Shadow
     public int mMaxProgresstime;
 
-    @ModifyConstant(method = "onPostTick", constant = @Constant(intValue = 1000))
+    @ModifyExpressionValue(method = "onPostTick", at = @At(value = "CONSTANT", args = "intValue=1000"))
     private int gtnhcc$modifyAutoOutputFluidAmount(int constant) {
         if (CutCorners.getStrategy().isImmediateMode()) {
             return Integer.MAX_VALUE;
