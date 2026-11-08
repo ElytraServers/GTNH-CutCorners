@@ -8,6 +8,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "_DEV.ShapedArcaneRecipeNullFix",
+    "_EXTRA.MTEIceCreamMachineMixin",
     "botania.TileSpreaderMixin",
     "crops_nh.MTEIndustrialFarmMixin",
     "crops_nh.TECropSticksMixin",
@@ -18,6 +19,7 @@
     "gregtech.cover.CoverArmMixin",
     "gregtech.cover.CoverConveyorMixin",
     "gregtech.cover.CoverPumpMixin",
+    "gregtech.misc.BaseMetaTileEntityAccessor",
     "gregtech.mte.MTEDigitalTankBaseMixin",
     "gregtech.mte.MTEIndustrialApiaryMixin",
     "gregtech.pre290.BaseItemTickableMixin",
