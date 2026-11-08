@@ -59,6 +59,9 @@ public class CCMixinLoader implements ILateMixinLoader {
             mixins.add("thaumcraft.TileAlchemyFurnaceMixin");
             mixins.add("thaumcraft.TileNodeMixin");
         }
+        if (Mods.ThaumicBases.isLoaded()) {
+            mixins.add("thaumicbases.AshroomMixin");
+        }
         if (Mods.GtnhIntergalactic.isLoaded()) {
             mixins.add("gtnhintergalactic.TileEntityModuleMinerMixin");
         }

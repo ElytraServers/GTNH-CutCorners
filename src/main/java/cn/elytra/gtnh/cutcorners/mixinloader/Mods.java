@@ -14,6 +14,7 @@ public enum Mods {
 
     GregTech("gregtech"),
     Thaumcraft("Thaumcraft"),
+    ThaumicBases("thaumicbases"),
     GtnhIntergalactic("gtnhintergalactic"),
     Botania("Botania"),
     Railcraft("Railcraft"),

@@ -16,7 +16,8 @@
     "gregtech.mte.MTEIndustrialApiaryMixin",
     "tconstruct.ExcavatorAccessor",
     "tconstruct.HammerMixin",
-    "thaumcraft.ShapedArcaneRecipeNullFix"
+    "thaumcraft.ShapedArcaneRecipeNullFix",
+    "thaumicbases.AshroomMixin"
   ],
   "client": [],
   "server": [],
