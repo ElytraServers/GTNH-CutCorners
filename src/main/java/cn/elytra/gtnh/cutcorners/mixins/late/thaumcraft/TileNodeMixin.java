@@ -1,8 +1,11 @@
 package cn.elytra.gtnh.cutcorners.mixins.late.thaumcraft;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
+import cn.elytra.gtnh.cutcorners.util.ModConst;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
+import me.fallenbreath.conditionalmixin.api.annotation.Condition;
+import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import thaumcraft.common.tiles.TileNode;
 
 @Mixin(value = TileNode.class, remap = false)
+@Restriction(require = @Condition(ModConst.ModId.Thaumcraft))
 public abstract class TileNodeMixin {
 
     @Shadow

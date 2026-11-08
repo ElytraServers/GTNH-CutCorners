@@ -1,6 +1,7 @@
-package cn.elytra.gtnh.cutcorners.mixins.late.thaumcraft;
+package cn.elytra.gtnh.cutcorners.mixins.late._DEV;
 
 import cn.elytra.gtnh.cutcorners.mixinloader.DevelopmentEnvironmentTester;
+import cn.elytra.gtnh.cutcorners.util.ModConst;
 import me.fallenbreath.conditionalmixin.api.annotation.Condition;
 import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import net.minecraft.init.Items;
@@ -16,7 +17,10 @@ import thaumcraft.api.crafting.ShapedArcaneRecipe;
 /// This mixin replaces the null slots to sticks, so that the game won't be fucked.
 @Mixin(value = ShapedArcaneRecipe.class, remap = false)
 @Restriction(
-    require = @Condition(type = Condition.Type.TESTER, tester = DevelopmentEnvironmentTester.class)
+    require = {
+        @Condition(ModConst.ModId.Thaumcraft),
+        @Condition(type = Condition.Type.TESTER, tester = DevelopmentEnvironmentTester.class)
+    }
 )
 public class ShapedArcaneRecipeNullFix {
 
