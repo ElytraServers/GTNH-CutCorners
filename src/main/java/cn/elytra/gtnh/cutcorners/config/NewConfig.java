@@ -217,6 +217,18 @@ public class NewConfig {
     @Config.Ignore
     public static final Supplier<MathOp> QUANTUM_TANK_OUTPUT_AMOUNT = op(() -> quantumTankOutputAmountModification);
 
+    @Config.Comment("the value modification applied to the aspect orb from Ashroom of Thaumic Bases")
+    @Config.DefaultString("*100")
+    public static String ashroomAspectOrbValueModification;
+    @Config.Ignore
+    public static final Supplier<MathOp> ASHROOM_ASPECT_ORB = op(() -> ashroomAspectOrbValueModification);
+
+    @Config.Comment("the value modification applied to the drop count of Aspect Orbs from Ashroom of Thaumic Bases")
+    @Config.DefaultString("*6")
+    public static String ashroomDropCountModification;
+    @Config.Ignore
+    public static final Supplier<MathOp> ASHROOM_DROP_COUNT = op(() -> ashroomDropCountModification);
+
     @Config.Comment({
         "the list of MTE-internal accelerated classes (FQCN)",
         "GENERATED, DON'T EDIT!"})

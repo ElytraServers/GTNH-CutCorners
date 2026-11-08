@@ -47,6 +47,7 @@
     "railcraft.TileCokeOvenMixin",
     "tconstruct.ExcavatorAccessor",
     "tconstruct.HammerMixin",
+    "thaumicbases.AshroomMixin",
     "tconstruct.SmelteryLogicMixin",
     "thaumcraft.TileAlchemyFurnaceMixin",
     "thaumcraft.TileNodeMixin"

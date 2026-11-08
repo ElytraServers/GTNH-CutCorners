@@ -230,4 +230,14 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     public int getQuantumTankOutputAmount(int original) {
         return NewConfig.QUANTUM_TANK_OUTPUT_AMOUNT.get().apply(original);
     }
+
+    @Override
+    public int getAshroomAspectOrbValue(int original) {
+        return NewConfig.ASHROOM_ASPECT_ORB.get().apply(original);
+    }
+
+    @Override
+    public int getAshroomDropCount(int original) {
+        return NewConfig.ASHROOM_DROP_COUNT.get().apply(original);
+    }
 }
