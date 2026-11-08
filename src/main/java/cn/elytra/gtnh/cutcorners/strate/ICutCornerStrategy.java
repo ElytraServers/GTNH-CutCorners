@@ -189,4 +189,12 @@ public interface ICutCornerStrategy {
     default int getQuantumTankOutputAmount(int original) {
         return original;
     }
+
+    default int getAshroomAspectOrbValue(int original) {
+        return original;
+    }
+
+    default int getAshroomDropCount(int original) {
+        return original;
+    }
 }
