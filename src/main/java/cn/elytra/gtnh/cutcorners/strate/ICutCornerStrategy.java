@@ -197,4 +197,16 @@ public interface ICutCornerStrategy {
     default int getAshroomDropCount(int original) {
         return original;
     }
+
+    default int getEnderIoItemConduitMaxExtractAmount(int original) {
+        return original;
+    }
+
+    default int getEnderIoLiquidConduitMaxExtractAmount(int original) {
+        return original;
+    }
+
+    default int getEnderIoLiquidConduitMaxInsertAmount(int original) {
+        return original;
+    }
 }

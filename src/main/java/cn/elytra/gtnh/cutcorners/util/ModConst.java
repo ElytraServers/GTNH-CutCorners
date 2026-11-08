@@ -9,7 +9,6 @@ public final class ModConst {
         private ModId() {
         }
 
-
         public static final String GregTech = "gregtech";
         public static final String CropsNH = "cropsnh";
         public static final String TinkersConstruct = "TConstruct";
@@ -20,6 +19,7 @@ public final class ModConst {
         public static final String NHCore = "dreamcraft";
         public static final String Railcraft = "Railcraft";
         public static final String Thaumcraft = "Thaumcraft";
+        public static final String EnderIO = "EnderIO";
     }
 
 }

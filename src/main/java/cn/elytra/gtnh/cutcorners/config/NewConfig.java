@@ -229,6 +229,24 @@ public class NewConfig {
     @Config.Ignore
     public static final Supplier<MathOp> ASHROOM_DROP_COUNT = op(() -> ashroomDropCountModification);
 
+    @Config.Comment("the value modification applied to the max extract amount of Item Conduit from Ender IO")
+    @Config.DefaultString("+0{min=INT_MAX}")
+    public static String enderIoItemConduitMaxExtractAmountModification;
+    @Config.Ignore
+    public static final Supplier<MathOp> ITEM_CONDUIT_MAX_EXTRACT = op(() -> enderIoItemConduitMaxExtractAmountModification);
+
+    @Config.Comment("the value modification applied to the max extract amount of Liquid (Fluid) Conduit from Ender IO")
+    @Config.DefaultString("+0{min=INT_MAX}")
+    public static String enderIoLiquidConduitMaxExtractAmountModification;
+    @Config.Ignore
+    public static final Supplier<MathOp> LIQUID_CONDUIT_MAX_EXTRACT = op(() -> enderIoLiquidConduitMaxExtractAmountModification);
+
+    @Config.Comment("the value modification applied to the max insert amount of Liquid (Fluid) Conduit from Ender IO")
+    @Config.DefaultString("+0{min=INT_MAX}")
+    public static String enderIoLiquidConduitMaxInsertAmountModification;
+    @Config.Ignore
+    public static final Supplier<MathOp> LIQUID_CONDUIT_MAX_INSERT = op(() -> enderIoLiquidConduitMaxInsertAmountModification);
+
     @Config.Comment({
         "the list of MTE-internal accelerated classes (FQCN)",
         "GENERATED, DON'T EDIT!"})

@@ -240,4 +240,19 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     public int getAshroomDropCount(int original) {
         return NewConfig.ASHROOM_DROP_COUNT.get().apply(original);
     }
+
+    @Override
+    public int getEnderIoItemConduitMaxExtractAmount(int original) {
+        return NewConfig.ITEM_CONDUIT_MAX_EXTRACT.get().apply(original);
+    }
+
+    @Override
+    public int getEnderIoLiquidConduitMaxExtractAmount(int original) {
+        return NewConfig.LIQUID_CONDUIT_MAX_EXTRACT.get().apply(original);
+    }
+
+    @Override
+    public int getEnderIoLiquidConduitMaxInsertAmount(int original) {
+        return NewConfig.LIQUID_CONDUIT_MAX_INSERT.get().apply(original);
+    }
 }

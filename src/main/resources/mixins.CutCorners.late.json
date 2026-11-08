@@ -11,6 +11,8 @@
     "botania.TileSpreaderMixin",
     "crops_nh.MTEIndustrialFarmMixin",
     "crops_nh.TECropSticksMixin",
+    "enderio.EnderLiquidConduitNetworkMixin",
+    "enderio.ItemConduitMixin",
     "et_futurum_requiem.BlastFurnaceAndSmoker_Mixin",
     "forestry.BeekeepingLogicMixin",
     "gregtech.cover.CoverArmMixin",
@@ -47,10 +49,10 @@
     "railcraft.TileCokeOvenMixin",
     "tconstruct.ExcavatorAccessor",
     "tconstruct.HammerMixin",
-    "thaumicbases.AshroomMixin",
     "tconstruct.SmelteryLogicMixin",
     "thaumcraft.TileAlchemyFurnaceMixin",
-    "thaumcraft.TileNodeMixin"
+    "thaumcraft.TileNodeMixin",
+    "thaumicbases.AshroomMixin"
   ],
   "client": [],
   "server": [],
