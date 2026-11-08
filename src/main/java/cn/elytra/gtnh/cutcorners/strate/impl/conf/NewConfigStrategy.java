@@ -219,4 +219,15 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     public boolean isNoFlyingDigPenalty() {
         return NewConfig.noFlyingDigPenalty;
     }
+
+    @Override
+    public int getQuantumTankOutputInterval(int original) {
+        int value = NewConfig.quantumTankOutputInterval;
+        return value > 0 ? value : original;
+    }
+
+    @Override
+    public int getQuantumTankOutputAmount(int original) {
+        return NewConfig.QUANTUM_TANK_OUTPUT_AMOUNT.get().apply(original);
+    }
 }

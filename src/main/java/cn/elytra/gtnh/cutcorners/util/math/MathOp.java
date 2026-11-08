@@ -11,6 +11,11 @@ public interface MathOp extends Function<BigDecimal, BigDecimal>, MathFunc {
 
     BigDecimal apply(BigDecimal left);
 
+    // factory
+    static MathOp parse(String s) {
+        return MathOpParser.parseOrThrow(s);
+    }
+
     /// Apply the value.
     ///
     /// - if the value is **[finite][Double#isFinite(double)]**, it works like [#apply(BigDecimal)].

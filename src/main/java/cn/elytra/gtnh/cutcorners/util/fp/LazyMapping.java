@@ -23,6 +23,12 @@ public class LazyMapping<T, R> implements Supplier<R> {
         return new LazyMapping<>(source, mapping);
     }
 
+    public static <T, R> LazyMapping<T, R> dynamicMapping(Supplier<T> source, Function<T, R> mapping) {
+        LazyMapping<T, R> lm = new LazyMapping<>(source, mapping);
+        lm.get(); // eagerly fetch the first value.
+        return lm;
+    }
+
     @Override
     public R get() {
         T newValue = source.get();

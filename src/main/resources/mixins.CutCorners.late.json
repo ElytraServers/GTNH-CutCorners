@@ -13,6 +13,7 @@
     "gregtech.cover.CoverArmMixin",
     "gregtech.cover.CoverConveyorMixin",
     "gregtech.cover.CoverPumpMixin",
+    "gregtech.mte.MTEDigitalTankBaseMixin",
     "gregtech.mte.MTEIndustrialApiaryMixin",
     "tconstruct.ExcavatorAccessor",
     "tconstruct.HammerMixin",

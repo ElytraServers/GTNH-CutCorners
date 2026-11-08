@@ -181,4 +181,12 @@ public interface ICutCornerStrategy {
     default boolean isNoFlyingDigPenalty() {
         return false;
     }
+
+    default int getQuantumTankOutputInterval(int original) {
+        return original;
+    }
+
+    default int getQuantumTankOutputAmount(int original) {
+        return original;
+    }
 }
