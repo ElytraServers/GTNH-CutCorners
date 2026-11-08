@@ -2,7 +2,7 @@ package cn.elytra.gtnh.cutcorners.strate.impl.conf;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
 import cn.elytra.gtnh.cutcorners.config.NewConfig;
-import cn.elytra.gtnh.cutcorners.mixins.late.gregtech.EyeOfHarmonyRecipeAccessor;
+import cn.elytra.gtnh.cutcorners.mixins.late.gregtech.pre290.EyeOfHarmonyRecipeAccessor;
 import cn.elytra.gtnh.cutcorners.mixins.late.railcraft.BlastFurnaceRecipeAccessor;
 import cn.elytra.gtnh.cutcorners.mixins.late.railcraft.CokeOvenRecipeAccessor;
 import cn.elytra.gtnh.cutcorners.strate.ICutCornerStrategy;
@@ -218,5 +218,16 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     @Override
     public boolean isNoFlyingDigPenalty() {
         return NewConfig.noFlyingDigPenalty;
+    }
+
+    @Override
+    public int getQuantumTankOutputInterval(int original) {
+        int value = NewConfig.quantumTankOutputInterval;
+        return value > 0 ? value : original;
+    }
+
+    @Override
+    public int getQuantumTankOutputAmount(int original) {
+        return NewConfig.QUANTUM_TANK_OUTPUT_AMOUNT.get().apply(original);
     }
 }

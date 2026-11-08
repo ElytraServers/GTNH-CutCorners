@@ -10,7 +10,7 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import static cn.elytra.gtnh.cutcorners.util.fp.LazyMapping.lazyMapping;
+import static cn.elytra.gtnh.cutcorners.util.fp.LazyMapping.dynamicMapping;
 
 @Config(modid = "CutCorners-1")
 public class NewConfig {
@@ -24,8 +24,8 @@ public class NewConfig {
     public static void init() {
     }
 
-    private static Supplier<MathOp> vm(Supplier<String> s) {
-        return lazyMapping(s, input -> MathOpParser.parseOrThrow(input).memoize());
+    private static Supplier<MathOp> op(Supplier<String> s) {
+        return dynamicMapping(s, input -> MathOp.parse(input).memoize());
     }
 
     @Config.Comment("whether disable the \"MOTD\" from CC")
@@ -68,7 +68,7 @@ public class NewConfig {
         "gt.recipe.largeboilerfakefuels"})
     public static String[] blacklist;
     @Config.Ignore
-    public static final Supplier<Set<String>> BLACKLIST = lazyMapping(() -> blacklist, Sets::newHashSet);
+    public static final Supplier<Set<String>> BLACKLIST = dynamicMapping(() -> blacklist, Sets::newHashSet);
 
     @Config.Comment("whether to invert the blacklist behavior")
     public static boolean whitelistMode;
@@ -89,7 +89,7 @@ public class NewConfig {
     @Config.DefaultString("=1{min=1}")
     public static String generalModification;
     @Config.Ignore
-    public static final Supplier<MathOp> GENERAL_MODIFICATION = vm(() -> generalModification);
+    public static final Supplier<MathOp> GENERAL_MODIFICATION = op(() -> generalModification);
 
     @Config.Comment("whether to set all GT recipes to LV EU-tier")
     @Config.DefaultBoolean(false)
@@ -105,7 +105,7 @@ public class NewConfig {
     @Config.DefaultString("+0{min=0.99}") // instead of =0.99, use +0{min=0.99} to allow unmodified instant breaks
     public static String blockStrengthModification;
     @Config.Ignore
-    public static final Supplier<MathOp> BLOCK_STRENGTH = vm(() -> blockStrengthModification);
+    public static final Supplier<MathOp> BLOCK_STRENGTH = op(() -> blockStrengthModification);
 
     @Config.Comment({
         "the value modification expression that applied to the block strength, when non-harvestable (tool mismatch or harvest level higher than the tool)",
@@ -114,7 +114,7 @@ public class NewConfig {
     @Config.DefaultString("*4")
     public static String blockStrengthNonHarvestModification;
     @Config.Ignore
-    public static final Supplier<MathOp> BLOCK_STRENGTH_NON_HARVEST = vm(() -> blockStrengthNonHarvestModification);
+    public static final Supplier<MathOp> BLOCK_STRENGTH_NON_HARVEST = op(() -> blockStrengthNonHarvestModification);
 
     @Config.Comment("whether all blocks are harvestable (destroy with drops) with any tools, even barehand")
     @Config.DefaultBoolean(true)
@@ -134,37 +134,37 @@ public class NewConfig {
     @Config.DefaultString("*0.5")
     public static String eyeOfHarmonyStartEuCostModification;
     @Config.Ignore
-    public static final Supplier<MathOp> EYE_OF_HARMONY_START_EU_COST = vm(() -> eyeOfHarmonyStartEuCostModification);
+    public static final Supplier<MathOp> EYE_OF_HARMONY_START_EU_COST = op(() -> eyeOfHarmonyStartEuCostModification);
 
     @Config.Comment("the value modification expression that applied to \"Fuel Burn Time\" of Large Boilers")
     @Config.DefaultString("*2")
     public static String largeBoilerFuelBurnTimeModification;
     @Config.Ignore
-    public static final Supplier<MathOp> LARGE_BOILER_FUEL_BURN_TIME = vm(() -> largeBoilerFuelBurnTimeModification);
+    public static final Supplier<MathOp> LARGE_BOILER_FUEL_BURN_TIME = op(() -> largeBoilerFuelBurnTimeModification);
 
     @Config.Comment("the value modification expression that applied to \"Amperage\" of Research Stations")
     @Config.DefaultString("~")
     public static String researchStationAmperageModification;
     @Config.Ignore
-    public static final Supplier<MathOp> RESEARCH_STATION_AMP = vm(() -> researchStationAmperageModification);
+    public static final Supplier<MathOp> RESEARCH_STATION_AMP = op(() -> researchStationAmperageModification);
 
     @Config.Comment("the value modification expression that applied to \"Min Computation\" of Research Stations")
     @Config.DefaultString("~")
     public static String researchStationMinComputationModification;
     @Config.Ignore
-    public static final Supplier<MathOp> RESEARCH_STATION_MIN_COMPUTATION = vm(() -> researchStationMinComputationModification);
+    public static final Supplier<MathOp> RESEARCH_STATION_MIN_COMPUTATION = op(() -> researchStationMinComputationModification);
 
     @Config.Comment("the value modification expression that applied to \"Success Chance\" of Water Purification Plants")
     @Config.DefaultString("+50")
     public static String waterPurificationPlantSuccessChance;
     @Config.Ignore
-    public static final Supplier<MathOp> WATER_PURIFICATION_SUCCESS_CHANCE = vm(() -> waterPurificationPlantSuccessChance);
+    public static final Supplier<MathOp> WATER_PURIFICATION_SUCCESS_CHANCE = op(() -> waterPurificationPlantSuccessChance);
 
     @Config.Comment("the value modification expression that applied to duration of Water Purification Plant")
     @Config.DefaultString("~")
     public static String waterPurificationPlantModification;
     @Config.Ignore
-    public static final Supplier<MathOp> WATER_PURIFICATION_CYCLE = vm(() -> waterPurificationPlantModification);
+    public static final Supplier<MathOp> WATER_PURIFICATION_CYCLE = op(() -> waterPurificationPlantModification);
 
     @Config.Comment("whether add effective materials of Excavators to Hammers (so that Hammers can dig gravels and sands.")
     @Config.DefaultBoolean(true)
@@ -206,12 +206,24 @@ public class NewConfig {
     public static int queenIntervalForestry;
 
     @Config.Comment({
+        "the output interval of Super & Quantum Tanks",
+        "20 by default. -1 to disable modification."})
+    @Config.DefaultInt(-1)
+    public static int quantumTankOutputInterval;
+
+    @Config.Comment("the value modification applied to the output amount of Super & Quantum Tanks")
+    @Config.DefaultString("+0{min=INT_MAX}")
+    public static String quantumTankOutputAmountModification;
+    @Config.Ignore
+    public static final Supplier<MathOp> QUANTUM_TANK_OUTPUT_AMOUNT = op(() -> quantumTankOutputAmountModification);
+
+    @Config.Comment({
         "the list of MTE-internal accelerated classes (FQCN)",
         "GENERATED, DON'T EDIT!"})
     @Config.DefaultStringList({})
     public static String[] mteAccelerationClass;
     @Config.Ignore
-    public static final Supplier<Set<Class<?>>> MTE_ACCELERATION_CLASS = lazyMapping(
+    public static final Supplier<Set<Class<?>>> MTE_ACCELERATION_CLASS = dynamicMapping(
         () -> mteAccelerationClass,
         NewConfig::nameSet2ClassSet);
 

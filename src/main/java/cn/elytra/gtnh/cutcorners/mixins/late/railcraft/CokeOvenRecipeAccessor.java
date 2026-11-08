@@ -1,5 +1,8 @@
 package cn.elytra.gtnh.cutcorners.mixins.late.railcraft;
 
+import cn.elytra.gtnh.cutcorners.util.ModConst;
+import me.fallenbreath.conditionalmixin.api.annotation.Condition;
+import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
 import mods.railcraft.common.util.crafting.CokeOvenCraftingManager;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -8,6 +11,7 @@ import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(value = CokeOvenCraftingManager.CokeOvenRecipe.class, remap = false)
+@Restriction(require = @Condition(ModConst.ModId.Railcraft))
 public interface CokeOvenRecipeAccessor {
 
     @Accessor("input")

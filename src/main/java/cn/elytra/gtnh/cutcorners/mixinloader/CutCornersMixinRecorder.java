@@ -1,5 +1,6 @@
 package cn.elytra.gtnh.cutcorners.mixinloader;
 
+import cn.elytra.gtnh.cutcorners.api.CutCornersAPI;
 import cn.elytra.gtnh.cutcorners.util.ChatHelper;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
@@ -14,6 +15,11 @@ public final class CutCornersMixinRecorder {
 
     private record NotApplied(String mixinClass, String reason) {
         private static final String CC_MIXIN_PACKAGE = "cn.elytra.gtnh.cutcorners.mixins.";
+        private static final String CC_DEV_MIXIN_PACKAGE = "cn.elytra.gtnh.cutcorners.mixins.late._DEV.";
+
+        public boolean isDevMixin() {
+            return mixinClass.startsWith(CC_DEV_MIXIN_PACKAGE);
+        }
 
         public String shortenedMixinClass() {
             return shortenedMixinClass(CC_MIXIN_PACKAGE);
@@ -65,6 +71,9 @@ public final class CutCornersMixinRecorder {
         // build messages
         List<IChatComponent> messages = new ArrayList<>();
         for (NotApplied nar : notApplied) {
+            // skip dev-only mixin warnings.
+            if (!CutCornersAPI.isDev() && nar.isDevMixin()) continue;
+
             ChatHelper.Dsl dsl = ChatHelper.translate("%s Mixin %s is not applied because %s",
                     ChatHelper.text("[CutCorners]")
                         .color(EnumChatFormatting.GOLD)

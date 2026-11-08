@@ -1,8 +1,8 @@
-package cn.elytra.gtnh.cutcorners.config;
+package cn.elytra.gtnh.cutcorners.util.math;
 
-import cn.elytra.gtnh.cutcorners.util.fp.MayThrow;
-import cn.elytra.gtnh.cutcorners.util.math.MathOp;
+import com.google.common.collect.Maps;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -11,10 +11,25 @@ import java.util.Map;
 
 @SuppressWarnings("SameParameterValue")
 @NullMarked
-public class MathOpParser {
+class MathOpParser {
 
-    public static MayThrow<MathOp> parse(String s) {
-        return MayThrow.capture(() -> parseOrThrow(s));
+    // case-insensitive tree
+    private static final Map<String, BigDecimal> MIN_MAX_LOOKUP;
+
+    static {
+        MIN_MAX_LOOKUP = Maps.newTreeMap(String.CASE_INSENSITIVE_ORDER);
+        // int
+        MIN_MAX_LOOKUP.put("int_min", new BigDecimal(Integer.MIN_VALUE));
+        MIN_MAX_LOOKUP.put("int_max", new BigDecimal(Integer.MAX_VALUE));
+        // long
+        MIN_MAX_LOOKUP.put("long_min", new BigDecimal(Long.MIN_VALUE));
+        MIN_MAX_LOOKUP.put("long_max", new BigDecimal(Long.MAX_VALUE));
+        // float
+        MIN_MAX_LOOKUP.put("float_min", new BigDecimal(Float.MIN_VALUE));
+        MIN_MAX_LOOKUP.put("float_max", new BigDecimal(Float.MAX_VALUE));
+        // double
+        MIN_MAX_LOOKUP.put("double_min", new BigDecimal(Double.MIN_VALUE));
+        MIN_MAX_LOOKUP.put("double_max", new BigDecimal(Double.MAX_VALUE));
     }
 
     public static MathOp parseOrThrow(String input) {
@@ -83,12 +98,23 @@ public class MathOpParser {
 
     private static MathOp applyAttributes(MathOp op, Map<String, String> attrs) {
         if (attrs.containsKey("min")) {
-            op = op.coerceAtLeast(new BigDecimal(attrs.get("min")));
+            op = op.coerceAtLeast(bigDecimalExtended(attrs.get("min")));
         }
         if (attrs.containsKey("max")) {
-            op = op.coerceAtMost(new BigDecimal(attrs.get("max")));
+            op = op.coerceAtMost(bigDecimalExtended(attrs.get("max")));
         }
         return op;
+    }
+
+    private static @Nullable BigDecimal lookupMinMax(String s) {
+        return MIN_MAX_LOOKUP.get(s);
+    }
+
+    private static BigDecimal bigDecimalExtended(String s) {
+        BigDecimal value = lookupMinMax(s);
+        if (value != null) return value;
+
+        return bigDecimal(s);
     }
 
     private static BigDecimal bigDecimal(String s) {

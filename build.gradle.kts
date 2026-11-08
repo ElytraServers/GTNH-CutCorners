@@ -56,3 +56,10 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
+idea {
+    module {
+        excludeDirs.add(file("run"))
+        excludeDirs.add(file("logs"))
+    }
+}
