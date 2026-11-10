@@ -1,6 +1,8 @@
 package com.github.wohaopa.GTNHModify;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
+import cn.elytra.gtnh.cutcorners.core.CutCornersCommand;
+import com.gtnewhorizon.gtnhlib.brigadier.BrigadierApi;
 import cpw.mods.fml.common.event.*;
 
 public class CommonProxy {
@@ -21,6 +23,6 @@ public class CommonProxy {
     }
 
     public void serverStarting(FMLServerStartingEvent event) {
-        event.registerServerCommand(CutCorners.getCutCornersCommand());
+        CutCornersCommand.registerCommand(BrigadierApi.getCommandDispatcher());
     }
 }
