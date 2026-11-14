@@ -82,6 +82,7 @@ public final class CutCornersCommand {
                     .color(EnumChatFormatting.WHITE);
                 // block in item form
                 try {
+                    // somehow, the method is absent in production environment.
                     ItemStack item = block.getPickBlock(null, world, bX, bY, bZ, player);
                     if (item != null) {
                         chat.text("Item Name: ")
@@ -89,7 +90,7 @@ public final class CutCornersCommand {
                             .appendTranslatable(item.getUnlocalizedName() + ".name")
                             .color(EnumChatFormatting.WHITE);
                     }
-                } catch (Exception ignored) {}
+                } catch (Exception | NoSuchMethodError /* I don't know, but this happened. */ ignored) {}
                 // block in TE perspective
                 TileEntity te = world.getTileEntity(bX, bY, bZ);
                 if (te != null) {
