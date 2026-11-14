@@ -1,5 +1,7 @@
 package cn.elytra.gtnh.cutcorners.core;
 
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import com.mojang.brigadier.Command;
@@ -20,6 +22,7 @@ import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.maps.FuelBackend;
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -47,6 +50,10 @@ public final class CutCornersCommand {
                         .then(literal("remove").then(
                                 required("cls", StringArgumentType.greedyString())
                                     .executes(wrap(CutCornersCommand::removeAccelerate))))
+                )
+                .then(
+                    literal("environment-inspect")
+                        .executes(wrap(CutCornersCommand::environmentInspect))
                 )
         );
         // @formatter:on
@@ -112,8 +119,9 @@ public final class CutCornersCommand {
                             RecipeMap<?> currentMap = workable.getRecipeMap();
                             for (RecipeMap<?> recipeMap : workable.getAvailableRecipeMaps()) {
                                 dsl.appendTranslatable(recipeMap.unlocalizedName)
-                                    .color(
-                                        recipeMap == currentMap ? EnumChatFormatting.GOLD : EnumChatFormatting.WHITE);
+                                    .color(recipeMap == currentMap ? EnumChatFormatting.GOLD : EnumChatFormatting.WHITE)
+                                    .underlined(true)
+                                    .clickEventSuggestMessage(recipeMap.unlocalizedName);
                             }
                         }
                         if (mte instanceof MTEBasicMachine || mte instanceof MTEMultiBlockBase) {
@@ -179,6 +187,23 @@ public final class CutCornersCommand {
                 chat.text(String.format("Class %s wasn't found", cls)).color(EnumChatFormatting.RED);
             }
         }
+    }
+
+    private static void environmentInspect(CommandContext<ICommandSender> c) {
+        List<String> fuelMaps = RecipeMap.ALL_RECIPE_MAPS.entrySet()
+            .stream()
+            .filter(entry -> entry.getValue().getBackend() instanceof FuelBackend)
+            .map(Map.Entry::getKey)
+            .toList();
+        // Using carriage-return symbol (⏎) as a replacement of '\n', because it's not supported by the GUI.
+        // A click-to-copy action extension to the vanilla chat is planed.
+        String fuelMapsLines = String.join("⏎", fuelMaps);
+        ChatHelper.text("Fuel Maps: ")
+            .appendText(String.join(", ", fuelMaps))
+            .color(EnumChatFormatting.GRAY)
+            .underlined(true)
+            .clickEventSuggestMessage(fuelMapsLines)
+            .sendTo(c.getSource());
     }
 
     private static Command<ICommandSender> wrap(Consumer<CommandContext<ICommandSender>> command) {

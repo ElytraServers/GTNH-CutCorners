@@ -36,6 +36,7 @@ dependencies {
     devOnlyNonPublishable(nh.newHorizonsCoreMod) { dev() }
     devOnlyNonPublishable(nh.cropsNh) { dev() }
     devOnlyNonPublishable(nh.thaumicBases) { dev() }
+    devOnlyNonPublishable(nh.vendingMachine) { dev(false) }
     runtimeOnlyNonPublishable(nh.notEnoughItems) { dev() }
     runtimeOnlyNonPublishable(nh.waila) { dev() }
     runtimeOnlyNonPublishable(nh.enderCore) { dev() }

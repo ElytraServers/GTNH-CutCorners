@@ -1,16 +1,18 @@
 package cn.elytra.gtnh.cutcorners.config;
 
-import cn.elytra.gtnh.cutcorners.util.math.MathOp;
-import com.google.common.collect.Sets;
-import com.gtnewhorizon.gtnhlib.config.Config;
-import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
-import it.unimi.dsi.fastutil.objects.ReferenceArraySet;
-import org.jetbrains.annotations.ApiStatus;
+import static cn.elytra.gtnh.cutcorners.util.fp.LazyMapping.dynamicMapping;
 
 import java.util.Set;
 import java.util.function.Supplier;
 
-import static cn.elytra.gtnh.cutcorners.util.fp.LazyMapping.dynamicMapping;
+import org.jetbrains.annotations.ApiStatus;
+
+import com.google.common.collect.Sets;
+import com.gtnewhorizon.gtnhlib.config.Config;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
+
+import cn.elytra.gtnh.cutcorners.util.math.MathOp;
+import it.unimi.dsi.fastutil.objects.ReferenceArraySet;
 
 @Config(modid = "CutCorners-1")
 public class NewConfig {
@@ -21,8 +23,7 @@ public class NewConfig {
     }
 
     @ApiStatus.Internal
-    public static void init() {
-    }
+    public static void init() {}
 
     private static Supplier<MathOp> op(Supplier<String> s) {
         return dynamicMapping(s, input -> MathOp.parse(input).memoize());
@@ -35,7 +36,7 @@ public class NewConfig {
     // special blacklist keys
     @Config.Ignore
     public static final String
-        // @formatter:off
+    // @formatter:off
         BL_FURNACE     = "@mcFurnace",
         BL_TC          = "@tc",
         BL_BOT         = "@bot",
@@ -62,10 +63,28 @@ public class NewConfig {
         "\"@gtWPP\"     - Water Purification P. recipes in GT",
         "\"@gt*\"       - Wildcard recipes in GT",
         "",
-        "NOTE: @gt* works for all modifications under getMaxProgressTime"})
+        "NOTE: @gt* works for all modifications under getMaxProgressTime" })
     @Config.DefaultStringList({
+        "gt.recipe.largeboilerfakefuels",
+        // Recipe Maps under FuelBackends
+        "gt.recipe.extrahugenaquadahreactor",
+        "gt.recipe.plasmageneratorfuels",
+        "gt.recipe.largenaquadahreactor",
+        "gt.recipe.gasturbinefuel",
         "gg.recipe.naquadah_reactor",
-        "gt.recipe.largeboilerfakefuels"})
+        "gt.recipe.thermalgeneratorfuel",
+        "gg.recipe.extreme_heat_exchanger",
+        "gt.recipe.semifluidgeneratorfuels",
+        "gt.recipe.magicfuels",
+        "gt.recipe.RTGgenerators",
+        "gt.recipe.extremedieselgeneratorfuel",
+        "gt.recipe.fluidnaquadahreactor",
+        "gt.recipe.smallnaquadahreactor",
+        "gt.recipe.semifluidboilerfuels",
+        "gt.recipe.rocketenginefuel",
+        "gt.recipe.dieselgeneratorfuel",
+        "bw.fuels.acidgens",
+        "gt.recipe.hugenaquadahreactor", })
     public static String[] blacklist;
     @Config.Ignore
     public static final Supplier<Set<String>> BLACKLIST = dynamicMapping(() -> blacklist, Sets::newHashSet);
@@ -85,7 +104,7 @@ public class NewConfig {
         "It starts with '{' and ends with '}'. Entries are comma (,) separated. Key-value paired by equals (=).",
         "Like \"{min=114, max=514}\".",
         "min=<value> - the minimum value",
-        "max=<value> - the maximum value"})
+        "max=<value> - the maximum value" })
     @Config.DefaultString("=1{min=1}")
     public static String generalModification;
     @Config.Ignore
@@ -101,7 +120,7 @@ public class NewConfig {
 
     @Config.Comment({
         "the value modification expression that applied to the block strength when harvestable (tool matches or no tool required)",
-        "if the value is >= 1.0F, block is broken instantly."})
+        "if the value is >= 1.0F, block is broken instantly." })
     @Config.DefaultString("+0{min=0.99}") // instead of =0.99, use +0{min=0.99} to allow unmodified instant breaks
     public static String blockStrengthModification;
     @Config.Ignore
@@ -110,7 +129,7 @@ public class NewConfig {
     @Config.Comment({
         "the value modification expression that applied to the block strength, when non-harvestable (tool mismatch or harvest level higher than the tool)",
         "by default, it's about 3.33x (or 100 / 30, to be precise) slower comparing to the harvestable situation, ignoring the benefits from tools.",
-        "if the value is >= 1.0F, block is broken instantly."})
+        "if the value is >= 1.0F, block is broken instantly." })
     @Config.DefaultString("*4")
     public static String blockStrengthNonHarvestModification;
     @Config.Ignore
@@ -122,7 +141,7 @@ public class NewConfig {
 
     @Config.Comment({
         "whether all blocks are breakable, even unbreakable blocks like Bedrock",
-        "this is different from \"harvestable\", where harvestable controls if the block will drop an item (or if you're using the right tool), while breakable controls if you have any chance to break it."})
+        "this is different from \"harvestable\", where harvestable controls if the block will drop an item (or if you're using the right tool), while breakable controls if you have any chance to break it." })
     @Config.DefaultBoolean(false)
     public static boolean allBreakable;
 
@@ -152,13 +171,15 @@ public class NewConfig {
     @Config.DefaultString("~")
     public static String researchStationMinComputationModification;
     @Config.Ignore
-    public static final Supplier<MathOp> RESEARCH_STATION_MIN_COMPUTATION = op(() -> researchStationMinComputationModification);
+    public static final Supplier<MathOp> RESEARCH_STATION_MIN_COMPUTATION = op(
+        () -> researchStationMinComputationModification);
 
     @Config.Comment("the value modification expression that applied to \"Success Chance\" of Water Purification Plants")
     @Config.DefaultString("+50")
     public static String waterPurificationPlantSuccessChance;
     @Config.Ignore
-    public static final Supplier<MathOp> WATER_PURIFICATION_SUCCESS_CHANCE = op(() -> waterPurificationPlantSuccessChance);
+    public static final Supplier<MathOp> WATER_PURIFICATION_SUCCESS_CHANCE = op(
+        () -> waterPurificationPlantSuccessChance);
 
     @Config.Comment("the value modification expression that applied to duration of Water Purification Plant")
     @Config.DefaultString("~")
@@ -189,25 +210,19 @@ public class NewConfig {
     @Config.Comment({
         "the multiplier of the growth progress",
         "the value is replacing \"Growth rate multiplier\" in CropsNH configuration. the range isn't capped.",
-        "the value should be positive."})
+        "the value should be positive." })
     @Config.DefaultFloat(10.0F)
     public static float growthMultiplierCropsNH;
 
-    @Config.Comment({
-        "the tick rate of growth for Crop Sticks in CropsNH",
-        "the value should be positive"})
+    @Config.Comment({ "the tick rate of growth for Crop Sticks in CropsNH", "the value should be positive" })
     @Config.DefaultInt(1)
     public static int tickRateCropsNH;
 
-    @Config.Comment({
-        "the interval ticks of queen working",
-        "the value should be positive"})
+    @Config.Comment({ "the interval ticks of queen working", "the value should be positive" })
     @Config.DefaultInt(1)
     public static int queenIntervalForestry;
 
-    @Config.Comment({
-        "the output interval of Super & Quantum Tanks",
-        "20 by default. -1 to disable modification."})
+    @Config.Comment({ "the output interval of Super & Quantum Tanks", "20 by default. -1 to disable modification." })
     @Config.DefaultInt(-1)
     public static int quantumTankOutputInterval;
 
@@ -233,23 +248,24 @@ public class NewConfig {
     @Config.DefaultString("+0{min=INT_MAX}")
     public static String enderIoItemConduitMaxExtractAmountModification;
     @Config.Ignore
-    public static final Supplier<MathOp> ITEM_CONDUIT_MAX_EXTRACT = op(() -> enderIoItemConduitMaxExtractAmountModification);
+    public static final Supplier<MathOp> ITEM_CONDUIT_MAX_EXTRACT = op(
+        () -> enderIoItemConduitMaxExtractAmountModification);
 
     @Config.Comment("the value modification applied to the max extract amount of Liquid (Fluid) Conduit from Ender IO")
     @Config.DefaultString("+0{min=INT_MAX}")
     public static String enderIoLiquidConduitMaxExtractAmountModification;
     @Config.Ignore
-    public static final Supplier<MathOp> LIQUID_CONDUIT_MAX_EXTRACT = op(() -> enderIoLiquidConduitMaxExtractAmountModification);
+    public static final Supplier<MathOp> LIQUID_CONDUIT_MAX_EXTRACT = op(
+        () -> enderIoLiquidConduitMaxExtractAmountModification);
 
     @Config.Comment("the value modification applied to the max insert amount of Liquid (Fluid) Conduit from Ender IO")
     @Config.DefaultString("+0{min=INT_MAX}")
     public static String enderIoLiquidConduitMaxInsertAmountModification;
     @Config.Ignore
-    public static final Supplier<MathOp> LIQUID_CONDUIT_MAX_INSERT = op(() -> enderIoLiquidConduitMaxInsertAmountModification);
+    public static final Supplier<MathOp> LIQUID_CONDUIT_MAX_INSERT = op(
+        () -> enderIoLiquidConduitMaxInsertAmountModification);
 
-    @Config.Comment({
-        "the list of MTE-internal accelerated classes (FQCN)",
-        "GENERATED, DON'T EDIT!"})
+    @Config.Comment({ "the list of MTE-internal accelerated classes (FQCN)", "GENERATED, DON'T EDIT!" })
     @Config.DefaultStringList({})
     public static String[] mteAccelerationClass;
     @Config.Ignore
@@ -262,8 +278,7 @@ public class NewConfig {
         for (String name : names) {
             try {
                 set.add(Class.forName(name));
-            } catch (ClassNotFoundException ignore) {
-            }
+            } catch (ClassNotFoundException ignore) {}
         }
         return set;
     }
