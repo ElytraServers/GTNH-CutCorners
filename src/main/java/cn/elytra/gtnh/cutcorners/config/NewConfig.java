@@ -273,6 +273,10 @@ public class NewConfig {
     @Config.DefaultBoolean(true)
     public static boolean galacticraftFuelLoaderImmediateCharge;
 
+    @Config.Comment("whether to disable Research Completer from consuming the capacity of the vis node")
+    @Config.DefaultBoolean(false)
+    public static boolean disableResearchCompleterConsumingNodeCapacity;
+
     @Config.Comment({ "the list of MTE-internal accelerated classes (FQCN)", "GENERATED, DON'T EDIT!" })
     @Config.DefaultStringList({})
     public static String[] mteAccelerationClass;

@@ -24,6 +24,7 @@
     "gregtech.misc.BaseMetaTileEntityAccessor",
     "gregtech.mte.MTEDigitalTankBaseMixin",
     "gregtech.mte.MTEIndustrialApiaryMixin",
+    "gregtech.mte.MTEResearchCompleterMixin",
     "gregtech.pre290.BaseItemTickableMixin",
     "gregtech.pre290.EyeOfHarmonyRecipeAccessor",
     "gregtech.pre290.FurnaceBackendMixin",
