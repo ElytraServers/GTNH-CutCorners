@@ -265,6 +265,14 @@ public class NewConfig {
     public static final Supplier<MathOp> LIQUID_CONDUIT_MAX_INSERT = op(
         () -> enderIoLiquidConduitMaxInsertAmountModification);
 
+    @Config.Comment("whether to charge the oxygen to the oxygen container immediately in Oxygen Compressor from Galacticraft")
+    @Config.DefaultBoolean(true)
+    public static boolean galacticraftOxygenCompressorImmediateCharge;
+
+    @Config.Comment("whether to charge the fuel to the rocket (or launch pad) immediately in Fuel Loader from Galacticraft")
+    @Config.DefaultBoolean(true)
+    public static boolean galacticraftFuelLoaderImmediateCharge;
+
     @Config.Comment({ "the list of MTE-internal accelerated classes (FQCN)", "GENERATED, DON'T EDIT!" })
     @Config.DefaultStringList({})
     public static String[] mteAccelerationClass;

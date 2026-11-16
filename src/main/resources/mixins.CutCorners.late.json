@@ -16,6 +16,8 @@
     "enderio.ItemConduitMixin",
     "et_futurum_requiem.BlastFurnaceAndSmoker_Mixin",
     "forestry.BeekeepingLogicMixin",
+    "galacticraft.TEFuelLoaderMixin",
+    "galacticraft.TEOxygenCompressorMixin",
     "gregtech.cover.CoverArmMixin",
     "gregtech.cover.CoverConveyorMixin",
     "gregtech.cover.CoverPumpMixin",
