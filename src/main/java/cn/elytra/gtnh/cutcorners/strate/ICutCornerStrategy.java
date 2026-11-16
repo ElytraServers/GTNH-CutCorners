@@ -210,4 +210,8 @@ public interface ICutCornerStrategy {
     default int getGalacticraftFuelLoaderRate(int original) {
         return original;
     }
+
+    default boolean isDisableResearchCompleterConsumingNodeCapacity() {
+        return false;
+    }
 }

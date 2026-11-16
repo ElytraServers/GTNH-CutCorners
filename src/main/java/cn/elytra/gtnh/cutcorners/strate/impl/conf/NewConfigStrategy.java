@@ -260,4 +260,9 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     public int getGalacticraftFuelLoaderRate(int original) {
         return NewConfig.galacticraftFuelLoaderImmediateCharge ? Integer.MAX_VALUE : original;
     }
+
+    @Override
+    public boolean isDisableResearchCompleterConsumingNodeCapacity() {
+        return NewConfig.disableResearchCompleterConsumingNodeCapacity;
+    }
 }
