@@ -1,13 +1,13 @@
 package cn.elytra.gtnh.cutcorners.util;
 
 public final class ModConst {
-    private ModConst() {
-    }
+
+    private ModConst() {}
 
     @SuppressWarnings("SpellCheckingInspection")
     public static final class ModId {
-        private ModId() {
-        }
+
+        private ModId() {}
 
         public static final String GregTech = "gregtech";
         public static final String CropsNH = "cropsnh";
@@ -20,6 +20,7 @@ public final class ModConst {
         public static final String Railcraft = "Railcraft";
         public static final String Thaumcraft = "Thaumcraft";
         public static final String EnderIO = "EnderIO";
+        public static final String Galacticraft = "GalacticraftCore";
     }
 
 }
