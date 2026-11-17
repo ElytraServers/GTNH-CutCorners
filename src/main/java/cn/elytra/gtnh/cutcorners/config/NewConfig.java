@@ -1,6 +1,7 @@
 package cn.elytra.gtnh.cutcorners.config;
 
 import static cn.elytra.gtnh.cutcorners.util.fp.LazyMapping.dynamicMapping;
+import static cn.elytra.gtnh.cutcorners.util.fp.LazyMapping.lazyMapping;
 
 import java.util.Set;
 import java.util.function.Supplier;
@@ -281,7 +282,7 @@ public class NewConfig {
     @Config.DefaultStringList({})
     public static String[] mteAccelerationClass;
     @Config.Ignore
-    public static final Supplier<Set<Class<?>>> MTE_ACCELERATION_CLASS = dynamicMapping(
+    public static final Supplier<Set<Class<?>>> MTE_ACCELERATION_CLASS = lazyMapping(
         () -> mteAccelerationClass,
         NewConfig::nameSet2ClassSet);
 
