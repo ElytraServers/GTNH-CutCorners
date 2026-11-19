@@ -9,14 +9,18 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(value = ForgeHooks.class, remap = false)
 public class ForgeHooksMixin {
 
-    @ModifyReturnValue(method = "blockStrength", at = @At("RETURN"))
-    private static float cc$blockStrength(float original) {
-        return CutCorners.getStrategy().getBlockStrength(original);
+    @ModifyReturnValue(method = "blockStrength", at = @At(value = "RETURN", ordinal = 1))
+    private static float cc$blockStrengthNonHarvest(float original) {
+        // this is used when the tool mismatches.
+        // normally expected a slower results.
+        return CutCorners.getStrategy().getBlockStrength(original, false);
     }
 
-    @ModifyReturnValue(method = "canHarvestBlock", at = @At("RETURN"))
-    private static boolean cc$canHarvestBlock(boolean original) {
-        return CutCorners.getStrategy().canHarvestBlock(original);
+    @ModifyReturnValue(method = "blockStrength", at = @At(value = "RETURN", ordinal = 2))
+    private static float cc$blockStrengthHarvest(float original) {
+        // this is used when the tool matches, or doesn't require tools.
+        // should be faster.
+        return CutCorners.getStrategy().getBlockStrength(original, true);
     }
 
 }

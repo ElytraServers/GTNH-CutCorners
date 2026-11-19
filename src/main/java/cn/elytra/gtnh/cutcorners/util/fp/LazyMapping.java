@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 /// [LazyMapping] transforms the [given input][source] to output type by [mapping] realtime.
 public class LazyMapping<T, R> implements Supplier<R> {
+
     private static final Object UNDEFINED = new Object();
 
     private final Supplier<T> source;
@@ -21,6 +22,12 @@ public class LazyMapping<T, R> implements Supplier<R> {
 
     public static <T, R> LazyMapping<T, R> lazyMapping(Supplier<T> source, Function<T, R> mapping) {
         return new LazyMapping<>(source, mapping);
+    }
+
+    public static <T, R> LazyMapping<T, R> dynamicMapping(Supplier<T> source, Function<T, R> mapping) {
+        LazyMapping<T, R> lm = new LazyMapping<>(source, mapping);
+        lm.get(); // eagerly fetch the first value.
+        return lm;
     }
 
     @Override

@@ -7,11 +7,9 @@ import cn.elytra.gtnh.cutcorners.strate.ICutCornerStrategy;
 import com.github.wohaopa.GTNHModify.GTNHModifyMod;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
-import net.minecraft.command.ICommand;
 import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -89,10 +87,5 @@ public class CutCorners {
         } else {
             LOG.info("CutCorners is the last to be loaded, everything should be fine.");
         }
-    }
-
-    @ApiStatus.Internal
-    public static ICommand getCutCornersCommand() {
-        return CutCornersCommand.INSTANCE;
     }
 }

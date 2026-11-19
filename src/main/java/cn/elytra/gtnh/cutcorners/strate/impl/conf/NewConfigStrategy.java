@@ -1,8 +1,13 @@
 package cn.elytra.gtnh.cutcorners.strate.impl.conf;
 
+import java.util.HashMap;
+import java.util.List;
+
+import org.jetbrains.annotations.Nullable;
+
 import cn.elytra.gtnh.cutcorners.CutCorners;
 import cn.elytra.gtnh.cutcorners.config.NewConfig;
-import cn.elytra.gtnh.cutcorners.mixins.late.gregtech.EyeOfHarmonyRecipeAccessor;
+import cn.elytra.gtnh.cutcorners.mixins.late.gregtech.pre290.EyeOfHarmonyRecipeAccessor;
 import cn.elytra.gtnh.cutcorners.mixins.late.railcraft.BlastFurnaceRecipeAccessor;
 import cn.elytra.gtnh.cutcorners.mixins.late.railcraft.CokeOvenRecipeAccessor;
 import cn.elytra.gtnh.cutcorners.strate.ICutCornerStrategy;
@@ -12,16 +17,11 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
-import org.jetbrains.annotations.Nullable;
 import tectech.recipe.EyeOfHarmonyRecipe;
-
-import java.util.HashMap;
-import java.util.List;
 
 public class NewConfigStrategy implements ICutCornerStrategy {
 
-    public NewConfigStrategy() {
-    }
+    public NewConfigStrategy() {}
 
     @Override
     public boolean isImmediateMode() {
@@ -72,7 +72,8 @@ public class NewConfigStrategy implements ICutCornerStrategy {
 
         for (EyeOfHarmonyRecipe recipe : recipeMap.values()) {
             var recipeAcc = (EyeOfHarmonyRecipeAccessor) recipe;
-            recipeAcc.set_miningTimeSeconds(NewConfig.GENERAL_MODIFICATION.get().apply(recipeAcc.get_miningTimeSeconds()));
+            recipeAcc
+                .set_miningTimeSeconds(NewConfig.GENERAL_MODIFICATION.get().apply(recipeAcc.get_miningTimeSeconds()));
             recipeAcc.set_euStartCost(NewConfig.EYE_OF_HARMONY_START_EU_COST.get().apply(recipeAcc.get_euStartCost()));
         }
     }
@@ -95,8 +96,7 @@ public class NewConfigStrategy implements ICutCornerStrategy {
             recipe.mDuration = NewConfig.GENERAL_MODIFICATION.get().apply(recipe.mDuration);
             recipe.mSpecialValue = ResearchStationHelper.getSpecialValueAtAmp(
                 recipe.mSpecialValue,
-                NewConfig.RESEARCH_STATION_AMP.get()
-                    .apply(ResearchStationHelper.getAmp(recipe.mSpecialValue)));
+                NewConfig.RESEARCH_STATION_AMP.get().apply(ResearchStationHelper.getAmp(recipe.mSpecialValue)));
             recipe.mSpecialValue = ResearchStationHelper.getSpecialValueAtMinComputation(
                 recipe.mSpecialValue,
                 NewConfig.RESEARCH_STATION_MIN_COMPUTATION.get()
@@ -106,8 +106,7 @@ public class NewConfigStrategy implements ICutCornerStrategy {
 
     @Override
     public int getMaxFurnaceSmeltingTime(int original) {
-        return NewConfig.BLACKLIST.get().contains(NewConfig.BL_FURNACE)
-            ? original
+        return NewConfig.BLACKLIST.get().contains(NewConfig.BL_FURNACE) ? original
             : NewConfig.GENERAL_MODIFICATION.get().apply(original);
     }
 
@@ -121,29 +120,25 @@ public class NewConfigStrategy implements ICutCornerStrategy {
 
     @Override
     public int getMaxProgressTime(Object instance, int original) {
-        return NewConfig.BLACKLIST.get().contains(NewConfig.BL_GT_WILDCARD)
-            ? original
+        return NewConfig.BLACKLIST.get().contains(NewConfig.BL_GT_WILDCARD) ? original
             : NewConfig.GENERAL_MODIFICATION.get().apply(original);
     }
 
     @Override
     public int getBotaniaSpreaderPingbackTicks(int original) {
-        return NewConfig.BLACKLIST.get().contains(NewConfig.BL_BOT)
-            ? original
+        return NewConfig.BLACKLIST.get().contains(NewConfig.BL_BOT) ? original
             : NewConfig.GENERAL_MODIFICATION.get().apply(original);
     }
 
     @Override
     public int getThaumcraftFurnaceSmeltingTime(int original) {
-        return NewConfig.BLACKLIST.get().contains(NewConfig.BL_TC)
-            ? original
+        return NewConfig.BLACKLIST.get().contains(NewConfig.BL_TC) ? original
             : NewConfig.GENERAL_MODIFICATION.get().apply(original);
     }
 
     @Override
     public int getThaumcraftNodeRegenerationTime(int original) {
-        return NewConfig.BLACKLIST.get().contains(NewConfig.BL_TC)
-            ? original
+        return NewConfig.BLACKLIST.get().contains(NewConfig.BL_TC) ? original
             : NewConfig.GENERAL_MODIFICATION.get().apply(original);
     }
 
@@ -182,10 +177,14 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     }
 
     @Override
-    public float getBlockStrength(float original) {
+    public float getBlockStrength(float original, boolean harvested) {
         // prevent from breaking bedrocks.
         if (!NewConfig.allBreakable && original <= 0.0F) return original;
-        return NewConfig.BLOCK_STRENGTH.get().safeApply(original);
+        if (harvested) {
+            return NewConfig.BLOCK_STRENGTH.get().safeApply(original);
+        } else {
+            return NewConfig.BLOCK_STRENGTH_NON_HARVEST.get().safeApply(original);
+        }
     }
 
     @Override
@@ -215,5 +214,61 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     public int getForestryQueenInterval(int original) {
         int value = NewConfig.queenIntervalForestry;
         return value > 0 ? value : original;
+    }
+
+    @Override
+    public boolean isNoFlyingDigPenalty() {
+        return NewConfig.noFlyingDigPenalty;
+    }
+
+    @Override
+    public int getQuantumTankOutputInterval(int original) {
+        int value = NewConfig.quantumTankOutputInterval;
+        return value > 0 ? value : original;
+    }
+
+    @Override
+    public int getQuantumTankOutputAmount(int original) {
+        return NewConfig.QUANTUM_TANK_OUTPUT_AMOUNT.get().apply(original);
+    }
+
+    @Override
+    public int getAshroomAspectOrbValue(int original) {
+        return NewConfig.ASHROOM_ASPECT_ORB.get().apply(original);
+    }
+
+    @Override
+    public int getAshroomDropCount(int original) {
+        return NewConfig.ASHROOM_DROP_COUNT.get().apply(original);
+    }
+
+    @Override
+    public int getEnderIoItemConduitMaxExtractAmount(int original) {
+        return NewConfig.ITEM_CONDUIT_MAX_EXTRACT.get().apply(original);
+    }
+
+    @Override
+    public int getEnderIoLiquidConduitMaxExtractAmount(int original) {
+        return NewConfig.LIQUID_CONDUIT_MAX_EXTRACT.get().apply(original);
+    }
+
+    @Override
+    public int getEnderIoLiquidConduitMaxInsertAmount(int original) {
+        return NewConfig.LIQUID_CONDUIT_MAX_INSERT.get().apply(original);
+    }
+
+    @Override
+    public int getGalacticraftOxygenCompressorChargeRate(int original) {
+        return NewConfig.galacticraftOxygenCompressorImmediateCharge ? Integer.MAX_VALUE : original;
+    }
+
+    @Override
+    public int getGalacticraftFuelLoaderRate(int original) {
+        return NewConfig.galacticraftFuelLoaderImmediateCharge ? Integer.MAX_VALUE : original;
+    }
+
+    @Override
+    public boolean isDisableResearchCompleterConsumingNodeCapacity() {
+        return NewConfig.disableResearchCompleterConsumingNodeCapacity;
     }
 }

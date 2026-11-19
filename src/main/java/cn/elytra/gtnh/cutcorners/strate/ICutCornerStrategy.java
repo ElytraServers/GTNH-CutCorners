@@ -1,15 +1,16 @@
 package cn.elytra.gtnh.cutcorners.strate;
 
+import java.util.HashMap;
+import java.util.List;
+
+import org.jetbrains.annotations.Nullable;
+
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import mods.railcraft.api.crafting.IBlastFurnaceRecipe;
 import mods.railcraft.api.crafting.ICokeOvenRecipe;
 import net.minecraft.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
 import tectech.recipe.EyeOfHarmonyRecipe;
-
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * The strategy of how to work with modifications.
@@ -35,17 +36,14 @@ public interface ICutCornerStrategy {
      * Modify the {@link GTRecipe} in the recipe map.
      * It should be invoked when the recipe is added to the recipe map.
      */
-    default void updateGTRecipe(GTRecipe recipe, @Nullable RecipeMap<?> recipeMap) {
-    }
+    default void updateGTRecipe(GTRecipe recipe, @Nullable RecipeMap<?> recipeMap) {}
 
     /**
      * Modify the {@link GTRecipe.RecipeAssemblyLine} list.
      */
-    default void updateAssemblyLineRecipeList(List<GTRecipe.RecipeAssemblyLine> recipes) {
-    }
+    default void updateAssemblyLineRecipeList(List<GTRecipe.RecipeAssemblyLine> recipes) {}
 
-    default void updateEOHRecipeMap(HashMap<String, EyeOfHarmonyRecipe> recipeMap) {
-    }
+    default void updateEOHRecipeMap(HashMap<String, EyeOfHarmonyRecipe> recipeMap) {}
 
     /**
      * Return the burn time of fuels in Large Boilers.
@@ -58,16 +56,14 @@ public interface ICutCornerStrategy {
     /**
      * Modify the {@link GTRecipe Research Station Recipe} map.
      */
-    default void updateResearchStationRecipeMap(RecipeMap<?> recipeMap) {
-    }
+    default void updateResearchStationRecipeMap(RecipeMap<?> recipeMap) {}
 
     /**
      * Modify the {@link GTRecipe Research Station GT_Recipe}.
      * It should be invoked once per recipe on game load completion.
      */
     @Deprecated
-    default void updateResearchStationRecipe(GTRecipe recipe) {
-    }
+    default void updateResearchStationRecipe(GTRecipe recipe) {}
 
     /**
      * Modify the input and output of furnace recipes.
@@ -79,8 +75,7 @@ public interface ICutCornerStrategy {
      * @param stackIn  the input itemstack
      * @param stackOut the output itemstack
      */
-    default void updateFurnaceRecipe_size(ItemStack stackIn, ItemStack stackOut) {
-    }
+    default void updateFurnaceRecipe_size(ItemStack stackIn, ItemStack stackOut) {}
 
     /**
      * Return the max smelting time (working value) of furnaces.
@@ -137,15 +132,13 @@ public interface ICutCornerStrategy {
      * Modify the {@link ICokeOvenRecipe}.
      * It should be invoked once per recipe on game load completion.
      */
-    default void updateRailcraftCokeOvenRecipe(ICokeOvenRecipe recipe) {
-    }
+    default void updateRailcraftCokeOvenRecipe(ICokeOvenRecipe recipe) {}
 
     /**
      * Modify the {@link IBlastFurnaceRecipe}.
      * It should be invoked once per recipe on game load completion.
      */
-    default void updateRailcraftBlastFurnaceRecipe(IBlastFurnaceRecipe recipe) {
-    }
+    default void updateRailcraftBlastFurnaceRecipe(IBlastFurnaceRecipe recipe) {}
 
     /**
      * Return the max cycle time of the water purification plant.
@@ -158,7 +151,7 @@ public interface ICutCornerStrategy {
         return original;
     }
 
-    default float getBlockStrength(float original) {
+    default float getBlockStrength(float original, boolean harvested) {
         return original;
     }
 
@@ -188,5 +181,49 @@ public interface ICutCornerStrategy {
 
     default int getForestryQueenInterval(int original) {
         return original;
+    }
+
+    default boolean isNoFlyingDigPenalty() {
+        return false;
+    }
+
+    default int getQuantumTankOutputInterval(int original) {
+        return original;
+    }
+
+    default int getQuantumTankOutputAmount(int original) {
+        return original;
+    }
+
+    default int getAshroomAspectOrbValue(int original) {
+        return original;
+    }
+
+    default int getAshroomDropCount(int original) {
+        return original;
+    }
+
+    default int getEnderIoItemConduitMaxExtractAmount(int original) {
+        return original;
+    }
+
+    default int getEnderIoLiquidConduitMaxExtractAmount(int original) {
+        return original;
+    }
+
+    default int getEnderIoLiquidConduitMaxInsertAmount(int original) {
+        return original;
+    }
+
+    default int getGalacticraftOxygenCompressorChargeRate(int original) {
+        return original;
+    }
+
+    default int getGalacticraftFuelLoaderRate(int original) {
+        return original;
+    }
+
+    default boolean isDisableResearchCompleterConsumingNodeCapacity() {
+        return false;
     }
 }

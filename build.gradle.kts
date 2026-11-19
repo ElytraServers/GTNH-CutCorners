@@ -35,6 +35,8 @@ dependencies {
     devOnlyNonPublishable(nh.tinkersConstruct) { dev() }
     devOnlyNonPublishable(nh.newHorizonsCoreMod) { dev() }
     devOnlyNonPublishable(nh.cropsNh) { dev() }
+    devOnlyNonPublishable(nh.thaumicBases) { dev() }
+    devOnlyNonPublishable(nh.vendingMachine) { dev(false) }
     runtimeOnlyNonPublishable(nh.notEnoughItems) { dev() }
     runtimeOnlyNonPublishable(nh.waila) { dev() }
     runtimeOnlyNonPublishable(nh.enderCore) { dev() }
@@ -54,4 +56,11 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+idea {
+    module {
+        excludeDirs.add(file("run"))
+        excludeDirs.add(file("logs"))
+    }
 }
