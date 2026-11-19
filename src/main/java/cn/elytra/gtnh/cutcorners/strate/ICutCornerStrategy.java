@@ -169,7 +169,8 @@ public interface ICutCornerStrategy {
 
     /**
      * Return the growth multiplier of Industrial Farms in CropsNH.
-     * Delegates to {@link #getCropsNHMultiplier(float)} by default for backward compatibility.
+     * <p>
+     * Fallback to {@link #getCropsNHMultiplier(float)} unless overridden.
      */
     default float getCropsNHIndustrialFarmMultiplier(float original) {
         return getCropsNHMultiplier(original);
