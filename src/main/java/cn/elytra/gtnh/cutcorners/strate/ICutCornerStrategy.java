@@ -159,8 +159,21 @@ public interface ICutCornerStrategy {
         return original;
     }
 
+    /**
+     * Return the growth multiplier of Crop Sticks in CropsNH.
+     * Industrial Farms use {@link #getCropsNHIndustrialFarmMultiplier(float)} instead.
+     */
     default float getCropsNHMultiplier(float original) {
         return original;
+    }
+
+    /**
+     * Return the growth multiplier of Industrial Farms in CropsNH.
+     * <p>
+     * Fallback to {@link #getCropsNHMultiplier(float)} unless overridden.
+     */
+    default float getCropsNHIndustrialFarmMultiplier(float original) {
+        return getCropsNHMultiplier(original);
     }
 
     default int getCropsNHStickTickRate(int original) {
