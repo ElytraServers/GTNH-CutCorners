@@ -18,6 +18,7 @@
     "forestry.BeekeepingLogicMixin",
     "galacticraft.TEFuelLoaderMixin",
     "galacticraft.TEOxygenCompressorMixin",
+    "gregtech.bugfix.MTENanochipAssemblyModuleBaseMixin",
     "gregtech.cover.CoverArmMixin",
     "gregtech.cover.CoverConveyorMixin",
     "gregtech.cover.CoverPumpMixin",
