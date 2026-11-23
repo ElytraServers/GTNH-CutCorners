@@ -34,6 +34,16 @@ public class NewConfig {
     private static final Logger LOG = LogManager.getLogger();
 
     /// the reload id for general fields.
+    ///
+    /// Use `@Reloadable(RELOADABLE)` to mark something reloadable.
+    ///
+    /// Reloadable fields should be change-aware, which means it should take effect after changing.
+    /// Something like startup recipe value updater won't work, so they're NOT reloadable.
+    ///
+    /// By default, the configuration file is monitored, and if it changes, the fields are updated a.s.a.p.
+    /// See [#loadAndWatch()] for details.
+    ///
+    /// @see #reload()
     @Config.Ignore
     public static final String RELOADABLE = "default";
 
@@ -41,12 +51,14 @@ public class NewConfig {
         loadAndWatch();
     }
 
+    /// Load the [NewConfig] class.
     @ApiStatus.Internal
     public static void init() {}
 
     private static void loadAndWatch() {
         ConfigurationManager.registerConfig(NewConfig.class);
         // watching the configuration
+        // get the configuration file by retrieve the Configuration instance.
         Configuration config = ConfigurationManager.getConfig(NewConfig.class);
         File configFile = config.getConfigFile();
         if (configFile == null) {
@@ -99,6 +111,7 @@ public class NewConfig {
 
     @Config.Comment("whether disable the \"MOTD\" from CC")
     @Config.DefaultBoolean(false)
+    @Config.Reloadable(RELOADABLE)
     public static boolean noAboardMessage;
 
     // special blacklist keys
@@ -196,6 +209,7 @@ public class NewConfig {
         "if the value is >= 1.0F, block is broken instantly." })
     @Config.DefaultString("+0{min=0.99}") // instead of =0.99, use +0{min=0.99} to allow unmodified instant breaks
     @Config.Reloadable(RELOADABLE)
+    @Config.Sync // should be sync-ed to prevent from weird behavior
     public static String blockStrengthModification;
     @Config.Ignore
     public static final Supplier<MathOp> BLOCK_STRENGTH = op(() -> blockStrengthModification);
@@ -205,44 +219,56 @@ public class NewConfig {
         "by default, it's about 3.33x (or 100 / 30, to be precise) slower comparing to the harvestable situation, ignoring the benefits from tools.",
         "if the value is >= 1.0F, block is broken instantly." })
     @Config.DefaultString("*4")
+    @Config.Reloadable(RELOADABLE)
+    @Config.Sync // same as above
     public static String blockStrengthNonHarvestModification;
     @Config.Ignore
     public static final Supplier<MathOp> BLOCK_STRENGTH_NON_HARVEST = op(() -> blockStrengthNonHarvestModification);
 
     @Config.Comment("whether all blocks are harvestable (destroy with drops) with any tools, even barehand")
     @Config.DefaultBoolean(true)
+    @Config.Reloadable(RELOADABLE)
+    @Config.Sync
     public static boolean allHarvestable;
 
     @Config.Comment({
         "whether all blocks are breakable, even unbreakable blocks like Bedrock",
         "this is different from \"harvestable\", where harvestable controls if the block will drop an item (or if you're using the right tool), while breakable controls if you have any chance to break it." })
     @Config.DefaultBoolean(false)
+    @Config.Reloadable(RELOADABLE)
+    @Config.Sync
     public static boolean allBreakable;
 
     @Config.Comment("whether to cancel the digging speed penalty when not on ground. (which is 5x slower than on ground)")
     @Config.DefaultBoolean(true)
+    @Config.Reloadable(RELOADABLE)
+    @Config.Sync
     public static boolean noFlyingDigPenalty;
 
     @Config.Comment("the value modification expression that applied to the \"Start EU Cost\" of Eye of Harmony-s")
     @Config.DefaultString("*0.5")
+    // not reloadable: a startup recipe modification
     public static String eyeOfHarmonyStartEuCostModification;
     @Config.Ignore
     public static final Supplier<MathOp> EYE_OF_HARMONY_START_EU_COST = op(() -> eyeOfHarmonyStartEuCostModification);
 
     @Config.Comment("the value modification expression that applied to \"Fuel Burn Time\" of Large Boilers")
     @Config.DefaultString("*2")
+    @Config.Reloadable(RELOADABLE)
     public static String largeBoilerFuelBurnTimeModification;
     @Config.Ignore
     public static final Supplier<MathOp> LARGE_BOILER_FUEL_BURN_TIME = op(() -> largeBoilerFuelBurnTimeModification);
 
     @Config.Comment("the value modification expression that applied to \"Amperage\" of Research Stations")
     @Config.DefaultString("~")
+    // not reloadable: a startup recipe modification
     public static String researchStationAmperageModification;
     @Config.Ignore
     public static final Supplier<MathOp> RESEARCH_STATION_AMP = op(() -> researchStationAmperageModification);
 
     @Config.Comment("the value modification expression that applied to \"Min Computation\" of Research Stations")
     @Config.DefaultString("~")
+    // not reloadable: a startup recipe modification
     public static String researchStationMinComputationModification;
     @Config.Ignore
     public static final Supplier<MathOp> RESEARCH_STATION_MIN_COMPUTATION = op(
@@ -250,6 +276,7 @@ public class NewConfig {
 
     @Config.Comment("the value modification expression that applied to \"Success Chance\" of Water Purification Plants")
     @Config.DefaultString("+50")
+    @Config.Reloadable(RELOADABLE)
     public static String waterPurificationPlantSuccessChance;
     @Config.Ignore
     public static final Supplier<MathOp> WATER_PURIFICATION_SUCCESS_CHANCE = op(
@@ -257,28 +284,34 @@ public class NewConfig {
 
     @Config.Comment("the value modification expression that applied to duration of Water Purification Plant")
     @Config.DefaultString("~")
+    @Config.Reloadable(RELOADABLE)
     public static String waterPurificationPlantModification;
     @Config.Ignore
     public static final Supplier<MathOp> WATER_PURIFICATION_CYCLE = op(() -> waterPurificationPlantModification);
 
     @Config.Comment("whether add effective materials of Excavators to Hammers (so that Hammers can dig gravels and sands.")
     @Config.DefaultBoolean(true)
+    @Config.Reloadable(RELOADABLE)
     public static boolean ticExtraHammerMaterial;
 
     @Config.Comment("whether to make all Pumps transfer \"max int\"L of fluids per execution")
     @Config.DefaultBoolean(true)
+    @Config.Reloadable(RELOADABLE)
     public static boolean maxBatchSizePump;
 
     @Config.Comment("whether to make all Conveyors transfer \"max int\" amount of items per execution")
     @Config.DefaultBoolean(true)
+    @Config.Reloadable(RELOADABLE)
     public static boolean maxBatchSizeConveyor;
 
     @Config.Comment("whether to allow all Conveyors work with interval of 1t at minimum")
     @Config.DefaultBoolean(true)
+    @Config.Reloadable(RELOADABLE)
     public static boolean maxTickRateConveyorCover;
 
     @Config.Comment("whether to allow all Robot Arms work with interval of 1t at minimum")
     @Config.DefaultBoolean(true)
+    @Config.Reloadable(RELOADABLE)
     public static boolean maxTickRateRobotArmCover;
 
     @Config.Comment({
@@ -287,6 +320,7 @@ public class NewConfig {
         "the value should be positive.",
         "NOTE: this only affects Crop Sticks. Industrial Farms use growthMultiplierIndustrialFarmCropsNH." })
     @Config.DefaultFloat(10.0F)
+    @Config.Reloadable(RELOADABLE)
     public static float growthMultiplierCropsNH;
 
     @Config.Comment({
@@ -294,40 +328,48 @@ public class NewConfig {
         "this is independent from growthMultiplierCropsNH, so neither of them affects the other.",
         "the value should be positive; non-positive values disable the acceleration (x1)." })
     @Config.DefaultFloat(10.0F)
+    @Config.Reloadable(RELOADABLE)
     public static float growthMultiplierIndustrialFarmCropsNH;
 
     @Config.Comment({ "the tick rate of growth for Crop Sticks in CropsNH", "the value should be positive" })
     @Config.DefaultInt(1)
+    @Config.Reloadable(RELOADABLE)
     public static int tickRateCropsNH;
 
     @Config.Comment({ "the interval ticks of queen working", "the value should be positive" })
     @Config.DefaultInt(1)
+    @Config.Reloadable(RELOADABLE)
     public static int queenIntervalForestry;
 
     @Config.Comment({ "the output interval of Super & Quantum Tanks", "20 by default. -1 to disable modification." })
     @Config.DefaultInt(-1)
+    @Config.Reloadable(RELOADABLE)
     public static int quantumTankOutputInterval;
 
     @Config.Comment("the value modification applied to the output amount of Super & Quantum Tanks")
     @Config.DefaultString("+0{min=INT_MAX}")
+    @Config.Reloadable(RELOADABLE)
     public static String quantumTankOutputAmountModification;
     @Config.Ignore
     public static final Supplier<MathOp> QUANTUM_TANK_OUTPUT_AMOUNT = op(() -> quantumTankOutputAmountModification);
 
     @Config.Comment("the value modification applied to the aspect orb from Ashroom of Thaumic Bases")
     @Config.DefaultString("*100")
+    @Config.Reloadable(RELOADABLE)
     public static String ashroomAspectOrbValueModification;
     @Config.Ignore
     public static final Supplier<MathOp> ASHROOM_ASPECT_ORB = op(() -> ashroomAspectOrbValueModification);
 
     @Config.Comment("the value modification applied to the drop count of Aspect Orbs from Ashroom of Thaumic Bases")
     @Config.DefaultString("*6")
+    @Config.Reloadable(RELOADABLE)
     public static String ashroomDropCountModification;
     @Config.Ignore
     public static final Supplier<MathOp> ASHROOM_DROP_COUNT = op(() -> ashroomDropCountModification);
 
     @Config.Comment("the value modification applied to the max extract amount of Item Conduit from Ender IO")
     @Config.DefaultString("+0{min=INT_MAX}")
+    @Config.Reloadable(RELOADABLE)
     public static String enderIoItemConduitMaxExtractAmountModification;
     @Config.Ignore
     public static final Supplier<MathOp> ITEM_CONDUIT_MAX_EXTRACT = op(
@@ -335,6 +377,7 @@ public class NewConfig {
 
     @Config.Comment("the value modification applied to the max extract amount of Liquid (Fluid) Conduit from Ender IO")
     @Config.DefaultString("+0{min=INT_MAX}")
+    @Config.Reloadable(RELOADABLE)
     public static String enderIoLiquidConduitMaxExtractAmountModification;
     @Config.Ignore
     public static final Supplier<MathOp> LIQUID_CONDUIT_MAX_EXTRACT = op(
@@ -342,6 +385,7 @@ public class NewConfig {
 
     @Config.Comment("the value modification applied to the max insert amount of Liquid (Fluid) Conduit from Ender IO")
     @Config.DefaultString("+0{min=INT_MAX}")
+    @Config.Reloadable(RELOADABLE)
     public static String enderIoLiquidConduitMaxInsertAmountModification;
     @Config.Ignore
     public static final Supplier<MathOp> LIQUID_CONDUIT_MAX_INSERT = op(
@@ -349,18 +393,22 @@ public class NewConfig {
 
     @Config.Comment("whether to charge the oxygen to the oxygen container immediately in Oxygen Compressor from Galacticraft")
     @Config.DefaultBoolean(true)
+    @Config.Reloadable(RELOADABLE)
     public static boolean galacticraftOxygenCompressorImmediateCharge;
 
     @Config.Comment("whether to charge the fuel to the rocket (or launch pad) immediately in Fuel Loader from Galacticraft")
     @Config.DefaultBoolean(true)
+    @Config.Reloadable(RELOADABLE)
     public static boolean galacticraftFuelLoaderImmediateCharge;
 
     @Config.Comment("whether to disable Research Completer from consuming the capacity of the vis node")
-    @Config.DefaultBoolean(false)
+    @Config.DefaultBoolean(false) // disabled because it breaks the mechanism too much
+    @Config.Reloadable(RELOADABLE)
     public static boolean disableResearchCompleterConsumingNodeCapacity;
 
     @Config.Comment({ "the list of MTE-internal accelerated classes (FQCN)", "GENERATED, DON'T EDIT!" })
     @Config.DefaultStringList({})
+    @Config.Reloadable(RELOADABLE)
     public static String[] mteAccelerationClass;
     @Config.Ignore
     public static final Supplier<Set<Class<?>>> MTE_ACCELERATION_CLASS = lazyMapping(
@@ -372,7 +420,9 @@ public class NewConfig {
         for (String name : names) {
             try {
                 set.add(Class.forName(name));
-            } catch (ClassNotFoundException ignore) {}
+            } catch (ClassNotFoundException ignore) {
+                LOG.warn("MTE Acceleration configuration is loading a missing class \"{}\"", name);
+            }
         }
         return set;
     }
