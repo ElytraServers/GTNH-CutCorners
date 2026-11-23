@@ -1,6 +1,6 @@
 package cn.elytra.gtnh.cutcorners.mixins.late.gregtech.pre290;
 
-import cn.elytra.gtnh.cutcorners.api.CutCornersAPI;
+import cn.elytra.gtnh.cutcorners.CutCorners;
 import cn.elytra.gtnh.cutcorners.util.ModConst;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
@@ -22,7 +22,7 @@ public class MTEMultiBlockBaseMixin {
     @Inject(method = "runMachine", at = @At("HEAD"))
     private void gtnhcc$hookRunMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick, CallbackInfo ci) {
         if (mMaxProgresstime > 0) {
-            if (CutCornersAPI.isMTEAccelerated(getClass())) {
+            if (CutCorners.getStrategy().isInMteAcceleration(getClass())) {
                 mMaxProgresstime = 1;
             }
         }

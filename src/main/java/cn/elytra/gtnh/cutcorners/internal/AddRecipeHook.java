@@ -1,7 +1,7 @@
 package cn.elytra.gtnh.cutcorners.internal;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
-import cn.elytra.gtnh.cutcorners.api.CutCornersAPI;
+import cn.elytra.gtnh.cutcorners.util.Utils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.util.GTRecipe;
@@ -44,7 +44,7 @@ public class AddRecipeHook {
                 "Failed to update the GTRecipe in {}",
                 recipeMapContext != null ? recipeMapContext.unlocalizedName : "<RecipeMap context isn't provided>",
                 e);
-            if (CutCornersAPI.isDev()) throw e;
+            if (Utils.isDev()) throw e;
         }
     }
 

@@ -227,4 +227,12 @@ public interface ICutCornerStrategy {
     default boolean isDisableResearchCompleterConsumingNodeCapacity() {
         return false;
     }
+
+    default boolean isInMteAcceleration(Class<?> c) {
+        return false;
+    }
+
+    default void addMteAcceleration(Class<?> c) {}
+
+    default void removeMteAcceleration(Class<?> c) {}
 }

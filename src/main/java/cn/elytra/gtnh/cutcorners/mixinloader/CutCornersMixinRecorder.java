@@ -3,9 +3,9 @@ package cn.elytra.gtnh.cutcorners.mixinloader;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.elytra.gtnh.cutcorners.api.CutCornersAPI;
 import cn.elytra.gtnh.cutcorners.core.util.ClassNameUtil;
 import cn.elytra.gtnh.cutcorners.util.ChatHelper;
+import cn.elytra.gtnh.cutcorners.util.Utils;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
@@ -47,7 +47,7 @@ public final class CutCornersMixinRecorder {
         List<IChatComponent> messages = new ArrayList<>();
         for (NotApplied nar : notApplied) {
             // skip dev-only mixin warnings.
-            if (!CutCornersAPI.isDev() && nar.isDevMixin()) continue;
+            if (!Utils.isDev() && nar.isDevMixin()) continue;
 
             ChatHelper.Dsl dsl = ChatHelper
                 .translate(

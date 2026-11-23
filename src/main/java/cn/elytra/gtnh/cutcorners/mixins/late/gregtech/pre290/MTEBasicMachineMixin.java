@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
-import cn.elytra.gtnh.cutcorners.api.CutCornersAPI;
 import cn.elytra.gtnh.cutcorners.util.ModConst;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
@@ -34,7 +33,7 @@ public class MTEBasicMachineMixin {
     @Inject(method = "onPostTick", at = @At("HEAD"))
     private void gtnhcc$hookRunMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick, CallbackInfo ci) {
         if (mMaxProgresstime > 0) {
-            if (CutCornersAPI.isMTEAccelerated(getClass())) {
+            if (CutCorners.getStrategy().isInMteAcceleration(getClass())) {
                 mMaxProgresstime = 1;
             }
         }

@@ -3,6 +3,7 @@ package cn.elytra.gtnh.cutcorners.strate.impl.conf;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
 import cn.elytra.gtnh.cutcorners.CutCorners;
@@ -21,7 +22,9 @@ import tectech.recipe.EyeOfHarmonyRecipe;
 
 public class NewConfigStrategy implements ICutCornerStrategy {
 
-    public NewConfigStrategy() {}
+    public NewConfigStrategy() {
+        NewConfig.init();
+    }
 
     @Override
     public boolean isImmediateMode() {
@@ -270,5 +273,23 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     @Override
     public boolean isDisableResearchCompleterConsumingNodeCapacity() {
         return NewConfig.disableResearchCompleterConsumingNodeCapacity;
+    }
+
+    @Override
+    public boolean isInMteAcceleration(Class<?> c) {
+        return NewConfig.MTE_ACCELERATION_CLASS.get().contains(c);
+    }
+
+    @Override
+    public void addMteAcceleration(Class<?> c) {
+        NewConfig.mteAccelerationClass = ArrayUtils.add(NewConfig.mteAccelerationClass, c.getCanonicalName());
+        NewConfig.save();
+    }
+
+    @Override
+    public void removeMteAcceleration(Class<?> c) {
+        NewConfig.mteAccelerationClass = ArrayUtils
+            .removeElements(NewConfig.mteAccelerationClass, c.getCanonicalName());
+        NewConfig.save();
     }
 }

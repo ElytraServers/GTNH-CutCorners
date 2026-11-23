@@ -3,28 +3,95 @@ package cn.elytra.gtnh.cutcorners.config;
 import static cn.elytra.gtnh.cutcorners.util.fp.LazyMapping.dynamicMapping;
 import static cn.elytra.gtnh.cutcorners.util.fp.LazyMapping.lazyMapping;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.Set;
 import java.util.function.Supplier;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
 
 import com.google.common.collect.Sets;
 import com.gtnewhorizon.gtnhlib.config.Config;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
+import cn.elytra.gtnh.cutcorners.core.util.FileWatcher;
+import cn.elytra.gtnh.cutcorners.util.ChatHelper;
+import cn.elytra.gtnh.cutcorners.util.Utils;
 import cn.elytra.gtnh.cutcorners.util.math.MathOp;
 import it.unimi.dsi.fastutil.objects.ReferenceArraySet;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
+import net.minecraftforge.common.config.Configuration;
 
 @Config(modid = "CutCorners-1")
 public class NewConfig {
 
+    @Config.Ignore
+    private static final Logger LOG = LogManager.getLogger();
+
+    /// the reload id for general fields.
+    @Config.Ignore
+    public static final String RELOADABLE = "default";
+
     static {
-        // make sure that GTNHLib loads this configuration first.
-        ConfigurationManager.registerConfig(NewConfig.class);
+        loadAndWatch();
     }
 
     @ApiStatus.Internal
     public static void init() {}
+
+    private static void loadAndWatch() {
+        ConfigurationManager.registerConfig(NewConfig.class);
+        // watching the configuration
+        Configuration config = ConfigurationManager.getConfig(NewConfig.class);
+        File configFile = config.getConfigFile();
+        if (configFile == null) {
+            LOG.warn("Unable to keep tracking the configuration file because it returned a null.");
+            return;
+        }
+
+        Path configPath = configFile.toPath();
+        FileWatcher.defaultInstance().addWatch(configPath, () -> {
+            LOG.info("{} has changed, reloading the CutCorners configuration", configPath);
+            reload();
+            try {
+                // notify the online operators.
+                MinecraftServer server = MinecraftServer.getServer();
+                if (server == null) return;
+                IChatComponent message = ChatHelper.text("Configuration has changed and reloaded")
+                    .color(EnumChatFormatting.BLUE)
+                    .appendText(" ")
+                    .appendText(NewConfig.beepString)
+                    .color(EnumChatFormatting.GRAY)
+                    .build();
+                for (EntityPlayerMP playerMP : server.getConfigurationManager().playerEntityList) {
+                    if (Utils.isOp(playerMP)) {
+                        playerMP.addChatMessage(message);
+                    }
+                }
+            } catch (Exception ignored) {}
+        });
+        LOG.info("Watching {} as the CutCorners configuration", configPath);
+    }
+
+    @ApiStatus.Internal
+    public static void reload() {
+        reload(RELOADABLE);
+    }
+
+    @ApiStatus.Internal
+    public static void reload(String id) {
+        ConfigurationManager.reloadConfig(NewConfig.class, id);
+    }
+
+    @ApiStatus.Internal
+    public static void save() {
+        ConfigurationManager.save(NewConfig.class);
+    }
 
     private static Supplier<MathOp> op(Supplier<String> s) {
         return dynamicMapping(s, input -> MathOp.parse(input).memoize());
@@ -119,10 +186,16 @@ public class NewConfig {
     @Config.DefaultBoolean(true)
     public static boolean immediateMode;
 
+    @Config.Comment("the dummy configuration option to test if reloading works.")
+    @Config.DefaultString("beep")
+    @Config.Reloadable(RELOADABLE)
+    public static String beepString;
+
     @Config.Comment({
         "the value modification expression that applied to the block strength when harvestable (tool matches or no tool required)",
         "if the value is >= 1.0F, block is broken instantly." })
     @Config.DefaultString("+0{min=0.99}") // instead of =0.99, use +0{min=0.99} to allow unmodified instant breaks
+    @Config.Reloadable(RELOADABLE)
     public static String blockStrengthModification;
     @Config.Ignore
     public static final Supplier<MathOp> BLOCK_STRENGTH = op(() -> blockStrengthModification);
@@ -212,20 +285,18 @@ public class NewConfig {
         "the multiplier of the growth progress for Crop Sticks in CropsNH",
         "the value is replacing \"Growth rate multiplier\" in CropsNH configuration. the range isn't capped.",
         "the value should be positive.",
-        "NOTE: this only affects Crop Sticks. Industrial Farms use growthMultiplierIndustrialFarmCropsNH."})
+        "NOTE: this only affects Crop Sticks. Industrial Farms use growthMultiplierIndustrialFarmCropsNH." })
     @Config.DefaultFloat(10.0F)
     public static float growthMultiplierCropsNH;
 
     @Config.Comment({
         "the multiplier of the growth progress for Industrial Farms in CropsNH",
         "this is independent from growthMultiplierCropsNH, so neither of them affects the other.",
-        "the value should be positive; non-positive values disable the acceleration (x1)."})
+        "the value should be positive; non-positive values disable the acceleration (x1)." })
     @Config.DefaultFloat(10.0F)
     public static float growthMultiplierIndustrialFarmCropsNH;
 
-    @Config.Comment({
-        "the tick rate of growth for Crop Sticks in CropsNH",
-        "the value should be positive"})
+    @Config.Comment({ "the tick rate of growth for Crop Sticks in CropsNH", "the value should be positive" })
     @Config.DefaultInt(1)
     public static int tickRateCropsNH;
 

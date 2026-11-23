@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import cn.elytra.gtnh.cutcorners.CutCorners;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.ArgumentType;
@@ -12,7 +13,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 
-import cn.elytra.gtnh.cutcorners.api.CutCornersAPI;
+import cn.elytra.gtnh.cutcorners.config.NewConfig;
 import cn.elytra.gtnh.cutcorners.core.util.ClassNameUtil;
 import cn.elytra.gtnh.cutcorners.util.ChatHelper;
 import codechicken.lib.raytracer.RayTracer;
@@ -50,6 +51,10 @@ public final class CutCornersCommand {
                         .then(literal("remove").then(
                                 required("cls", StringArgumentType.greedyString())
                                     .executes(wrap(CutCornersCommand::removeAccelerate))))
+                )
+                .then(
+                    literal("reload-config")
+                        .executes(wrap(CutCornersCommand::reloadConfig))
                 )
                 .then(
                     literal("environment-inspect")
@@ -126,7 +131,7 @@ public final class CutCornersCommand {
                         }
                         if (mte instanceof MTEBasicMachine || mte instanceof MTEMultiBlockBase) {
                             Class<? extends IMetaTileEntity> cls = mte.getClass();
-                            boolean listed = CutCornersAPI.isMTEAccelerated(cls);
+                            boolean listed = CutCorners.getStrategy().isInMteAcceleration(cls);
                             chat.text("Acceleration: ")
                                 .color(EnumChatFormatting.GRAY)
                                 .appendText(listed ? "Listed" : "Not listed")
@@ -162,7 +167,7 @@ public final class CutCornersCommand {
             String cls = StringArgumentType.getString(ctx, "cls");
             try {
                 Class<?> c = Class.forName(cls);
-                CutCornersAPI.addMTEAccelerated(c);
+                CutCorners.getStrategy().addMteAcceleration(c);
                 chat.text("OK!").color(EnumChatFormatting.GREEN);
             } catch (ClassNotFoundException e) {
                 chat.text(String.format("Class %s wasn't found", cls)).color(EnumChatFormatting.RED);
@@ -181,7 +186,7 @@ public final class CutCornersCommand {
             String cls = StringArgumentType.getString(ctx, "cls");
             try {
                 Class<?> c = Class.forName(cls);
-                CutCornersAPI.removeMTEAccelerated(c);
+                CutCorners.getStrategy().removeMteAcceleration(c);
                 chat.text("OK!").color(EnumChatFormatting.GREEN);
             } catch (ClassNotFoundException e) {
                 chat.text(String.format("Class %s wasn't found", cls)).color(EnumChatFormatting.RED);
@@ -204,6 +209,20 @@ public final class CutCornersCommand {
             .underlined(true)
             .clickEventSuggestMessage(fuelMapsLines)
             .sendTo(c.getSource());
+    }
+
+    private static void reloadConfig(CommandContext<ICommandSender> c) {
+        try (ChatHelper.CommandSenderScope scope = ChatHelper.ofContext(c.getSource())) {
+            try {
+                NewConfig.reload();
+                scope.text("OK!").color(EnumChatFormatting.GREEN);
+            } catch (Throwable e) {
+                scope.text("Unable to reload the configuration!");
+                scope.text(e.getMessage()).color(EnumChatFormatting.RED);
+                e.printStackTrace(System.err);
+            }
+            scope.text(NewConfig.beepString).color(EnumChatFormatting.GRAY);
+        }
     }
 
     private static Command<ICommandSender> wrap(Consumer<CommandContext<ICommandSender>> command) {
