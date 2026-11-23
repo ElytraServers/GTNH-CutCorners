@@ -12,8 +12,6 @@ import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 import static com.gtnewhorizon.cropsnh.tileentity.TileEntityCropSticks.TICK_RATE;
 
@@ -26,7 +24,7 @@ public class TECropSticksMixin {
         return CutCorners.getStrategy().getCropsNHStickTickRate(TICK_RATE);
     }
 
-    @ModifyConstant(method = "updateEntity", constant = @Constant(intValue = TICK_RATE), remap = true)
+    @ModifyExpressionValue(method = "updateEntity", at = @At(value = "CONSTANT", args = "intValue=" + TICK_RATE), remap = true)
     private int cc$tickRate(int constant) {
         assert constant == TICK_RATE;
         return cc$getTickRate();
