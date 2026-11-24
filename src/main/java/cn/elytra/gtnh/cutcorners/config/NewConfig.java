@@ -406,6 +406,15 @@ public class NewConfig {
     @Config.Reloadable(RELOADABLE)
     public static boolean disableResearchCompleterConsumingNodeCapacity;
 
+    @Config.Comment({
+        "the value modification applied to the operation interval (duration) of single block Pumps and Miners",
+        "FYI, retract is controlled by immediate mode" })
+    @Config.DefaultString("=1")
+    @Config.Reloadable(RELOADABLE)
+    public static String pumpAndMinerDurationModification;
+    @Config.Ignore
+    public static final Supplier<MathOp> PUMP_AND_MINER_MODIFICATION = op(() -> pumpAndMinerDurationModification);
+
     @Config.Comment({ "the list of MTE-internal accelerated classes (FQCN)", "GENERATED, DON'T EDIT!" })
     @Config.DefaultStringList({})
     @Config.Reloadable(RELOADABLE)

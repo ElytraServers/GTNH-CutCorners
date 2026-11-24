@@ -235,4 +235,8 @@ public interface ICutCornerStrategy {
     default void addMteAcceleration(Class<?> c) {}
 
     default void removeMteAcceleration(Class<?> c) {}
+
+    default int getPumpAndMinerDuration(int original) {
+        return original;
+    }
 }

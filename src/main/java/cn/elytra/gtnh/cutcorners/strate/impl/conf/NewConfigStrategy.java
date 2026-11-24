@@ -292,4 +292,9 @@ public class NewConfigStrategy implements ICutCornerStrategy {
             .removeElements(NewConfig.mteAccelerationClass, c.getCanonicalName());
         NewConfig.save();
     }
+
+    @Override
+    public int getPumpAndMinerDuration(int original) {
+        return NewConfig.PUMP_AND_MINER_MODIFICATION.get().apply(original);
+    }
 }
