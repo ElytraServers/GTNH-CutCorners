@@ -2,17 +2,19 @@ package cn.elytra.gtnh.cutcorners.core;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-import cn.elytra.gtnh.cutcorners.CutCorners;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 
+import cn.elytra.gtnh.cutcorners.CutCorners;
 import cn.elytra.gtnh.cutcorners.config.NewConfig;
 import cn.elytra.gtnh.cutcorners.core.util.ClassNameUtil;
 import cn.elytra.gtnh.cutcorners.util.ChatHelper;
@@ -59,6 +61,15 @@ public final class CutCornersCommand {
                 .then(
                     literal("environment-inspect")
                         .executes(wrap(CutCornersCommand::environmentInspect))
+                )
+                .then(
+                    // TODO: add BlockPos argument variant
+                    literal("torcherino")
+                        .then(required("tickCount", IntegerArgumentType.integer(0))
+                            .then(required("duration" /* in seconds */, IntegerArgumentType.integer(0))
+                                .executes(wrap(CutCornersCommand::accelerateAutoPos))
+                            )
+                        )
                 )
         );
         // @formatter:on
@@ -222,6 +233,49 @@ public final class CutCornersCommand {
                 e.printStackTrace(System.err);
             }
             scope.text(NewConfig.beepString).color(EnumChatFormatting.GRAY);
+        }
+    }
+
+    private static void accelerateAutoPos(CommandContext<ICommandSender> c) {
+        ICommandSender source = c.getSource();
+        try (ChatHelper.CommandSenderScope chat = ChatHelper.ofContext(source)) {
+            if (!(source instanceof EntityPlayer player)) {
+                chat.text("This command can only be used as a player.").color(EnumChatFormatting.RED);
+                return;
+            }
+
+            World world = player.worldObj;
+            MovingObjectPosition mop = RayTracer.reTrace(world, player);
+            if (mop.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) {
+                chat.text("You're not targeting to a block? traced " + mop.typeOfHit + " instead")
+                    .color(EnumChatFormatting.RED);
+                return;
+            }
+            TileEntity tile = world.getTileEntity(mop.blockX, mop.blockY, mop.blockZ);
+            if (tile == null) {
+                chat.text("There's nothing tickable at ")
+                    .appendTranslatable("%s/%s/%s", mop.blockX, mop.blockY, mop.blockZ)
+                    .color(EnumChatFormatting.YELLOW);
+                return;
+            }
+
+            int tickCount = IntegerArgumentType.getInteger(c, "tickCount");
+            if (tickCount <= 0) {
+                chat.text("Invalid tick count: " + tickCount + ", expected a number greater than zero.")
+                    .color(EnumChatFormatting.RED);
+                return;
+            }
+
+            int duration = IntegerArgumentType.getInteger(c, "duration"); // in seconds
+            if (duration <= 0) {
+                chat.text("Invalid duration: " + duration + ", expected a number greater than zero.")
+                    .color(EnumChatFormatting.RED);
+                return;
+            }
+
+            WorldTickingManager
+                .registerDuration(mop.blockX, mop.blockY, mop.blockZ, tickCount, duration, TimeUnit.SECONDS);
+            chat.text("OK!").color(EnumChatFormatting.GREEN);
         }
     }
 

@@ -9,7 +9,8 @@
     "BlockMixin",
     "EntityPlayerMixin",
     "ForgeHooksMixin",
-    "TileEntityFurnaceMixin"
+    "TileEntityFurnaceMixin",
+    "WorldMixin"
   ],
   "client": [],
   "server": []
