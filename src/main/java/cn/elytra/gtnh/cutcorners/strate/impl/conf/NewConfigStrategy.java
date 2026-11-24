@@ -297,4 +297,9 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     public int getPumpAndMinerDuration(int original) {
         return NewConfig.PUMP_AND_MINER_MODIFICATION.get().apply(original);
     }
+
+    @Override
+    public int getAirIntakeAmount(int original) {
+        return NewConfig.AIR_INTAKE_AMOUNT.get().apply(original);
+    }
 }

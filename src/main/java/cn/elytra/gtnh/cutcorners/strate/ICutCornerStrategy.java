@@ -239,4 +239,8 @@ public interface ICutCornerStrategy {
     default int getPumpAndMinerDuration(int original) {
         return original;
     }
+
+    default int getAirIntakeAmount(int original) {
+        return original;
+    }
 }

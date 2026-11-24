@@ -415,6 +415,13 @@ public class NewConfig {
     @Config.Ignore
     public static final Supplier<MathOp> PUMP_AND_MINER_MODIFICATION = op(() -> pumpAndMinerDurationModification);
 
+    @Config.Comment("the value modification applied to the air intake hatches")
+    @Config.DefaultString("+0{min=INT_MAX}")
+    @Config.Reloadable(RELOADABLE)
+    public static String airIntakeAmountModification;
+    @Config.Ignore
+    public static final Supplier<MathOp> AIR_INTAKE_AMOUNT = op(() -> airIntakeAmountModification);
+
     @Config.Comment({ "the list of MTE-internal accelerated classes (FQCN)", "GENERATED, DON'T EDIT!" })
     @Config.DefaultStringList({})
     @Config.Reloadable(RELOADABLE)
