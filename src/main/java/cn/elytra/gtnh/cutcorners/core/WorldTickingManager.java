@@ -1,5 +1,6 @@
 package cn.elytra.gtnh.cutcorners.core;
 
+import java.time.Duration;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +33,13 @@ public final class WorldTickingManager {
         long pos = CoordinatePacker.pack(x, y, z);
         ACCELERATED_POS.put(pos, extraTickCount);
         long delay = timeUnit.toMillis(duration);
+        THE_TIMER.schedule(new CancelTask(pos), delay);
+    }
+
+    public static void registerDuration(int x, int y, int z, int extraTickCount, Duration duration) {
+        long pos = CoordinatePacker.pack(x, y, z);
+        ACCELERATED_POS.put(pos, extraTickCount);
+        long delay = duration.toMillis();
         THE_TIMER.schedule(new CancelTask(pos), delay);
     }
 

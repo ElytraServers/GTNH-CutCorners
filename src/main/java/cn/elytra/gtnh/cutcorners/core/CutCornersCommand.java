@@ -1,8 +1,8 @@
 package cn.elytra.gtnh.cutcorners.core;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import com.mojang.brigadier.Command;
@@ -66,7 +66,7 @@ public final class CutCornersCommand {
                     // TODO: add BlockPos argument variant
                     literal("torcherino")
                         .then(required("tickCount", IntegerArgumentType.integer(0))
-                            .then(required("duration" /* in seconds */, IntegerArgumentType.integer(0))
+                            .then(required("duration" /* in seconds */, DurationArgumentType.duration())
                                 .executes(wrap(CutCornersCommand::accelerateAutoPos))
                             )
                         )
@@ -266,15 +266,9 @@ public final class CutCornersCommand {
                 return;
             }
 
-            int duration = IntegerArgumentType.getInteger(c, "duration"); // in seconds
-            if (duration <= 0) {
-                chat.text("Invalid duration: " + duration + ", expected a number greater than zero.")
-                    .color(EnumChatFormatting.RED);
-                return;
-            }
+            Duration duration = DurationArgumentType.getDuration(c, "duration");
 
-            WorldTickingManager
-                .registerDuration(mop.blockX, mop.blockY, mop.blockZ, tickCount, duration, TimeUnit.SECONDS);
+            WorldTickingManager.registerDuration(mop.blockX, mop.blockY, mop.blockZ, tickCount, duration);
             chat.text("OK!").color(EnumChatFormatting.GREEN);
         }
     }
