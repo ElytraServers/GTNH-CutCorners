@@ -302,4 +302,14 @@ public class NewConfigStrategy implements ICutCornerStrategy {
     public int getAirIntakeAmount(int original) {
         return NewConfig.AIR_INTAKE_AMOUNT.get().apply(original);
     }
+
+    @Override
+    public boolean isBinnieAcclimatiserAccelerated() {
+        return NewConfig.binnieAcclimatiserAccelerated;
+    }
+
+    @Override
+    public boolean isBinnieAcclimatiserAlwaysSuccess() {
+        return NewConfig.binnieAcclimatiserAlwaysSuccess;
+    }
 }

@@ -21,6 +21,7 @@ public final class ModConst {
         public static final String Thaumcraft = "Thaumcraft";
         public static final String EnderIO = "EnderIO";
         public static final String Galacticraft = "GalacticraftCore";
+        public static final String Binnie_Genetics = "Genetics";
     }
 
 }

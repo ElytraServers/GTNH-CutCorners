@@ -422,6 +422,16 @@ public class NewConfig {
     @Config.Ignore
     public static final Supplier<MathOp> AIR_INTAKE_AMOUNT = op(() -> airIntakeAmountModification);
 
+    @Config.Comment("whether Acclimatiser from Binnie runs every tick")
+    @Config.DefaultBoolean(true)
+    @Config.Reloadable(RELOADABLE)
+    public static boolean binnieAcclimatiserAccelerated;
+
+    @Config.Comment("whether Acclimatiser from Binnie success every run")
+    @Config.DefaultBoolean(false) // too powerful
+    @Config.Reloadable(RELOADABLE)
+    public static boolean binnieAcclimatiserAlwaysSuccess;
+
     @Config.Comment({ "the list of MTE-internal accelerated classes (FQCN)", "GENERATED, DON'T EDIT!" })
     @Config.DefaultStringList({})
     @Config.Reloadable(RELOADABLE)

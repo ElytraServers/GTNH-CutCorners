@@ -243,4 +243,12 @@ public interface ICutCornerStrategy {
     default int getAirIntakeAmount(int original) {
         return original;
     }
+
+    default boolean isBinnieAcclimatiserAccelerated() {
+        return false;
+    }
+
+    default boolean isBinnieAcclimatiserAlwaysSuccess() {
+        return false;
+    }
 }

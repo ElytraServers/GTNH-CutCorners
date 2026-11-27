@@ -9,6 +9,8 @@
   "mixins": [
     "_DEV.ShapedArcaneRecipeNullFix",
     "_EXTRA.MTEIceCreamMachineMixin",
+    "binnie.AcclimatiserComponentLogicMixin",
+    "binnie.ToleranceSystemMixin",
     "botania.TileSpreaderMixin",
     "crops_nh.MTEIndustrialFarmMixin",
     "crops_nh.TECropSticksMixin",

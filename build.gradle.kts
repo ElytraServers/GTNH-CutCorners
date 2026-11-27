@@ -37,6 +37,7 @@ dependencies {
     devOnlyNonPublishable(nh.cropsNh) { dev() }
     devOnlyNonPublishable(nh.thaumicBases) { dev() }
     devOnlyNonPublishable(nh.vendingMachine) { dev(false) }
+    devOnlyNonPublishable(nh.binnie) { dev() }
     runtimeOnlyNonPublishable(nh.notEnoughItems) { dev() }
     runtimeOnlyNonPublishable(nh.waila) { dev() }
     runtimeOnlyNonPublishable(nh.enderCore) { dev() }
